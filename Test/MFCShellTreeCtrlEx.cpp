@@ -54,10 +54,12 @@ void CMFCShellTreeCtrlEx::RefreshEx()
 void CMFCShellTreeCtrlEx::InitTreeEx()
 {
 	TCHAR szWinDir[MAX_PATH + 1];
-	if (GetWindowsDirectory(szWinDir, MAX_PATH) > 0)
+	if (GetWindowsDirectory(szWinDir, MAX_PATH) > 0)//윈도우 디렉터리 구함 경로 저장 버퍼, 사이즈
 	{
-		SHFILEINFO sfi;
+		SHFILEINFO sfi;//시스템 아이콘 추출을 위한 파일 및 시스템 아이콘 정보 구조체
 		SetImageList(CImageList::FromHandle((HIMAGELIST)SHGetFileInfo(szWinDir, 0, &sfi, sizeof(SHFILEINFO), SHGFI_SYSICONINDEX | SHGFI_SMALLICON)), 0);
+		//SHGFI_SMALLICON : 작은 아이콘
+		//HIMAGELIST 시스템 이미지 리스트를 구해 이미지리스트 리스트컨트롤에 등록
 	}
 	RefreshEx();
 }
@@ -191,10 +193,10 @@ void CMFCShellTreeCtrlEx::SetRootFolder(LPCTSTR szRootDir, BOOL bFullPath, DWORD
 	if (szRootDir)
 	{
 		// Check if szRootDir is not an empty string and points to a valid folder patname
-		if (lstrlen(szRootDir) != 0 && _taccess(szRootDir, 0) != 0)
+		if (lstrlen(szRootDir) != 0 && _taccess(szRootDir, 0) != 0) //디렉토리 존재 검사, 00 = 존재여부만
 			return;
 		// If root folder didn't change => exit
-		if (!m_cRootDir.CompareNoCase(szRootDir))
+		if (!m_cRootDir.CompareNoCase(szRootDir))//CString 문자열 비교
 			return;
 	}
 	// If root folder didn't change => exit
@@ -202,12 +204,11 @@ void CMFCShellTreeCtrlEx::SetRootFolder(LPCTSTR szRootDir, BOOL bFullPath, DWORD
 		return;
 	if (pdwProp)
 		m_dwProp = *pdwProp;
-	m_cRootDir = szRootDir ? szRootDir : _T("");
+	m_cRootDir = szRootDir;//멤버변수의 root dir 변경
 	if (m_hWnd)
 	{
-		// Re-populate tree items
-		RefreshEx();
-		HTREEITEM hRootItem = GetRootItem();
+		RefreshEx();// ListCtrl 아이템 초기화
+		HTREEITEM hRootItem = GetRootItem();//TREEITEM의 루트 변경
 		if (hRootItem)
 			SelectItem(hRootItem);
 	}

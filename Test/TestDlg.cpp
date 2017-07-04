@@ -39,6 +39,7 @@ BEGIN_MESSAGE_MAP(CTestDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON4, &CTestDlg::OnBnClickedButton4)
 	ON_WM_DESTROY()
 	ON_NOTIFY(TVN_SELCHANGED, IDC_FOLDERS_TREE, OnTvnSelchanged)
+	ON_WM_MOUSEHWHEEL()
 END_MESSAGE_MAP()
 
 
@@ -368,4 +369,18 @@ void CTestDlg::OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult)
 		// Refreshing both list controls contents		
 		m_cListCtrlRem.DisplayFolder(cFolderPath);
 	}
+}
+
+void CTestDlg::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// 이 기능을 사용하려면 Windows Vista 이상이 있어야 합니다.
+	// _WIN32_WINNT 기호는 0x0600보다 크거나 같아야 합니다.
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (zDelta < 0) {//마우스휠 down
+		//_fView
+	}
+	else {//마우스휠 up
+
+	}
+	CDialogEx::OnMouseHWheel(nFlags, zDelta, pt);
 }

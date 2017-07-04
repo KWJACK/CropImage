@@ -91,7 +91,7 @@ void CMFCShellTreeCtrlEx::SetRootFolder(LPCTSTR szRootDir, BOOL bFullPath, DWORD
 		return;
 	if (pdwProp)
 		m_dwProp = *pdwProp;
-	m_cRootDir = szRootDir ? szRootDir : _T("");
+	m_cRootDir = szRootDir;
 	if (m_hWnd)
 	{
 		// Re-populate tree items

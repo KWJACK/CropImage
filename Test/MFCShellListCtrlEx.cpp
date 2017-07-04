@@ -22,6 +22,7 @@ CMFCShellListCtrlEx::~CMFCShellListCtrlEx()
 
 BEGIN_MESSAGE_MAP(CMFCShellListCtrlEx, CMFCShellListCtrl)
 	ON_NOTIFY_REFLECT(LVN_DELETEITEM, &CMFCShellListCtrlEx::OnDeleteitem)
+	ON_NOTIFY_REFLECT(NM_CLICK, &CMFCShellListCtrlEx::OnNMClick)
 END_MESSAGE_MAP()
 
 // CMFCShellListCtrlEx message handlers
@@ -193,4 +194,22 @@ BOOL CMFCShellListCtrlEx::CopyItems(const CMFCShellListCtrlEx& cSrcListCtrl, con
 		RedrawWindow();
 	}
 	return bResult;
+}
+
+
+void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int m_nItem = pNMItemActivate->iItem;
+	int m_nSubItem = pNMItemActivate->iSubItem;
+	CString cStrText = GetItemText(m_nItem, m_nSubItem); //선택 list의 파일 이름 얻음
+
+	//경로얻어야함
+	//http://www.tipssoft.com/bulletin/board.php?bo_table=QnA&wr_id=7163
+	
+	TCHAR Path[MAX_PATH];
+	
+	
+	*pResult = 0;
 }

@@ -38,7 +38,8 @@ public:
 	CMFCShellTreeCtrlEx m_cTreeCtrl;
 	CProjectListCtrl m_cListCtrlRem;
 	CProjFilesArray m_cProjFileMap;
-	//CString m_cRootFolder;
+
+	CString m_cRootFolder;
 // 구현입니다.
 
 protected:
@@ -58,4 +59,5 @@ public:
 
 	afx_msg void OnRootFolderChanged(UINT uID);
 	afx_msg void OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
 };

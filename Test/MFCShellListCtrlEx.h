@@ -25,6 +25,8 @@ protected:
 	virtual BOOL IncludeItem(LPCTSTR szFileName) { return TRUE; }
 	virtual void FreeItemData(int nItem, DWORD_PTR dwItemData) {}
 	virtual void OnItemInserted(int nItem) {}
+public:
+	afx_msg void OnNMClick(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 
