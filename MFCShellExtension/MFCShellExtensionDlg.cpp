@@ -107,7 +107,7 @@ void CMFCShellExtensionDlg::OnBnClickedAddFiles()
 
 void CMFCShellExtensionDlg::OnRootFolderChanged(UINT uID)
 {
-	/*BOOL bCustomFolder = (uID == IDC_RADIO_CUSTOM);
+	BOOL bCustomFolder = (uID == IDC_RADIO_CUSTOM);
 	if (bCustomFolder == m_bCustomFolder)
 		return;
 	CString cRootFolder = m_cRootFolder;
@@ -127,7 +127,7 @@ void CMFCShellExtensionDlg::OnRootFolderChanged(UINT uID)
 		cRootFolder.Empty();
 	SetDlgItemText(IDC_EDIT_ROOTFOLDER, cRootFolder);
 	m_cTreeCtrl.SetRootFolder(cRootFolder);
-	m_bCustomFolder = bCustomFolder;*/
+	m_bCustomFolder = bCustomFolder;
 }
 
 void CMFCShellExtensionDlg::OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult)
