@@ -42,6 +42,21 @@
     <ClInclude Include="FileOpenClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MFCShellTreeCtrlEx.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCShellUtils.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjFilesArray.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectListCtrl.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCShellListCtrlEx.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp">
@@ -60,6 +75,21 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="FileOpenClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MFCShellTreeCtrlEx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MFCShellUtils.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjFilesArray.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectListCtrl.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MFCShellListCtrlEx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

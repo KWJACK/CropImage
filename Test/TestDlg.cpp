@@ -18,7 +18,7 @@ using namespace std;
 
 
 CTestDlg::CTestDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CTestDlg::IDD, pParent)
+	: CDialogEx(CTestDlg::IDD, pParent), m_bCustomFolder(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -26,6 +26,8 @@ CTestDlg::CTestDlg(CWnd* pParent /*=NULL*/)
 void CTestDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_FOLDERS_TREE, m_cTreeCtrl);
+	DDX_Control(pDX, IDC_LIST_REM, m_cListCtrlRem);
 }
 
 BEGIN_MESSAGE_MAP(CTestDlg, CDialogEx)
@@ -36,6 +38,7 @@ BEGIN_MESSAGE_MAP(CTestDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CTestDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CTestDlg::OnBnClickedButton4)
 	ON_WM_DESTROY()
+	ON_NOTIFY(TVN_SELCHANGED, IDC_FOLDERS_TREE, OnTvnSelchanged)
 END_MESSAGE_MAP()
 
 
@@ -55,6 +58,16 @@ BOOL CTestDlg::OnInitDialog()
 	m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(100)\\temp\\*.*";
 	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(100)\\temp\\";
 	m_FileClass = new FileOpenClass;
+
+	// Not displaying subfolders	
+	m_cListCtrlRem.SetItemTypes(SHCONTF_NONFOLDERS);
+	// Passing project files map pointer to both shell list controls	
+	m_cListCtrlRem.SetProjectFiles(&m_cProjFileMap);
+	// Setting list control filters	
+	m_cListCtrlRem.SetFilter(LISTFILTER_REMAINING);
+	HTREEITEM hParentItem = m_cTreeCtrl.GetRootItem();
+	m_cTreeCtrl.SelectItem(hParentItem);
+	m_cTreeCtrl.Expand(hParentItem, TVE_EXPAND);
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -315,4 +328,44 @@ void CTestDlg::OnDestroy()
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	delete m_FileClass;
 	
+}
+
+void CTestDlg::OnRootFolderChanged(UINT uID)
+{
+	/*BOOL bCustomFolder = (uID == IDC_RADIO_CUSTOM);
+	if (bCustomFolder == m_bCustomFolder)
+		return;
+	CString cRootFolder = m_cRootFolder;
+	if (uID == IDC_RADIO_CUSTOM)
+	{
+		CSelRootFolderDlg cDlg;
+		cDlg.m_cRootFolder = m_cRootFolder;
+		if (cDlg.DoModal() != IDOK)
+		{
+			int nID = bCustomFolder ? IDC_RADIO_DEFAULT : IDC_RADIO_CUSTOM;
+			CheckRadioButton(IDC_RADIO_DEFAULT, IDC_RADIO_CUSTOM, nID);
+			return;
+		}
+		cRootFolder = m_cRootFolder = cDlg.m_cRootFolder;
+	}
+	else
+		cRootFolder.Empty();
+	SetDlgItemText(IDC_EDIT_ROOTFOLDER, cRootFolder);
+	m_cTreeCtrl.SetRootFolder(cRootFolder);
+	m_bCustomFolder = bCustomFolder;*/
+}
+
+void CTestDlg::OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	HTREEITEM hItem = m_cTreeCtrl.GetSelectedItem();
+	CString cFolderPath;
+	if (m_cTreeCtrl.GetItemPath(cFolderPath, hItem))
+	{
+		// Retrieving an existing (or adding a new: bAddIfNotFound = TRUE) project files array
+		CStringArray *pFilesArr = m_cProjFileMap.GetFiles(cFolderPath, TRUE);
+		// and using the resultant pointer as the selected tree item data
+		m_cTreeCtrl.SetItemDataEx(hItem, (DWORD_PTR)pFilesArr);
+		// Refreshing both list controls contents		
+		m_cListCtrlRem.DisplayFolder(cFolderPath);
+	}
 }

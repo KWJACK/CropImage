@@ -6,6 +6,9 @@
 #include <iostream>
 #include "StdioFileEx.h"
 #include "FileOpenClass.h"
+#include "MFCShellTreeCtrlEx.h"
+#include "ProjectListCtrl.h"
+#include "ProjFilesArray.h"
 enum { success= 1, fail= -1};
 // CTestDlg 대화 상자
 class CTestDlg : public CDialogEx
@@ -30,6 +33,12 @@ public:
 	FileOpenClass* m_FileClass;	//BMP 파일 관리 클래스
 	CString m_sTmp;
 	CString m_sPath;
+
+	BOOL m_bCustomFolder;
+	CMFCShellTreeCtrlEx m_cTreeCtrl;
+	CProjectListCtrl m_cListCtrlRem;
+	CProjFilesArray m_cProjFileMap;
+	//CString m_cRootFolder;
 // 구현입니다.
 
 protected:
@@ -46,4 +55,7 @@ public:
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnDestroy();
+
+	afx_msg void OnRootFolderChanged(UINT uID);
+	afx_msg void OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult);
 };

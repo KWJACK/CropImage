@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{13A3DCF3-F366-4400-9C33-05C729AD1D3B}</ProjectGuid>
-    <RootNamespace>Test</RootNamespace>
+    <ProjectGuid>{77DB590B-2ADA-417D-BE7A-6659AB249662}</ProjectGuid>
+    <RootNamespace>MFCShellExtension</RootNamespace>
     <Keyword>MFCProj</Keyword>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>Static</UseOfMfc>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -47,15 +47,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -67,7 +66,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </Midl>
     <ResourceCompile>
-      <Culture>0x0412</Culture>
+      <Culture>0x0409</Culture>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
@@ -75,12 +74,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -94,7 +93,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </Midl>
     <ResourceCompile>
-      <Culture>0x0412</Culture>
+      <Culture>0x0409</Culture>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
@@ -103,51 +102,43 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BMPclass.h" />
-    <ClInclude Include="FileOpenClass.h" />
-    <ClInclude Include="MFCShellListCtrlEx.h" />
-    <ClInclude Include="MFCShellTreeCtrlEx.h" />
-    <ClInclude Include="MFCShellUtils.h" />
+    <ClInclude Include="MFCShellExtension.h" />
+    <ClInclude Include="MFCShellExtensionDlg.h" />
     <ClInclude Include="ProjectListCtrl.h" />
-    <ClInclude Include="ProjFilesArray.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SelRootFolderDlg.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="StdioFileEx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Test.h" />
-    <ClInclude Include="TestDlg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BMPclass.cpp" />
-    <ClCompile Include="FileOpenClass.cpp" />
+    <ClCompile Include="MFCShellExtension.cpp" />
+    <ClCompile Include="MFCShellExtensionDlg.cpp" />
     <ClCompile Include="MFCShellListCtrlEx.cpp" />
     <ClCompile Include="MFCShellTreeCtrlEx.cpp" />
     <ClCompile Include="MFCShellUtils.cpp" />
     <ClCompile Include="ProjectListCtrl.cpp" />
     <ClCompile Include="ProjFilesArray.cpp" />
+    <ClCompile Include="SelRootFolderDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="StdioFileEx.cpp" />
-    <ClCompile Include="Test.cpp" />
-    <ClCompile Include="TestDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Test.rc" />
+    <ResourceCompile Include="MFCShellExtension.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\Test.rc2" />
+    <None Include="res\MFCShellExtension.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Test.ico" />
+    <Image Include="res\MFCShellExtension.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE="Test.rc" />
+      <UserProperties RESOURCE_FILE="MFCShellExtension.rc" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
