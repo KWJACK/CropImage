@@ -1,6 +1,7 @@
 #pragma once
 
 // CMFCShellListCtrlEx
+class PreviewDlg;
 
 class CMFCShellListCtrlEx : public CMFCShellListCtrl
 {
@@ -12,7 +13,9 @@ public:
 	DWORD_PTR GetItemDataEx(int nItem) const;
 	BOOL SetItemDataEx(int nItem, DWORD_PTR dwData);
 	BOOL CopyItems(const CMFCShellListCtrlEx& cSrcListCtrl, const CUIntArray& cItemPosArr);
-
+	
+	PreviewDlg* m_preViewDlg;
+	void init(class PreviewDlg* a_PreViewDlg);
 protected:
 	afx_msg void OnDeleteitem(NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()

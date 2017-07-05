@@ -4,6 +4,8 @@
 #include "MFCShellUtils.h"
 #include "MFCShellListCtrlEx.h"
 
+#include "PreviewDlg.h"//클래스 접근을 위한 헤더
+
 // Developed by Vladimir Misovsky
 // January 2016
 
@@ -11,9 +13,13 @@
 
 IMPLEMENT_DYNAMIC(CMFCShellListCtrlEx, CMFCShellListCtrl)
 
+void CMFCShellListCtrlEx::init(class PreviewDlg* a_PreViewDlg)
+{
+	m_preViewDlg = a_PreViewDlg;
+}
 CMFCShellListCtrlEx::CMFCShellListCtrlEx()
 {
-
+	
 }
 
 CMFCShellListCtrlEx::~CMFCShellListCtrlEx()
@@ -206,12 +212,13 @@ void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 	//CString cStrText = GetItemText(m_nItem, m_nSubItem); //선택 list의 파일 이름 얻음
 
 	//선택 아이템 경로 얻기	
-	CString Path;
-	if(!GetItemPath(Path, m_nItem)){
+	CString filePath;
+	if(!GetItemPath(filePath, m_nItem)){
 		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
+	}else if(filePath.Compare(L".bmp")!=0){//bmp 파일만 읽어들임
+		return;
 	}
-
 	
-	
+		
 	*pResult = 0;
 }

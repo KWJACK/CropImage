@@ -47,7 +47,7 @@ int CPreviewDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 	CRect rect; GetClientRect( &rect );
 
-	BOOL tt= m_wndCanvas.Create( L"Image Preview Canvas", WS_VISIBLE | WS_CHILD | SS_OWNERDRAW, rect, this, 80 );
+	//BOOL tt= m_wndCanvas.Create( L"Image Preview Canvas", WS_VISIBLE | WS_CHILD | SS_OWNERDRAW, rect, this, 80 );
 	return 0;
 }
 
@@ -70,16 +70,21 @@ void CPreviewDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		DeleteObject( hBrush );
 		///*CImageToolDoc *pDoc = (CImageToolDoc*)((CMainFrame*)AfxGetMainWnd())->GetActiveDocument();
 		//
-		//if( pDoc->m_pSelectedImage != NULL )
-		//{
-		//	Graphics graphics( lpDrawItemStruct->hDC );
-		//	graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
-		//	graphics.DrawImage( pDoc->m_pSelectedImage,	
-		//		                 Rect( lpDrawItemStruct->rcItem.left, 
-		//							   lpDrawItemStruct->rcItem.top,
-		//							   lpDrawItemStruct->rcItem.right - lpDrawItemStruct->rcItem.left,
-		//							   lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top)); 
-		//}*/
+
+		
+		/*m_pSelectedImage  = Bitmap::FromFile( filePath.AllocSysString() );
+
+
+		if( pDoc->m_pSelectedImage != NULL )
+		{
+			Graphics graphics( lpDrawItemStruct->hDC );
+			graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
+			graphics.DrawImage( pDoc->m_pSelectedImage,	
+				                 Rect( lpDrawItemStruct->rcItem.left, 
+									   lpDrawItemStruct->rcItem.top,
+									   lpDrawItemStruct->rcItem.right - lpDrawItemStruct->rcItem.left,
+									   lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top)); 
+		}*/
 
 		delete pMemDC;
 	}

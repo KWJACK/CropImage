@@ -1,6 +1,7 @@
 #pragma once
 #include "afxwin.h"
-
+#include "myGdiPlus.h" 
+using namespace Gdiplus; 
 
 // CPreviewDlg 대화 상자입니다.
 
@@ -12,6 +13,9 @@ public:
 	CPreviewDlg(CWnd* pParent = NULL);   // 표준 생성자입니다.
 	virtual ~CPreviewDlg();
 
+	//선택 이미지
+	Bitmap  *m_pSelectedImage;	
+	inline Bitmap *GetImage() { return m_pSelectedImage; }
 // 대화 상자 데이터입니다.
 	enum { IDD = IDD_PREVIEW_DLG };
 
