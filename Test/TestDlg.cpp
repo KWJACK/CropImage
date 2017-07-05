@@ -280,7 +280,7 @@ int CTestDlg::makeFileNmae(){
 			}								
 		} while (FindNextFile(hFind, &fd));		
 		FindClose(hFind);//handle 반환
-		m_fp.Close();	//파일 닫음
+		//m_fp.Close();	//파일 닫음 
 		return success;
 	}
 	return fail;
