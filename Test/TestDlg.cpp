@@ -21,6 +21,8 @@ CTestDlg::CTestDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CTestDlg::IDD, pParent), m_bCustomFolder(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	m_pPreviewDlg = NULL;
 }
 
 void CTestDlg::DoDataExchange(CDataExchange* pDX)
@@ -69,6 +71,13 @@ BOOL CTestDlg::OnInitDialog()
 	HTREEITEM hParentItem = m_cTreeCtrl.GetRootItem();
 	m_cTreeCtrl.SelectItem(hParentItem);
 	m_cTreeCtrl.Expand(hParentItem, TVE_EXPAND);
+
+	//PrevieweImageDlg 생성
+	m_pPreviewDlg = new CPreviewDlg();
+	m_pPreviewDlg->Create( IDD_PREVIEW_DLG, this);	
+	//m_pPreviewDlg->ShowWindow(SW_SHOW); 	
+	//m_pPreviewDlg->MoveWindow(CRect(200,200,400,400));
+	m_pPreviewDlg->SetWindowPos( &wndTopMost, 20, 320, 500, 430, SWP_DRAWFRAME );
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -327,7 +336,13 @@ void CTestDlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	delete m_FileClass;
+	if( m_FileClass ){
+		delete m_FileClass;
+	}
+	if( m_pPreviewDlg )
+	{
+		delete m_pPreviewDlg;
+	}
 	
 }
 

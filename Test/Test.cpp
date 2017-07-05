@@ -5,11 +5,17 @@
 #include "stdafx.h"
 #include "Test.h"
 #include "TestDlg.h"
+#include "myGdiPlus.h" 
+
+using namespace Gdiplus; 
+#pragma comment(lib, "gdiplus.lib")
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+ULONG_PTR gdiplusToken;
 
 // CTestApp
 
@@ -40,6 +46,12 @@ BOOL CTestApp::InitInstance()
 	CWinApp::InitInstance();
 	AfxEnableControlContainer();
 
+	//begin: initialize GDI+  
+	GdiplusStartupInput gdiplusStartupInput;
+    VERIFY(GdiplusStartup( &gdiplusToken, &gdiplusStartupInput, NULL ) == Ok );
+	//end: initialize GDI+
+
+
 	// Create the shell manager, in case the dialog contains
 	// any shell tree view or shell list view controls.
 	CShellManager *pShellManager = new CShellManager;
@@ -59,3 +71,12 @@ BOOL CTestApp::InitInstance()
 	return FALSE;
 }
 
+
+
+int CTestApp::ExitInstance()
+{
+//begin: shutdown GDI+ 
+	GdiplusShutdown(gdiplusToken);
+//end: shutdown GDI+
+	return CWinApp::ExitInstance();
+}

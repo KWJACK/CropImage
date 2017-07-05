@@ -57,6 +57,12 @@
     <ClInclude Include="MFCShellListCtrlEx.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="PreviewDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="memdc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp">
@@ -92,6 +98,9 @@
     <ClCompile Include="MFCShellListCtrlEx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="PreviewDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Test.rc">
@@ -107,5 +116,8 @@
     <Image Include="res\Test.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\Downloads\MFC_codeproject\ImageTool\gdiplus\GdiPlus.lib" />
   </ItemGroup>
 </Project>

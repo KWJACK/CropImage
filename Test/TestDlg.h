@@ -9,6 +9,8 @@
 #include "MFCShellTreeCtrlEx.h"
 #include "ProjectListCtrl.h"
 #include "ProjFilesArray.h"
+
+#include "PreviewDlg.h"
 enum { success= 1, fail= -1};
 // CTestDlg 대화 상자
 class CTestDlg : public CDialogEx
@@ -34,12 +36,16 @@ public:
 	CString m_sTmp;
 	CString m_sPath;
 
+	//ListCtrl, TreeCtrl
 	BOOL m_bCustomFolder;
 	CMFCShellTreeCtrlEx m_cTreeCtrl;
 	CProjectListCtrl m_cListCtrlRem;
 	CProjFilesArray m_cProjFileMap;
-
 	CString m_cRootFolder;
+
+	//PreviewImage
+	CPreviewDlg   *m_pPreviewDlg;
+
 // 구현입니다.
 
 protected:

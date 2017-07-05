@@ -56,10 +56,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\gdiplus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>..\gdiplus\gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -105,9 +108,11 @@
   <ItemGroup>
     <ClInclude Include="BMPclass.h" />
     <ClInclude Include="FileOpenClass.h" />
+    <ClInclude Include="memdc.h" />
     <ClInclude Include="MFCShellListCtrlEx.h" />
     <ClInclude Include="MFCShellTreeCtrlEx.h" />
     <ClInclude Include="MFCShellUtils.h" />
+    <ClInclude Include="PreviewDlg.h" />
     <ClInclude Include="ProjectListCtrl.h" />
     <ClInclude Include="ProjFilesArray.h" />
     <ClInclude Include="Resource.h" />
@@ -123,6 +128,7 @@
     <ClCompile Include="MFCShellListCtrlEx.cpp" />
     <ClCompile Include="MFCShellTreeCtrlEx.cpp" />
     <ClCompile Include="MFCShellUtils.cpp" />
+    <ClCompile Include="PreviewDlg.cpp" />
     <ClCompile Include="ProjectListCtrl.cpp" />
     <ClCompile Include="ProjFilesArray.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -141,6 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Test.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\Downloads\MFC_codeproject\ImageTool\gdiplus\GdiPlus.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
