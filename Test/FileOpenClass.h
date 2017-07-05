@@ -4,11 +4,11 @@
 class FileOpenClass
 {
 private:
-	BOOL ReadBMP(CString a_fileName);	
-	BOOL SaveBMP(CString a_fileName);
 public:
 	FileOpenClass(void);
 	~FileOpenClass(void);
+	BOOL ReadBMP(CString a_fileName);	
+	BOOL SaveBMP(CString a_fileName);
 
 	CFile m_hFile;	
 	UCHAR* m_inImg;	
