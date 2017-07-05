@@ -28,7 +28,6 @@ protected:
 	LISTFILTER m_nFilter;
 	CString m_cCurFolder;
 	CProjFilesArray *m_pProjFileMap;
-
 	void PreEnumObjects(LPCTSTR szFolderPath);
 	BOOL IncludeItem(LPCTSTR szFileName);
 };

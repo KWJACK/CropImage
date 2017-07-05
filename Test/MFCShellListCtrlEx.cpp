@@ -196,19 +196,21 @@ BOOL CMFCShellListCtrlEx::CopyItems(const CMFCShellListCtrlEx& cSrcListCtrl, con
 	return bResult;
 }
 
-
+//리스트 아이템클릭시 해당 파일의 이름을 얻어옴
 void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	int m_nItem = pNMItemActivate->iItem;
-	int m_nSubItem = pNMItemActivate->iSubItem;
-	CString cStrText = GetItemText(m_nItem, m_nSubItem); //선택 list의 파일 이름 얻음
+	//int m_nSubItem = pNMItemActivate->iSubItem;//iItem= row, iSubItem= colum
+	//CString cStrText = GetItemText(m_nItem, m_nSubItem); //선택 list의 파일 이름 얻음
 
-	//경로얻어야함
-	//http://www.tipssoft.com/bulletin/board.php?bo_table=QnA&wr_id=7163
-	
-	TCHAR Path[MAX_PATH];
+	//선택 아이템 경로 얻기	
+	CString Path;
+	if(!GetItemPath(Path, m_nItem)){
+		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
+	}
+
 	
 	
 	*pResult = 0;

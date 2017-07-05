@@ -6,7 +6,10 @@
 
 BMPclass::~BMPclass(void)
 {
-	if(m_pucBMP) delete m_pucBMP;
+	if(m_pucBMP){
+		delete m_pucBMP;
+		m_pucBMP = nullptr;
+	}
 
 }
 
@@ -48,8 +51,7 @@ BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
    //이미지 데이터 복사	
 	m_pucBMP = new UCHAR[ih.biSizeImage];
 	memset(m_pucBMP, 0, sizeof(UCHAR)*ih.biSizeImage);
-
-
+	
 	//나중에 1bit으로 바꿔야합니다. 현재 8bit
 	m_bin = new UCHAR[ih.biSizeImage];
 	memset(m_bin, 0, sizeof(UCHAR)*ih.biSizeImage);
@@ -91,11 +93,9 @@ void BMPclass::adaptiveThreshold(unsigned char* input, unsigned char* bin)
 	{
 		// reset this column sum
 		sum = 0;
-
 		for (j=0; j<m_uiHeight; j++)
 		{
 			index = j*m_uiWidth+i;
-
 			sum += input[index];
 			if (i==0)
 				integralImg[index] = sum;
@@ -110,7 +110,6 @@ void BMPclass::adaptiveThreshold(unsigned char* input, unsigned char* bin)
 		for (j=0; j<m_uiHeight; j++)
 		{
 			index = j*m_uiWidth+i;
-
 			// set the SxS region
 			x1=i-s2; x2=i+s2;
 			y1=j-s2; y2=j+s2;
@@ -122,13 +121,11 @@ void BMPclass::adaptiveThreshold(unsigned char* input, unsigned char* bin)
 			if (y2 >= m_uiHeight) y2 = m_uiHeight-1;
 			
 			count = (x2-x1)*(y2-y1);
-
 			// I(x,y)=s(x2,y2)-s(x1,y2)-s(x2,y1)+s(x1,x1)
 			sum = integralImg[y2*m_uiWidth+x2] -
 				  integralImg[y1*m_uiWidth+x2] -
 				  integralImg[y2*m_uiWidth+x1] +
 				  integralImg[y1*m_uiWidth+x1];
-
 			if ((long)(input[index]*count) < (long)(sum*(1.0-T)))
 				bin[index] = 0;
 			else
@@ -138,6 +135,7 @@ void BMPclass::adaptiveThreshold(unsigned char* input, unsigned char* bin)
 
 	free (integralImg);
 
+	//복사( 수정 필요)
 	for(int i=0; i<ih.biSizeImage; i++)
 	{	
 		m_pucBMP[i]= bin[i];
