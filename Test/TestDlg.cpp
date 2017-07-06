@@ -6,6 +6,7 @@
 #include "Test.h"
 #include "TestDlg.h"
 #include "afxdialogex.h"
+#include "MyScrollView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -73,7 +74,7 @@ BOOL CTestDlg::OnInitDialog()
 	m_cTreeCtrl.Expand(hParentItem, TVE_EXPAND);		
 	//PrevieweImageDlg 생성
 	m_pPreviewDlg = new CPreviewDlg();
-	m_pPreviewDlg->Create(IDD_PREVIEW_DLG, this);
+	//m_pPreviewDlg->Create(IDD_PREVIEW_DLG, this);
 	
 	//초기 배치하기
 	CRect trt, prt,lrt;
@@ -82,12 +83,26 @@ BOOL CTestDlg::OnInitDialog()
 	m_cListCtrlRem.GetClientRect(lrt);
 
 	m_cTreeCtrl.MoveWindow(0,0,trt.Width(), prt.Height());
-	m_cListCtrlRem.MoveWindow(trt.right, 0, lrt.Width(), prt.Height());
-	m_pPreviewDlg->SetWindowPos(&wndTopMost, 20, 320, 700, 630, SWP_DRAWFRAME);
-	m_pPreviewDlg->MoveWindow(lrt.Width()+trt.right, 0, 700, prt.Height());
+	m_cListCtrlRem.MoveWindow(trt.right, 0, 300, prt.Height());
+	//m_pPreviewDlg->SetWindowPos(&wndTopMost, 20, 320, 700, 630, SWP_DRAWFRAME);
+	//m_pPreviewDlg->MoveWindow(lrt.Width()+trt.right, 0, 700, prt.Height());
 
 	m_cListCtrlRem.m_preViewDlg = m_pPreviewDlg;
 	
+
+	CRuntimeClass *pObject;
+	pObject = RUNTIME_CLASS(CMyScrollView);
+	CMyScrollView* pView = (CMyScrollView*)pObject->CreateObject();
+
+	if (!pView->Create(NULL, NULL, AFX_WS_DEFAULT_VIEW,
+		CRect(trt.right+400, 0, trt.right + 400+700, prt.Height()), this, AFX_IDW_PANE_FIRST, NULL))
+	{
+		TRACE0("Failed to create view window\n");
+		return -1;
+	}
+	CSize sizeTotal;
+	sizeTotal.cx = sizeTotal.cy = 100;
+	pView->SetScrollSizes(MM_TEXT, sizeTotal);
 	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }

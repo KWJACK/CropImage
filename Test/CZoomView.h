@@ -1,14 +1,14 @@
 #pragma once
 
-// ZoomView 뷰입니다.
+// CZoomView 뷰입니다.
 
-class ZoomView : public CScrollView
+class CZoomView : public CScrollView
 {
-	DECLARE_DYNCREATE(ZoomView)
+	DECLARE_DYNCREATE(CZoomView)
 
 protected:
-	ZoomView();           // 동적 만들기에 사용되는 protected 생성자입니다.
-	virtual ~ZoomView();
+	CZoomView();           // 동적 만들기에 사용되는 protected 생성자입니다.
+	virtual ~CZoomView();
 
 // Attributes
 public:
@@ -59,6 +59,10 @@ protected:
 	virtual void OnInitialUpdate();     // 생성된 후 처음입니다.
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnPaint();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 

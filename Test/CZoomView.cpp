@@ -1,15 +1,15 @@
-// ZoomView.cpp : 구현 파일입니다.
+// CZoomView.cpp : 구현 파일입니다.
 //
 
 #include "stdafx.h"
 #include "Test.h"
-#include "ZoomView.h"
+#include "CZoomView.h"
 
-// ZoomView
+// CZoomView
 
-IMPLEMENT_DYNCREATE(ZoomView, CScrollView)
+IMPLEMENT_DYNCREATE(CZoomView, CScrollView)
 
-ZoomView::ZoomView()
+CZoomView::CZoomView()
 {
 	m_pdcMemory = new CDC;
 	m_pBitmap = new CBitmap;
@@ -20,7 +20,7 @@ ZoomView::ZoomView()
 	m_maxZoomFactor = 10.0f;
 }
 
-ZoomView::~ZoomView()
+CZoomView::~CZoomView()
 {
 	if (m_pdcMemory != NULL)
 	{
@@ -37,16 +37,16 @@ ZoomView::~ZoomView()
 }
 
 
-BEGIN_MESSAGE_MAP(ZoomView, CScrollView)
+BEGIN_MESSAGE_MAP(CZoomView, CScrollView)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
-// ZoomView 그리기입니다.
+// CZoomView 그리기입니다.
 
-void ZoomView::OnInitialUpdate()
+void CZoomView::OnInitialUpdate()
 {
 	CScrollView::OnInitialUpdate();
 
@@ -82,23 +82,23 @@ void ZoomView::OnInitialUpdate()
 	}
 }
 
-void ZoomView::OnDraw(CDC* pDC)
+void CZoomView::OnDraw(CDC* pDC)
 {
 	CDocument* pDoc = GetDocument();
 	// TODO: 여기에 그리기 코드를 추가합니다.
 }
 
 
-// ZoomView 진단입니다.
+// CZoomView 진단입니다.
 
 #ifdef _DEBUG
-void ZoomView::AssertValid() const
+void CZoomView::AssertValid() const
 {
 	CScrollView::AssertValid();
 }
 
 #ifndef _WIN32_WCE
-void ZoomView::Dump(CDumpContext& dc) const
+void CZoomView::Dump(CDumpContext& dc) const
 {
 	CScrollView::Dump(dc);
 }
@@ -106,10 +106,10 @@ void ZoomView::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-// ZoomView 메시지 처리기입니다.
+// CZoomView 메시지 처리기입니다.
 
 
-void ZoomView::OnPaint()
+void CZoomView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	OnPrepareDC(&dc);
@@ -147,7 +147,7 @@ void ZoomView::OnPaint()
 	m_pdcMemory->SelectObject(pOldBrush);
 }
 
-void ZoomView::OnSize(UINT nType, int cx, int cy)
+void CZoomView::OnSize(UINT nType, int cx, int cy)
 {
 	CScrollView::OnSize(nType, cx, cy);
 
@@ -178,12 +178,12 @@ void ZoomView::OnSize(UINT nType, int cx, int cy)
 	Invalidate(FALSE);
 }
 
-BOOL ZoomView::OnEraseBkgnd(CDC* pDC)
+BOOL CZoomView::OnEraseBkgnd(CDC* pDC)
 {
 	return FALSE;
 }
 
-int ZoomView::SetMapMode(CDC* pDC)
+int CZoomView::SetMapMode(CDC* pDC)
 {
 	int previousMode = pDC->SetMapMode(MM_ISOTROPIC);
 	pDC->SetWindowExt(100, 100);
@@ -192,7 +192,7 @@ int ZoomView::SetMapMode(CDC* pDC)
 	return previousMode;
 }
 
-void ZoomView::SetDisplaySize(void)
+void CZoomView::SetDisplaySize(void)
 {
 	m_displaySize.cx = FloatToInt(m_layout.cx * m_zoomFactor);
 	m_displaySize.cy = FloatToInt(m_layout.cy * m_zoomFactor);
@@ -201,7 +201,7 @@ void ZoomView::SetDisplaySize(void)
 	SetMapMode(m_pdcMemory);
 }
 
-void ZoomView::SetZoomScale(float fScale)
+void CZoomView::SetZoomScale(float fScale)
 {
 	float oldZoomFactor = m_zoomFactor;
 	CPoint centerScrollPosition = GetCenterScrollPosition();
@@ -220,7 +220,7 @@ void ZoomView::SetZoomScale(float fScale)
 	Invalidate(FALSE);
 }
 
-void ZoomView::SetZoomArea(CRect zoomRect)
+void CZoomView::SetZoomArea(CRect zoomRect)
 {
 	CRect clientRect(0, 0, 0, 0);
 	GetClientRect(clientRect);
@@ -251,7 +251,7 @@ void ZoomView::SetZoomArea(CRect zoomRect)
 	Invalidate(FALSE);
 }
 
-CPoint ZoomView::GetCenterScrollPosition(void)
+CPoint CZoomView::GetCenterScrollPosition(void)
 {
 	CPoint ScrollPosition = GetScrollPosition();
 	CRect ClientRect(0, 0, 0, 0);
@@ -261,7 +261,7 @@ CPoint ZoomView::GetCenterScrollPosition(void)
 	return ScrollPosition;
 }
 
-void ZoomView::LPtoDP(LPPOINT lpPoint)
+void CZoomView::LPtoDP(LPPOINT lpPoint)
 {
 	CClientDC dc(this);
 	OnPrepareDC(&dc);
@@ -269,7 +269,7 @@ void ZoomView::LPtoDP(LPPOINT lpPoint)
 	dc.LPtoDP(lpPoint);
 }
 
-void ZoomView::LPtoDP(LPRECT lpRect)
+void CZoomView::LPtoDP(LPRECT lpRect)
 {
 	CClientDC dc(this);
 	OnPrepareDC(&dc);
@@ -277,7 +277,7 @@ void ZoomView::LPtoDP(LPRECT lpRect)
 	dc.LPtoDP(lpRect);
 }
 
-void ZoomView::LPtoDP(LPSIZE lpSize)
+void CZoomView::LPtoDP(LPSIZE lpSize)
 {
 	CClientDC dc(this);
 	OnPrepareDC(&dc);
@@ -285,7 +285,7 @@ void ZoomView::LPtoDP(LPSIZE lpSize)
 	dc.LPtoDP(lpSize);
 }
 
-void ZoomView::DPtoLP(LPPOINT lpPoint)
+void CZoomView::DPtoLP(LPPOINT lpPoint)
 {
 	CClientDC dc(this);
 	OnPrepareDC(&dc);
@@ -293,7 +293,7 @@ void ZoomView::DPtoLP(LPPOINT lpPoint)
 	dc.DPtoLP(lpPoint);
 }
 
-void ZoomView::DPtoLP(LPRECT lpRect)
+void CZoomView::DPtoLP(LPRECT lpRect)
 {
 	CClientDC dc(this);
 	OnPrepareDC(&dc);
@@ -301,7 +301,7 @@ void ZoomView::DPtoLP(LPRECT lpRect)
 	dc.DPtoLP(lpRect);
 }
 
-void ZoomView::DPtoLP(LPSIZE lpSize)
+void CZoomView::DPtoLP(LPSIZE lpSize)
 {
 	CClientDC dc(this);
 	OnPrepareDC(&dc);
@@ -309,7 +309,7 @@ void ZoomView::DPtoLP(LPSIZE lpSize)
 	dc.DPtoLP(lpSize);
 }
 
-int ZoomView::FloatToInt(float fNumber)
+int CZoomView::FloatToInt(float fNumber)
 {
 	if (fNumber >= 0)
 	{
@@ -322,7 +322,7 @@ int ZoomView::FloatToInt(float fNumber)
 	return int(fNumber);
 }
 
-void ZoomView::SetZoomFactor(float fZoomFactor)
+void CZoomView::SetZoomFactor(float fZoomFactor)
 {
 	if (fZoomFactor <= m_minZoomFactor)
 		m_zoomFactor = m_minZoomFactor;

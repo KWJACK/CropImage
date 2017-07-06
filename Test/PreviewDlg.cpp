@@ -168,7 +168,7 @@ BOOL CPreviewDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 						 //_fView
 		}
 		else {//¸¶¿ì½ºÈÙ up
-
+			
 		}
 	}
 	

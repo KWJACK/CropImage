@@ -112,6 +112,7 @@
     <ClInclude Include="MFCShellListCtrlEx.h" />
     <ClInclude Include="MFCShellTreeCtrlEx.h" />
     <ClInclude Include="MFCShellUtils.h" />
+    <ClInclude Include="MyScrollView.h" />
     <ClInclude Include="PreviewDlg.h" />
     <ClInclude Include="ProjectListCtrl.h" />
     <ClInclude Include="ProjFilesArray.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="TestDlg.h" />
+    <ClInclude Include="CZoomView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BMPclass.cpp" />
@@ -128,6 +130,7 @@
     <ClCompile Include="MFCShellListCtrlEx.cpp" />
     <ClCompile Include="MFCShellTreeCtrlEx.cpp" />
     <ClCompile Include="MFCShellUtils.cpp" />
+    <ClCompile Include="MyScrollView.cpp" />
     <ClCompile Include="PreviewDlg.cpp" />
     <ClCompile Include="ProjectListCtrl.cpp" />
     <ClCompile Include="ProjFilesArray.cpp" />
@@ -138,6 +141,7 @@
     <ClCompile Include="StdioFileEx.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="TestDlg.cpp" />
+    <ClCompile Include="CZoomView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Test.rc" />
