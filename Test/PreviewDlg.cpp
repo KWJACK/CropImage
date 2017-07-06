@@ -35,8 +35,8 @@ BEGIN_MESSAGE_MAP(CPreviewDlg, CDialog)
 	ON_WM_CREATE()
 	ON_WM_DRAWITEM()
 	ON_WM_SIZE()
-	ON_WM_CTLCOLOR()
-	ON_WM_MOUSEHWHEEL()
+	ON_WM_CTLCOLOR()	
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 
@@ -160,17 +160,17 @@ HBRUSH CPreviewDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return hbr;
 }
 
-void CPreviewDlg::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL CPreviewDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	// 이 기능을 사용하려면 Windows Vista 이상이 있어야 합니다.
-	// _WIN32_WINNT 기호는 0x0600보다 크거나 같아야 합니다.
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if (zDelta < 0) {//마우스휠 down
-		//_fView
-	}
-	else {//마우스휠 up
+	if (m_pSelectedImage) {
+		if (zDelta < 0) {//마우스휠 down
+						 //_fView
+		}
+		else {//마우스휠 up
 
+		}
 	}
-
-	CDialog::OnMouseHWheel(nFlags, zDelta, pt);
+	
+	return CDialog::OnMouseWheel(nFlags, zDelta, pt);
 }

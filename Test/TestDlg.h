@@ -46,7 +46,7 @@ public:
 	//PreviewImage
 	CPreviewDlg   *m_pPreviewDlg;
 	
-	BOOL IsImageGDIPLUSValid( CString filePath );
+	//BOOL IsImageGDIPLUSValid( CString filePath );
 // 구현입니다.
 
 protected:
