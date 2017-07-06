@@ -12,6 +12,7 @@
 
 
 #include "StdioFileEx.h"
+#include "stdafx.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

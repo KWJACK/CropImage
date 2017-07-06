@@ -1,8 +1,8 @@
 #pragma once
 #include "afxwin.h"
 #include "myGdiPlus.h" 
+#include "resource.h"
 using namespace Gdiplus; 
-
 // CPreviewDlg 대화 상자입니다.
 
 class CPreviewDlg : public CDialog

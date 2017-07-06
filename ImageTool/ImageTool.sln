@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageTool", "ImageTool\ImageTool.vcxproj", "{1CF67CF6-0CBE-4153-BC6B-7B2DCEC8E32B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageTool", "ImageTool\ImageTool.vcxproj", "{48CB482E-DFC9-4815-BB6C-D6EAD07705A4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gdiplus", "gdiplus\gdiplus.vcxproj", "{55B2F3DE-E44F-4D32-A7D7-92BE99EAD60C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gdiplus", "gdiplus\gdiplus.vcxproj", "{69E681FD-B559-479F-9C77-8AF7EDF88967}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,18 +12,18 @@ Global
 		Template|Win32 = Template|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1CF67CF6-0CBE-4153-BC6B-7B2DCEC8E32B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{1CF67CF6-0CBE-4153-BC6B-7B2DCEC8E32B}.Debug|Win32.Build.0 = Debug|Win32
-		{1CF67CF6-0CBE-4153-BC6B-7B2DCEC8E32B}.Release|Win32.ActiveCfg = Release|Win32
-		{1CF67CF6-0CBE-4153-BC6B-7B2DCEC8E32B}.Release|Win32.Build.0 = Release|Win32
-		{1CF67CF6-0CBE-4153-BC6B-7B2DCEC8E32B}.Template|Win32.ActiveCfg = Release|Win32
-		{1CF67CF6-0CBE-4153-BC6B-7B2DCEC8E32B}.Template|Win32.Build.0 = Release|Win32
-		{55B2F3DE-E44F-4D32-A7D7-92BE99EAD60C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{55B2F3DE-E44F-4D32-A7D7-92BE99EAD60C}.Debug|Win32.Build.0 = Debug|Win32
-		{55B2F3DE-E44F-4D32-A7D7-92BE99EAD60C}.Release|Win32.ActiveCfg = Release|Win32
-		{55B2F3DE-E44F-4D32-A7D7-92BE99EAD60C}.Release|Win32.Build.0 = Release|Win32
-		{55B2F3DE-E44F-4D32-A7D7-92BE99EAD60C}.Template|Win32.ActiveCfg = Template|Win32
-		{55B2F3DE-E44F-4D32-A7D7-92BE99EAD60C}.Template|Win32.Build.0 = Template|Win32
+		{48CB482E-DFC9-4815-BB6C-D6EAD07705A4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{48CB482E-DFC9-4815-BB6C-D6EAD07705A4}.Debug|Win32.Build.0 = Debug|Win32
+		{48CB482E-DFC9-4815-BB6C-D6EAD07705A4}.Release|Win32.ActiveCfg = Release|Win32
+		{48CB482E-DFC9-4815-BB6C-D6EAD07705A4}.Release|Win32.Build.0 = Release|Win32
+		{48CB482E-DFC9-4815-BB6C-D6EAD07705A4}.Template|Win32.ActiveCfg = Release|Win32
+		{48CB482E-DFC9-4815-BB6C-D6EAD07705A4}.Template|Win32.Build.0 = Release|Win32
+		{69E681FD-B559-479F-9C77-8AF7EDF88967}.Debug|Win32.ActiveCfg = Debug|Win32
+		{69E681FD-B559-479F-9C77-8AF7EDF88967}.Debug|Win32.Build.0 = Debug|Win32
+		{69E681FD-B559-479F-9C77-8AF7EDF88967}.Release|Win32.ActiveCfg = Release|Win32
+		{69E681FD-B559-479F-9C77-8AF7EDF88967}.Release|Win32.Build.0 = Release|Win32
+		{69E681FD-B559-479F-9C77-8AF7EDF88967}.Template|Win32.ActiveCfg = Template|Win32
+		{69E681FD-B559-479F-9C77-8AF7EDF88967}.Template|Win32.Build.0 = Template|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

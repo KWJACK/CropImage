@@ -18,7 +18,7 @@
     <SccProjectName />
     <SccLocalPath />
     <Keyword>MakeFileProj</Keyword>
-    <ProjectGuid>{55B2F3DE-E44F-4D32-A7D7-92BE99EAD60C}</ProjectGuid>
+    <ProjectGuid>{69E681FD-B559-479F-9C77-8AF7EDF88967}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" Label="Configuration">

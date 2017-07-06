@@ -117,7 +117,4 @@
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\..\..\Downloads\MFC_codeproject\ImageTool\gdiplus\GdiPlus.lib" />
-  </ItemGroup>
 </Project>

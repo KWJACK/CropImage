@@ -2,19 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="DLL">
-      <UniqueIdentifier>{ec0e89ac-8915-4b86-ad5c-9e1f39309150}</UniqueIdentifier>
+      <UniqueIdentifier>{ccb62e37-4e8e-4f76-aed9-05cbc9dd1e1d}</UniqueIdentifier>
       <Extensions>dll</Extensions>
     </Filter>
     <Filter Include="LIB">
-      <UniqueIdentifier>{287ecc86-cfe2-406e-96f7-0d791c1b2a8f}</UniqueIdentifier>
+      <UniqueIdentifier>{cf4409ce-f2de-4733-894d-a9499cb71c89}</UniqueIdentifier>
       <Extensions>lib</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{3a5c5713-3ab9-4f7a-b676-92f47a9c8f6c}</UniqueIdentifier>
+      <UniqueIdentifier>{f5460fa6-35f5-4c29-9606-cb2165c6d6e5}</UniqueIdentifier>
       <Extensions>h</Extensions>
     </Filter>
     <Filter Include="TXT">
-      <UniqueIdentifier>{33334182-684e-45ea-b18a-bec9506b00cf}</UniqueIdentifier>
+      <UniqueIdentifier>{e3333ab1-d95d-444e-a9a6-0aec59cbdf51}</UniqueIdentifier>
       <Extensions>txt</Extensions>
     </Filter>
   </ItemGroup>
