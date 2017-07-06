@@ -20,7 +20,8 @@ CMFCShellListCtrlEx::~CMFCShellListCtrlEx()
 BEGIN_MESSAGE_MAP(CMFCShellListCtrlEx, CMFCShellListCtrl)
 	ON_NOTIFY_REFLECT(LVN_DELETEITEM, &CMFCShellListCtrlEx::OnDeleteitem)
 	ON_NOTIFY_REFLECT(NM_CLICK, &CMFCShellListCtrlEx::OnNMClick)
-	ON_NOTIFY_REFLECT(NM_DBLCLK, &CMFCShellListCtrlEx::OnNMDblclk)
+	ON_NOTIFY_REFLECT(NM_DBLCLK, &CMFCShellListCtrlEx::OnNMDblclk)	
+	ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, &CMFCShellListCtrlEx::OnLvnItemchanged)
 END_MESSAGE_MAP()
 
 // CMFCShellListCtrlEx message handlers
@@ -209,16 +210,15 @@ void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 	
 	if(!GetItemPath(m_selFilePath, m_nItem)){
 		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
-	}else if(m_selFilePath.Find(L".jpg")<0){//bmp 파일만 읽어들임
+	}else if(m_selFilePath.Find(L".jpg")<0){//jpg 파일만 읽어들임
 		return;
 	}	
 
 	if(m_preViewDlg){				
 		//m_preViewDlg->m_filePath = m_selFilePath;
-		m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());
+		m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());		
 		::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0,0);	
-	}
-	
+	}	
 	*pResult = 0;
 }
 
@@ -229,4 +229,17 @@ void CMFCShellListCtrlEx::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	//LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	//*pResult = 0;
+}
+
+
+
+void CMFCShellListCtrlEx::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if(m_selFilePath){
+		OnNMClick(pNMHDR, pResult);
+	}
+		
+	*pResult = 0;
 }

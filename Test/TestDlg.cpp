@@ -403,9 +403,10 @@ void CTestDlg::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 	if (zDelta < 0) {//¸¶¿ì½ºÈÙ down
 		//_fView
 	}
-	else {//¸¶¿ì½ºÈÙ up
+	else {//¸¶¿ì½ºÈÙ up``
 
 	}
 	CDialogEx::OnMouseHWheel(nFlags, zDelta, pt);
 }
+
 
