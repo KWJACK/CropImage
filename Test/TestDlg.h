@@ -9,8 +9,8 @@
 #include "MFCShellTreeCtrlEx.h"
 #include "ProjectListCtrl.h"
 #include "ProjFilesArray.h"
-
 #include "PreviewDlg.h"
+
 enum { success= 1, fail= -1};
 // CTestDlg 대화 상자
 class CTestDlg : public CDialogEx

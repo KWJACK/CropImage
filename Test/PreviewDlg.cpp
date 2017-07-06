@@ -11,10 +11,13 @@
 
 IMPLEMENT_DYNAMIC(CPreviewDlg, CDialog)
 
+
+
 CPreviewDlg::CPreviewDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CPreviewDlg::IDD, pParent)
 {
-
+	m_pSelectedImage = NULL;
+	m_filePath=L"";
 }
 
 CPreviewDlg::~CPreviewDlg()
@@ -47,7 +50,7 @@ int CPreviewDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 	CRect rect; GetClientRect( &rect );
 
-	//BOOL tt= m_wndCanvas.Create( L"Image Preview Canvas", WS_VISIBLE | WS_CHILD | SS_OWNERDRAW, rect, this, 80 );
+	BOOL tt= m_wndCanvas.Create( L"Image Preview Canvas", WS_VISIBLE | WS_CHILD | SS_OWNERDRAW, rect, this, 80 );
 	return 0;
 }
 
@@ -69,45 +72,39 @@ void CPreviewDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		
 		DeleteObject( hBrush );
 		///*CImageToolDoc *pDoc = (CImageToolDoc*)((CMainFrame*)AfxGetMainWnd())->GetActiveDocument();
-		//
-
 		
-		/*m_pSelectedImage  = Bitmap::FromFile( filePath.AllocSysString() );
+		
+		if(!m_pSelectedImage)return;
+		//m_pSelectedImage  = Bitmap::FromFile(m_filePath.AllocSysString() );		
 
-
-		if( pDoc->m_pSelectedImage != NULL )
+		if(m_pSelectedImage != NULL )
 		{
 			Graphics graphics( lpDrawItemStruct->hDC );
 			graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
-			graphics.DrawImage( pDoc->m_pSelectedImage,	
+			graphics.DrawImage(m_pSelectedImage,	
 				                 Rect( lpDrawItemStruct->rcItem.left, 
 									   lpDrawItemStruct->rcItem.top,
 									   lpDrawItemStruct->rcItem.right - lpDrawItemStruct->rcItem.left,
 									   lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top)); 
-		}*/
+		}
 
 		delete pMemDC;
 	}
 
-	CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
+	//CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }
 
 //사이즈 조절시 확대
 void CPreviewDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
-	/*CRect rc; GetClientRect( rc );
+	CRect rc; GetClientRect( rc );
 
-	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	
 
-	if( pFrame == NULL )
-	{
-		return;
-	}
+	//CImageToolDoc* pDoc = (CImageToolDoc*)pFrame->GetActiveDocument();
 
-	CImageToolDoc* pDoc = (CImageToolDoc*)pFrame->GetActiveDocument();
-
-	if( pDoc->m_pSelectedImage == NULL )
+	if(m_pSelectedImage==NULL)
 	{
 		rc.SetRectEmpty();
 		m_wndCanvas.MoveWindow( rc );
@@ -117,7 +114,7 @@ void CPreviewDlg::OnSize(UINT nType, int cx, int cy)
 		const int   nWidth    = rc.Width();
 		const int   nHeight   = rc.Height();
 		const float fRatio    = (float)nHeight/nWidth;
-		const float fImgRatio = (float)pDoc->m_pSelectedImage->GetHeight()/pDoc->m_pSelectedImage->GetWidth();
+		const float fImgRatio = (float)m_pSelectedImage->GetHeight()/m_pSelectedImage->GetWidth();
 
 		int XDest, YDest, nDestWidth, nDestHeight;
 	
@@ -137,9 +134,10 @@ void CPreviewDlg::OnSize(UINT nType, int cx, int cy)
 		}
 
 		CRect rect(XDest, YDest, XDest+nDestWidth, YDest+nDestHeight);
+		//Invalidate();
 		m_wndCanvas.MoveWindow( rect );
 		m_wndCanvas.Invalidate();
-	}*/
+	}
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
 
@@ -160,3 +158,4 @@ HBRUSH CPreviewDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
 }
+

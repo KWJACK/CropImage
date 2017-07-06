@@ -2,9 +2,9 @@
 #include "afxwin.h"
 #include "myGdiPlus.h" 
 #include "resource.h"
+
 using namespace Gdiplus; 
 // CPreviewDlg 대화 상자입니다.
-
 class CPreviewDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CPreviewDlg)
@@ -15,11 +15,12 @@ public:
 
 	//선택 이미지
 	Bitmap  *m_pSelectedImage;	
-	inline Bitmap *GetImage() { return m_pSelectedImage; }
+	inline Bitmap *GetImage() { return m_pSelectedImage; }	
+	
 // 대화 상자 데이터입니다.
-	enum { IDD = IDD_PREVIEW_DLG };
-
+	enum { IDD = IDD_PREVIEW_DLG };	
 	CStatic m_wndCanvas;
+	CString m_filePath;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 

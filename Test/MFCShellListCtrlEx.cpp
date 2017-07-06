@@ -3,23 +3,14 @@
 #include "stdafx.h"
 #include "MFCShellUtils.h"
 #include "MFCShellListCtrlEx.h"
-
-#include "PreviewDlg.h"//클래스 접근을 위한 헤더
-
+#include "resource.h"
+#define filepathtopreview WM_USER+2
 // Developed by Vladimir Misovsky
 // January 2016
-
-// CMFCShellListCtrlEx
-
 IMPLEMENT_DYNAMIC(CMFCShellListCtrlEx, CMFCShellListCtrl)
-
-void CMFCShellListCtrlEx::init(class PreviewDlg* a_PreViewDlg)
-{
-	m_preViewDlg = a_PreViewDlg;
-}
 CMFCShellListCtrlEx::CMFCShellListCtrlEx()
 {
-	
+	m_preViewDlg=nullptr;
 }
 
 CMFCShellListCtrlEx::~CMFCShellListCtrlEx()
@@ -210,15 +201,22 @@ void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 	int m_nItem = pNMItemActivate->iItem;
 	//int m_nSubItem = pNMItemActivate->iSubItem;//iItem= row, iSubItem= colum
 	//CString cStrText = GetItemText(m_nItem, m_nSubItem); //선택 list의 파일 이름 얻음
-
-	//선택 아이템 경로 얻기	
-	CString filePath;
-	if(!GetItemPath(filePath, m_nItem)){
-		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
-	}else if(filePath.Compare(L".bmp")!=0){//bmp 파일만 읽어들임
+	if(m_nItem==-1){
 		return;
 	}
+	//선택 아이템 경로 얻기	
 	
-		
+	if(!GetItemPath(m_selFilePath, m_nItem)){
+		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
+	}else if(m_selFilePath.Find(L".jpg")<0){//bmp 파일만 읽어들임
+		return;
+	}	
+
+	if(m_preViewDlg){				
+		//m_preViewDlg->m_filePath = m_selFilePath;
+		m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());
+		::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0,0);	
+	}
+	
 	*pResult = 0;
 }

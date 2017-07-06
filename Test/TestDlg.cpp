@@ -10,8 +10,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
 // CTestDlg 대화 상자
 using namespace std;
 
@@ -41,7 +39,7 @@ BEGIN_MESSAGE_MAP(CTestDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON4, &CTestDlg::OnBnClickedButton4)
 	ON_WM_DESTROY()
 	ON_NOTIFY(TVN_SELCHANGED, IDC_FOLDERS_TREE, OnTvnSelchanged)
-	ON_WM_MOUSEHWHEEL()
+	ON_WM_MOUSEHWHEEL()	
 END_MESSAGE_MAP()
 
 
@@ -78,6 +76,8 @@ BOOL CTestDlg::OnInitDialog()
 	//m_pPreviewDlg->ShowWindow(SW_SHOW); 	
 	//m_pPreviewDlg->MoveWindow(CRect(200,200,400,400));
 	m_pPreviewDlg->SetWindowPos( &wndTopMost, 20, 320, 500, 430, SWP_DRAWFRAME );
+	m_cListCtrlRem.m_preViewDlg = m_pPreviewDlg;
+
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -399,3 +399,4 @@ void CTestDlg::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 	}
 	CDialogEx::OnMouseHWheel(nFlags, zDelta, pt);
 }
+
