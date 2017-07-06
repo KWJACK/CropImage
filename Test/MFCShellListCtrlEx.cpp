@@ -20,6 +20,7 @@ CMFCShellListCtrlEx::~CMFCShellListCtrlEx()
 BEGIN_MESSAGE_MAP(CMFCShellListCtrlEx, CMFCShellListCtrl)
 	ON_NOTIFY_REFLECT(LVN_DELETEITEM, &CMFCShellListCtrlEx::OnDeleteitem)
 	ON_NOTIFY_REFLECT(NM_CLICK, &CMFCShellListCtrlEx::OnNMClick)
+	ON_NOTIFY_REFLECT(NM_DBLCLK, &CMFCShellListCtrlEx::OnNMDblclk)
 END_MESSAGE_MAP()
 
 // CMFCShellListCtrlEx message handlers
@@ -219,4 +220,13 @@ void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	
 	*pResult = 0;
+}
+
+
+void CMFCShellListCtrlEx::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	//더블클릭 시 파일이 오픈되는데 막아버림
+	//LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//*pResult = 0;
 }

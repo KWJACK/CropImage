@@ -60,6 +60,8 @@ BOOL CTestDlg::OnInitDialog()
 	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(100)\\temp\\";
 	m_FileClass = new FileOpenClass;
 
+	ShowWindow(SW_SHOWMAXIMIZED);//다이얼로그 최대화
+
 	// Not displaying subfolders	
 	m_cListCtrlRem.SetItemTypes(SHCONTF_NONFOLDERS);
 	// Passing project files map pointer to both shell list controls	
@@ -68,16 +70,23 @@ BOOL CTestDlg::OnInitDialog()
 	m_cListCtrlRem.SetFilter(LISTFILTER_REMAINING);
 	HTREEITEM hParentItem = m_cTreeCtrl.GetRootItem();
 	m_cTreeCtrl.SelectItem(hParentItem);
-	m_cTreeCtrl.Expand(hParentItem, TVE_EXPAND);
+	m_cTreeCtrl.Expand(hParentItem, TVE_EXPAND);	
+	
+	CRect trt, prt,lrt;
+	this->GetClientRect(prt);
+	m_cTreeCtrl.GetClientRect(trt);
+	m_cListCtrlRem.GetClientRect(lrt);
+
+	m_cTreeCtrl.MoveWindow(0,0,trt.Width(), prt.Height());
+	m_cListCtrlRem.MoveWindow(trt.right, 0, lrt.Width(), prt.Height());
 
 	//PrevieweImageDlg 생성
 	m_pPreviewDlg = new CPreviewDlg();
 	m_pPreviewDlg->Create( IDD_PREVIEW_DLG, this);	
-	//m_pPreviewDlg->ShowWindow(SW_SHOW); 	
-	//m_pPreviewDlg->MoveWindow(CRect(200,200,400,400));
-	m_pPreviewDlg->SetWindowPos( &wndTopMost, 20, 320, 500, 430, SWP_DRAWFRAME );
+	
+	m_pPreviewDlg->SetWindowPos( &wndTopMost, 20, 320, 700, 630, SWP_DRAWFRAME );
 	m_cListCtrlRem.m_preViewDlg = m_pPreviewDlg;
-
+	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
