@@ -53,6 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\gdiplus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -102,9 +103,14 @@
     <ClInclude Include="BMPZoomView.h" />
     <ClInclude Include="EPRE.h" />
     <ClInclude Include="FormBMP.h" />
-    <ClInclude Include="FormFolder.h" />
-    <ClInclude Include="FormList.h" />
+    <ClInclude Include="FormFolderDlg.h" />
+    <ClInclude Include="FormListDlg.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MFCShellListCtrlEx.h" />
+    <ClInclude Include="MFCShellTreeCtrlEx.h" />
+    <ClInclude Include="MFCShellUtils.h" />
+    <ClInclude Include="ProjectListCtrl.h" />
+    <ClInclude Include="ProjFilesArray.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -114,9 +120,14 @@
     <ClCompile Include="BMPZoomView.cpp" />
     <ClCompile Include="EPRE.cpp" />
     <ClCompile Include="FormBMP.cpp" />
-    <ClCompile Include="FormFolder.cpp" />
-    <ClCompile Include="FormList.cpp" />
+    <ClCompile Include="FormFolderDlg.cpp" />
+    <ClCompile Include="FormListDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MFCShellListCtrlEx.cpp" />
+    <ClCompile Include="MFCShellTreeCtrlEx.cpp" />
+    <ClCompile Include="MFCShellUtils.cpp" />
+    <ClCompile Include="ProjectListCtrl.cpp" />
+    <ClCompile Include="ProjFilesArray.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

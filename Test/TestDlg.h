@@ -11,6 +11,7 @@
 #include "ProjFilesArray.h"
 #include "PreviewDlg.h"
 
+
 enum { success= 1, fail= -1};
 // CTestDlg 대화 상자
 class CTestDlg : public CDialogEx
@@ -44,7 +45,8 @@ public:
 	CString m_cRootFolder;
 
 	//PreviewImage
-	CPreviewDlg   *m_pPreviewDlg;
+	CPreviewDlg*	m_pPreviewDlg;
+
 	
 	//BOOL IsImageGDIPLUSValid( CString filePath );
 // 구현입니다.

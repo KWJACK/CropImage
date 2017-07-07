@@ -1,14 +1,15 @@
 #pragma once
-// FormFolder 폼 뷰입니다.
+// FormFolderDlg 폼 뷰입니다.
+#include "MFCShellTreeCtrlEx.h"
 
-class FormFolder : public CFormView
+class FormFolderDlg : public CFormView
 {
-	DECLARE_DYNCREATE(FormFolder)
+	DECLARE_DYNCREATE(FormFolderDlg)
 
 protected:
-	FormFolder();           // 동적 만들기에 사용되는 protected 생성자입니다.
-	virtual ~FormFolder();
-
+	FormFolderDlg();           // 동적 만들기에 사용되는 protected 생성자입니다.
+	virtual ~FormFolderDlg();
+	CMFCShellTreeCtrlEx m_cTreeCtrl;
 public:
 	enum { IDD = IDD_FORM_FOLDER };
 #ifdef _DEBUG
@@ -25,6 +26,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	void SetTarget(CWnd* m_cwnd);	
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	virtual void OnInitialUpdate();
 };
 
 

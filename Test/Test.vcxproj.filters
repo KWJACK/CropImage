@@ -42,9 +42,6 @@
     <ClInclude Include="FileOpenClass.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MFCShellTreeCtrlEx.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MFCShellUtils.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -54,20 +51,23 @@
     <ClInclude Include="ProjectListCtrl.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MFCShellListCtrlEx.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="PreviewDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="memdc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MyScrollView.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CZoomView.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCShellListCtrlEx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCShellTreeCtrlEx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MyScrollView.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

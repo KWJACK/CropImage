@@ -47,7 +47,9 @@ BEGIN_MESSAGE_MAP(CZoomView, CScrollView)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_WM_ERASEBKGND()
-	//}}AFX_MSG_MAP
+	//}}AFX_MSG_MAP	
+	ON_WM_VSCROLL()
+	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -334,4 +336,21 @@ void CZoomView::SetZoomFactor(float fZoomFactor)
 		m_zoomFactor = m_maxZoomFactor;
 	else
 		m_zoomFactor = fZoomFactor;
+}
+
+
+
+void CZoomView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CScrollView::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+void CZoomView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CScrollView::OnHScroll(nSBCode, nPos, pScrollBar);
 }

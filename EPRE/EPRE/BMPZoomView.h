@@ -1,6 +1,11 @@
 #pragma once
 // CBMPZoomView 뷰입니다.
 #include "ZoomView.h"
+#include "afxwin.h"
+#include "myGdiPlus.h" 
+#include "resource.h"
+
+using namespace Gdiplus; 
 class CBMPZoomView : public CZoomView
 {
 	DECLARE_DYNCREATE(CBMPZoomView)
@@ -14,6 +19,12 @@ public:
 	BOOL m_bSelectMode;
 	CRect m_rubberBand;
 	CPoint m_ptStart;
+	
+	CStatic m_wndCanvas;
+	CString m_filePath;
+	//선택 이미지
+	Bitmap  *m_pSelectedImage;	
+	inline Bitmap *GetImage() { return m_pSelectedImage; }	
 
 public:
 	virtual void OnDraw(CDC* pDC);      // 이 뷰를 그리기 위해 재정의되었습니다.

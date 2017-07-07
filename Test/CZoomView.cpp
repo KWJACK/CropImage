@@ -50,7 +50,7 @@ void CZoomView::OnInitialUpdate()
 {
 	CScrollView::OnInitialUpdate();
 
-
+	//크기 조절
 	m_layout.cx = 700;
 	m_layout.cy = 500;
 

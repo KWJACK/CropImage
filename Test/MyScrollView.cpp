@@ -31,16 +31,6 @@ END_MESSAGE_MAP()
 
 // CMyScrollView 그리기입니다.
 
-void CMyScrollView::OnInitialUpdate()
-{
-	CScrollView::OnInitialUpdate();
-
-	CSize sizeTotal;
-	// TODO: 이 뷰의 전체 크기를 계산합니다.
-	sizeTotal.cx = sizeTotal.cy = 100;
-	SetScrollSizes(MM_TEXT, sizeTotal);
-}
-
 void CMyScrollView::OnDraw(CDC* pDC)
 {
 	CDocument* pDoc = GetDocument();
@@ -64,6 +54,16 @@ void CMyScrollView::Dump(CDumpContext& dc) const
 #endif
 #endif //_DEBUG
 
+
+void CMyScrollView::OnInitialUpdate()
+{
+	CZoomView::OnInitialUpdate();
+	//CScrollView::OnInitialUpdate();
+	//CSize sizeTotal;
+	// TODO: 이 뷰의 전체 크기를 계산합니다.
+	//sizeTotal.cx = sizeTotal.cy = 100;
+	//SetScrollSizes(MM_TEXT, sizeTotal);
+}
 
 // CMyScrollView 메시지 처리기입니다.
 
@@ -115,4 +115,12 @@ void CMyScrollView::OnMouseMove(UINT nFlags, CPoint point)
 
 	Invalidate(FALSE);
 	CZoomView::OnMouseMove(nFlags, point);
+}
+
+
+BOOL CMyScrollView::PreCreateWindow(CREATESTRUCT& cs)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	return CZoomView::PreCreateWindow(cs);
 }

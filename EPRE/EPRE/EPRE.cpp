@@ -7,12 +7,16 @@
 #include "afxdialogex.h"
 #include "EPRE.h"
 #include "MainFrm.h"
+#include "myGdiPlus.h" 
 
+using namespace Gdiplus; 
+#pragma comment(lib, "gdiplus.lib")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+ULONG_PTR gdiplusToken;
 
 // CEPREApp
 
@@ -46,9 +50,17 @@ BOOL CEPREApp::InitInstance()
 
 
 	EnableTaskbarInteraction(FALSE);
+	
+	//begin: initialize GDI+  
+	GdiplusStartupInput gdiplusStartupInput;
+    VERIFY(GdiplusStartup( &gdiplusToken, &gdiplusStartupInput, NULL ) == Ok );
+	//end: initialize GDI+
+	// Create the shell manager, in case the dialog contains
+	// any shell tree view or shell list view controls.
+	CShellManager *pShellManager = new CShellManager;
 
-	// RichEdit 컨트롤을 사용하려면  AfxInitRichEdit2()가 있어야 합니다.	
-	// AfxInitRichEdit2();
+	// Activate "Windows Native" visual manager for enabling themes in MFC controls
+	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 
 	
 
@@ -72,11 +84,20 @@ BOOL CEPREApp::InitInstance()
 	HICON hIcon;
 	hIcon = LoadIcon(IDR_MAINFRAME);
 	AfxGetMainWnd()->SendMessage(WM_SETICON, TRUE, (LPARAM)hIcon);
+
+	// Delete the shell manager created above.
+	if (pShellManager != NULL)
+	{
+		delete pShellManager;
+	}
 	return TRUE;
 }
 
 int CEPREApp::ExitInstance()
 {
+//begin: shutdown GDI+ 
+	GdiplusShutdown(gdiplusToken);
+//end: shutdown GDI+
 	//TODO: 추가한 추가 리소스를 처리합니다.
 	return CWinApp::ExitInstance();
 }
@@ -100,7 +121,7 @@ protected:
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
-public:	
+public:		
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -112,7 +133,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)	
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)		
 END_MESSAGE_MAP()
 
 // 대화 상자를 실행하기 위한 응용 프로그램 명령입니다.
@@ -123,5 +144,4 @@ void CEPREApp::OnAppAbout()
 }
 
 // CEPREApp 메시지 처리기
-
 

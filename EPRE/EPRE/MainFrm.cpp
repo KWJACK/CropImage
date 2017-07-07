@@ -6,22 +6,23 @@
 #include "EPRE.h"
 
 #include "MainFrm.h"
-#include "FormFolder.h"
-#include "FormList.h"
+#include "FormFolderDlg.h"
+#include "FormListDlg.h"
 #include "FormBMP.h"
 #include "BMPZoomView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
+#define SEND_LISTDLG WM_USER+1
 // CMainFrame
 
 IMPLEMENT_DYNAMIC(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
-	ON_WM_SETFOCUS()
+	ON_WM_SETFOCUS()	
+	ON_MESSAGE(SEND_LISTDLG, &CMainFrame::OnSendListdlg)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -34,13 +35,21 @@ static UINT indicators[] =
 
 // CMainFrame 생성/소멸
 
-CMainFrame::CMainFrame()
+CMainFrame::CMainFrame():m_bCustomFolder(FALSE)
 {
 	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
 }
 
 CMainFrame::~CMainFrame()
 {
+}
+
+void CMainFrame::DoDataExchange(CDataExchange* pDX)
+{
+	CFrameWnd::DoDataExchange(pDX);
+	
+	
+	
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -115,12 +124,23 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 		TRACE0("Fail to right horizontal splitter...");
 		return FALSE;
 	}
-	// Main View (link 출력 뷰) 를 만듬(왼쪽 상단, 하단)
-	if(!m_wndSplitter2.CreateView(0, 0, RUNTIME_CLASS(FormFolder), CSize(800, 200), pContext)||
-		!m_wndSplitter2.CreateView(1, 0, RUNTIME_CLASS(FormBMP), CSize(500, 10), pContext)) {
+	CRuntimeClass* t_FormFolderDlg = RUNTIME_CLASS(FormFolderDlg);	
+
+	// Main View (link 출력 뷰) 를 만듬(왼쪽 하단, 상단) 하단 ForList를 만들어야  상단 FolderDlg 생성가능
+	m_wndSplitter2.CreateView(1, 0, RUNTIME_CLASS(FormListDlg), CSize(200, 10), pContext);
+ 	
+	if(!m_wndSplitter2.CreateView(0, 0, t_FormFolderDlg, CSize(200, 10), pContext)) {
 		TRACE0("Fail to create MainView...");
 		return FALSE;
 	}
+
+	//FormFolderDlg *pView = (FormFolderDlg *)((CMainFrame *)AfxGetMainWnd())->GetActiveView();
+	
+	//::SendMessage(obj->m_hWnd , GET_LISTDLG, (WPARAM)m_pFormListDlg, 0);
+
+
+	
+	
 	// Main View (link 출력 뷰) 를 만듬(오른쪽 상단, 하단)
 	if(!m_wndSplitter3.CreateView(0, 0, RUNTIME_CLASS(CBMPZoomView), CSize(800, 200), pContext)||
 		!m_wndSplitter3.CreateView(1, 0, RUNTIME_CLASS(FormBMP), CSize(800, 10), pContext)) {
@@ -136,6 +156,39 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	
 	// 활성창 지정
 	SetActiveView((CView *)m_wndSplitter3.GetPane(0, 0));
-
+			
+		
 	return TRUE;
+}
+
+
+void CMainFrame::OnRootFolderChanged(UINT uID)
+{
+	/*BOOL bCustomFolder = (uID == IDC_RADIO_CUSTOM);
+	if (bCustomFolder == m_bCustomFolder)
+		return;
+	CString cRootFolder = m_cRootFolder;
+	if (uID == IDC_RADIO_CUSTOM)
+	{
+		CSelRootFolderDlg cDlg;
+		cDlg.m_cRootFolder = m_cRootFolder;
+		if (cDlg.DoModal() != IDOK)
+		{
+			int nID = bCustomFolder ? IDC_RADIO_DEFAULT : IDC_RADIO_CUSTOM;
+			CheckRadioButton(IDC_RADIO_DEFAULT, IDC_RADIO_CUSTOM, nID);
+			return;
+		}
+		cRootFolder = m_cRootFolder = cDlg.m_cRootFolder;
+	}
+	else
+		cRootFolder.Empty();
+	SetDlgItemText(IDC_EDIT_ROOTFOLDER, cRootFolder);
+	m_cTreeCtrl.SetRootFolder(cRootFolder);
+	m_bCustomFolder = bCustomFolder;*/
+}
+
+afx_msg LRESULT CMainFrame::OnSendListdlg(WPARAM wParam, LPARAM lParam)
+{
+	m_pFormListDlg = (FormListDlg *)wParam;
+	return 0;
 }

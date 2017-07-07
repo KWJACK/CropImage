@@ -73,7 +73,7 @@ BOOL CTestDlg::OnInitDialog()
 	m_cTreeCtrl.SelectItem(hParentItem);
 	m_cTreeCtrl.Expand(hParentItem, TVE_EXPAND);		
 	//PrevieweImageDlg 생성
-	m_pPreviewDlg = new CPreviewDlg();
+	//m_pPreviewDlg = new CPreviewDlg();
 	//m_pPreviewDlg->Create(IDD_PREVIEW_DLG, this);
 	
 	//초기 배치하기
@@ -87,9 +87,9 @@ BOOL CTestDlg::OnInitDialog()
 	//m_pPreviewDlg->SetWindowPos(&wndTopMost, 20, 320, 700, 630, SWP_DRAWFRAME);
 	//m_pPreviewDlg->MoveWindow(lrt.Width()+trt.right, 0, 700, prt.Height());
 
-	m_cListCtrlRem.m_preViewDlg = m_pPreviewDlg;
+	//m_cListCtrlRem.m_preViewDlg = m_pPreviewDlg;
 	
-
+	//스크롤뷰 생성
 	CRuntimeClass *pObject;
 	pObject = RUNTIME_CLASS(CMyScrollView);
 	CMyScrollView* pView = (CMyScrollView*)pObject->CreateObject();
