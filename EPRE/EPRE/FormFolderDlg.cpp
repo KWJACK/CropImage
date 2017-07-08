@@ -27,6 +27,7 @@ void FormFolderDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(FormFolderDlg, CFormView)
 	ON_WM_CREATE()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -74,9 +75,6 @@ int FormFolderDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFormView::OnCreate(lpCreateStruct) == -1)
 		return -1;
-
-	CRect rt; GetClientRect(rt);
-
 	
 	return 0;
 }
@@ -93,6 +91,22 @@ void FormFolderDlg::OnInitialUpdate()
 
 	m_cTreeCtrl.SelectItem(hParentItem);
 	m_cTreeCtrl.Expand(hParentItem, TVE_EXPAND);	
-	CRect rt; GetClientRect(rt);
+
+	CSize scrollSize(0, 0);//View의 스크롤 바 제거
+	SetScrollSizes(MM_TEXT, scrollSize);
+
+	GetClientRect(rt);//View 크기만큼 얻어서 컨트롤 크기 확대
+	m_cTreeCtrl.MoveWindow(rt);
 	
+}
+
+
+void FormFolderDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CFormView::OnSize(nType, cx, cy);
+	if (rt.Width() != 0) {
+		GetClientRect(rt);
+		m_cTreeCtrl.MoveWindow(rt);
+	}
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }

@@ -84,13 +84,13 @@ BOOL CTestDlg::OnInitDialog()
 
 	m_cTreeCtrl.MoveWindow(0,0,trt.Width(), prt.Height());
 	m_cListCtrlRem.MoveWindow(trt.right, 0, 300, prt.Height());
-	//m_pPreviewDlg->SetWindowPos(&wndTopMost, 20, 320, 700, 630, SWP_DRAWFRAME);
-	//m_pPreviewDlg->MoveWindow(lrt.Width()+trt.right, 0, 700, prt.Height());
+	m_pPreviewDlg->SetWindowPos(&wndTopMost, 20, 320, 700, 630, SWP_DRAWFRAME);
+	m_pPreviewDlg->MoveWindow(lrt.Width()+trt.right, 0, 700, prt.Height());
 
-	//m_cListCtrlRem.m_preViewDlg = m_pPreviewDlg;
+	m_cListCtrlRem.m_preViewDlg = m_pPreviewDlg;
 	
 	//스크롤뷰 생성
-	CRuntimeClass *pObject;
+	/*CRuntimeClass *pObject;
 	pObject = RUNTIME_CLASS(CMyScrollView);
 	CMyScrollView* pView = (CMyScrollView*)pObject->CreateObject();
 
@@ -102,7 +102,7 @@ BOOL CTestDlg::OnInitDialog()
 	}
 	CSize sizeTotal;
 	sizeTotal.cx = sizeTotal.cy = 100;
-	pView->SetScrollSizes(MM_TEXT, sizeTotal);
+	pView->SetScrollSizes(MM_TEXT, sizeTotal);*/
 	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }

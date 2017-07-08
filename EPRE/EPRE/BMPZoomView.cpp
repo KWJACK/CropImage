@@ -27,7 +27,6 @@ BEGIN_MESSAGE_MAP(CBMPZoomView, CView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_VSCROLL()
 	ON_WM_HSCROLL()
-	ON_WM_MOUSEHWHEEL()
 	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
@@ -39,7 +38,7 @@ void CBMPZoomView::OnDraw(CDC* pDC)
 	/*TRACE("DemoZoom::OnDraw\n");
 	CDocument* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);*/
-	// TODO: 여기에 그리기 코드를 추가합니다.
+	
 	srand(0);
 	int width = 2000/10;
 	int height = 1000/10;
@@ -191,17 +190,6 @@ void CBMPZoomView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 	CZoomView::OnHScroll(nSBCode, nPos, pScrollBar);
 }
-
-
-void CBMPZoomView::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
-{
-	// 이 기능을 사용하려면 Windows Vista 이상이 있어야 합니다.
-	// _WIN32_WINNT 기호는 0x0600보다 크거나 같아야 합니다.
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	DoMouseWheel(nFlags, zDelta, pt);
-	//CZoomView::OnMouseHWheel(nFlags, zDelta, pt);
-}
-
 
 BOOL CBMPZoomView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {

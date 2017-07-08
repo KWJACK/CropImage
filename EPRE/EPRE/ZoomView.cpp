@@ -16,7 +16,7 @@ CZoomView::CZoomView()
 	m_pBitmap	= new CBitmap;
 	m_bInitialSize = FALSE;
 
-	m_zoomFactor = 1.0;
+	m_zoomFactor = 0.5f;
 	m_minZoomFactor = 0.2f;
 	m_maxZoomFactor = 10.0f;
 }
@@ -181,9 +181,9 @@ BOOL CZoomView::OnEraseBkgnd(CDC* pDC)
 
 int CZoomView::SetMapMode(CDC* pDC)
 {
-	int previousMode = pDC->SetMapMode(MM_ISOTROPIC);
-	pDC->SetWindowExt(100,100);
-	pDC->SetViewportExt(FloatToInt(100*m_zoomFactor),FloatToInt(100*m_zoomFactor));
+	int previousMode = pDC->SetMapMode(MM_ISOTROPIC);//배율 확대 지정 모드
+	pDC->SetWindowExt(10,10);//같은 배율로 지정해야함
+	pDC->SetViewportExt(FloatToInt(10*m_zoomFactor),FloatToInt(10*m_zoomFactor));
 
 	return previousMode;
 }

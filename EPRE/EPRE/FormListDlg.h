@@ -27,7 +27,8 @@ public:
 	CProjectListCtrl m_cListCtrlRem;
 	CProjFilesArray m_cProjFileMap;	
 	virtual void OnInitialUpdate();
-
+	CRect rt;
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 

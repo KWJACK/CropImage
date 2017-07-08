@@ -58,8 +58,8 @@ BOOL CDemoZoomView::PreCreateWindow(CREATESTRUCT& cs)
 void CDemoZoomView::OnDraw(CDC* pDC)
 {
 	TRACE("DemoZoom::OnDraw\n");
-	CDemoZoomDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
+	//CDemoZoomDoc* pDoc = GetDocument();
+	//ASSERT_VALID(pDoc);
 	// TODO: add draw code for native data here
 
 	srand(0);

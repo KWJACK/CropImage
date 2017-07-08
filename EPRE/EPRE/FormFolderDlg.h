@@ -28,6 +28,8 @@ public:
 	void SetTarget(CWnd* m_cwnd);	
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	virtual void OnInitialUpdate();
+	CRect rt;
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 

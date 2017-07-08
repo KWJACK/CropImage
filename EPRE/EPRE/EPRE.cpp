@@ -84,12 +84,7 @@ BOOL CEPREApp::InitInstance()
 	HICON hIcon;
 	hIcon = LoadIcon(IDR_MAINFRAME);
 	AfxGetMainWnd()->SendMessage(WM_SETICON, TRUE, (LPARAM)hIcon);
-
-	// Delete the shell manager created above.
-	if (pShellManager != NULL)
-	{
-		delete pShellManager;
-	}
+		
 	return TRUE;
 }
 

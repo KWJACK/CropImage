@@ -134,13 +134,6 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 		return FALSE;
 	}
 
-	//FormFolderDlg *pView = (FormFolderDlg *)((CMainFrame *)AfxGetMainWnd())->GetActiveView();
-	
-	//::SendMessage(obj->m_hWnd , GET_LISTDLG, (WPARAM)m_pFormListDlg, 0);
-
-
-	
-	
 	// Main View (link 출력 뷰) 를 만듬(오른쪽 상단, 하단)
 	if(!m_wndSplitter3.CreateView(0, 0, RUNTIME_CLASS(CBMPZoomView), CSize(800, 200), pContext)||
 		!m_wndSplitter3.CreateView(1, 0, RUNTIME_CLASS(FormBMP), CSize(800, 10), pContext)) {
