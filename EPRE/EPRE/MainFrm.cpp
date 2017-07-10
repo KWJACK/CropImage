@@ -56,6 +56,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;	
+	//스테이터스 바 생성
+	if (!m_wndStatusBar.Create(this))
+	{
+		TRACE0("상태 표시줄을 만들지 못했습니다.\n");
+		return -1;      // 만들지 못했습니다.
+	}
+	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	m_wndStatusBar.SetPaneInfo(1, ID_SEPARATOR, SBPS_NORMAL, 150);
 	return 0;
 }
 
@@ -124,12 +132,10 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 		TRACE0("Fail to right horizontal splitter...");
 		return FALSE;
 	}
-	CRuntimeClass* t_FormFolderDlg = RUNTIME_CLASS(FormFolderDlg);	
 
 	// Main View (link 출력 뷰) 를 만듬(왼쪽 하단, 상단) 하단 ForList를 만들어야  상단 FolderDlg 생성가능
-	m_wndSplitter2.CreateView(1, 0, RUNTIME_CLASS(FormListDlg), CSize(200, 10), pContext);
- 	
-	if(!m_wndSplitter2.CreateView(0, 0, t_FormFolderDlg, CSize(200, 10), pContext)) {
+	if(!m_wndSplitter2.CreateView(1, 0, RUNTIME_CLASS(FormListDlg), CSize(200, 10), pContext)||
+		!m_wndSplitter2.CreateView(0, 0, RUNTIME_CLASS(FormFolderDlg), CSize(200, 10), pContext)) {
 		TRACE0("Fail to create MainView...");
 		return FALSE;
 	}
@@ -182,6 +188,6 @@ void CMainFrame::OnRootFolderChanged(UINT uID)
 
 afx_msg LRESULT CMainFrame::OnSendListdlg(WPARAM wParam, LPARAM lParam)
 {
-	m_pFormListDlg = (FormListDlg *)wParam;
+	m_pFormListDlg = (FormListDlg *)wParam;	
 	return 0;
 }

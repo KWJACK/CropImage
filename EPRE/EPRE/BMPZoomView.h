@@ -19,9 +19,13 @@ public:
 	BOOL m_bSelectMode;
 	CRect m_rubberBand;
 	CPoint m_ptStart;
-	
+	BOOL m_create_canvas;
 	CStatic m_wndCanvas;
 	CString m_filePath;
+
+	CPoint m_ImageDest;//이미지 출력 시작점 cx = left, cy = top
+	CPoint m_ExpandDest;//늘어난 이미지 크기
+	float m_fResolution_W, m_fResolution_H;	//이미지 배율
 	//선택 이미지
 	Bitmap  *m_pSelectedImage;	
 	inline Bitmap *GetImage() { return m_pSelectedImage; }	
@@ -38,6 +42,8 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
+	void ShowImageInfo(CPoint a_point);//마우스 커서에 따른 비트맵 픽셀 정보 출력
+
 	afx_msg void OnViewZoomin();
 	afx_msg void OnViewZoomout();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -51,5 +57,7 @@ public:
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 

@@ -8,6 +8,7 @@ class CMainFrame : public CFrameWnd
 {	
 public:
 	CMainFrame();
+	virtual ~CMainFrame();
 protected: 
 	DECLARE_DYNAMIC(CMainFrame)
 
@@ -20,10 +21,10 @@ protected:
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-
 // 구현입니다.
 public:
-	virtual ~CMainFrame();
+	CToolBar          m_wndToolBar;
+	CStatusBar        m_wndStatusBar;//비트맵 픽셀 정보 출력을 위한 status bar
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

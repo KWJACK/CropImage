@@ -2,9 +2,9 @@
 #define _MEMDC_H_
 
 //////////////////////////////////////////////////
-// CMemDC - memory DC
+// CMMemDC - memory DC
 //
-class CMemDC : public CDC
+class CMMemDC : public CDC
 {
 protected:
    CBitmap  m_bitmap;       
@@ -44,28 +44,28 @@ protected:
     }
 
 public:
-   CMemDC( CDC *pDC )
+   CMMemDC( CDC *pDC )
 	   : CDC()
    {
 	   pDC->GetClipBox( &m_rect );
 	   Build( pDC );
    }
 
-   CMemDC( HDC hDC )
+   CMMemDC( HDC hDC )
 	   : CDC()
    {
 	   CDC::FromHandle( hDC )->GetClipBox( &m_rect );
 	   Build( CDC::FromHandle( hDC ) );
    }
 
-   CMemDC( CDC *pDC, const RECT& rect ) 
+   CMMemDC( CDC *pDC, const RECT& rect ) 
 	   : CDC()
    {
 	   m_rect = rect;
 	   Build( pDC ); 
    }
     
-   virtual ~CMemDC()
+   virtual ~CMMemDC()
    {        
         if( m_bMemDC )
 		{
@@ -86,12 +86,12 @@ public:
         }    
     }
     
-    CMemDC* operator->() 
+    CMMemDC* operator->() 
     {
         return this;
     }    
 
-    operator CMemDC*() 
+    operator CMMemDC*() 
     {
         return this;
     }

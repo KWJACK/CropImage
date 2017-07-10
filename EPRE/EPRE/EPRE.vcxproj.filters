@@ -63,6 +63,9 @@
     <ClInclude Include="ProjectListCtrl.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="memdc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EPRE.cpp">

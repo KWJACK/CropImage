@@ -20,7 +20,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
@@ -107,6 +107,7 @@
     <ClInclude Include="FormFolderDlg.h" />
     <ClInclude Include="FormListDlg.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="memdc.h" />
     <ClInclude Include="MFCShellListCtrlEx.h" />
     <ClInclude Include="MFCShellTreeCtrlEx.h" />
     <ClInclude Include="MFCShellUtils.h" />
