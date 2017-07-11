@@ -23,8 +23,8 @@ CMFCShellListCtrlEx::~CMFCShellListCtrlEx()
 BEGIN_MESSAGE_MAP(CMFCShellListCtrlEx, CMFCShellListCtrl)	
 	ON_NOTIFY_REFLECT(NM_CLICK, &CMFCShellListCtrlEx::OnNMClick)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, &CMFCShellListCtrlEx::OnNMDblclk)	
-	ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, &CMFCShellListCtrlEx::OnLvnItemchanged)
 	ON_NOTIFY_REFLECT(LVN_DELETEITEM, &CMFCShellListCtrlEx::OnDeleteitem)	
+	ON_NOTIFY_REFLECT(LVN_KEYDOWN, &CMFCShellListCtrlEx::OnLvnKeydown)	
 END_MESSAGE_MAP()
 
 // CMFCShellListCtrlEx message handlers
@@ -209,13 +209,12 @@ void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 	if(m_nItem==-1){
 		return;
 	}
-	//선택 아이템 경로 얻기	
-	
+	//선택 아이템 경로 얻기		
 	if(!GetItemPath(m_selFilePath, m_nItem)){
 		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
 		return;
 	}
-
+	//preview에 전달
 	if(m_preViewDlg){				
 		if(m_selFilePath.Find(L".jpg") > 0 ){//jpg, bmp 파일만 읽어들임		
 			m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());		
@@ -241,57 +240,46 @@ void CMFCShellListCtrlEx::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 }
 
 
-void CMFCShellListCtrlEx::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	//여기서 부터 하면 됨. 키 다운시 위 아래 아이템 선택할 수 있도록 하는 것이 목표
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);	
-	if(pNMLV->uChanged & LVIS_DROPHILITED)
-	{		
-		/*POINT t = pNMLV->ptAction;
-		if(m_selFilePath){
-			m_nItem+1;
-			this->SetItemState(m_nItem, LVIS_SELECTED|LVIS_FOCUSED, LVIS_SELECTED|LVIS_FOCUSED);
-			OnNMClick(pNMHDR, pResult);
-		}		*/
-		
-	}		
-}
-
 
 void CMFCShellListCtrlEx::OnLvnKeydown(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
-	int i = GetItemCount();
-	switch(pLVKeyDow->wVKey)
+	int i = m_nItem;
+	switch (pLVKeyDow->wVKey)
 	{
-	case VK_DOWN:
-		m_nItem = m_nItem+1;
-		this->SetItemState(m_nItem, LVIS_SELECTED|LVIS_FOCUSED, LVIS_SELECTED|LVIS_FOCUSED);
+	case VK_DOWN:		
+		if(GetItemCount() > m_nItem+1)
+			i = m_nItem + 1;		
 		break;
-	case VK_UP:
-		m_nItem = (m_nItem-1)%GetItemCount();
-		this->SetItemState(m_nItem, LVIS_SELECTED|LVIS_FOCUSED, LVIS_SELECTED|LVIS_FOCUSED);
-		break;
+	case VK_UP:	
+		if (m_nItem != 0) i = m_nItem - 1;break;
+	default:return;
 	}
-	
 	//선택 아이템 경로 얻기	
-	
-	if(!GetItemPath(m_selFilePath, m_nItem)){
+	if (!GetItemPath(m_selFilePath, i)) {
 		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
 		return;
 	}
-
-	if(m_preViewDlg){				
-		if(m_selFilePath.Find(L".jpg") > 0 ){//jpg, bmp 파일만 읽어들임		
-			m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());		
-			::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0,0);	
+	//preview에 전달
+	if (m_preViewDlg) {
+		if (m_selFilePath.Find(L".jpg") > 0) {//jpg, bmp 파일만 읽어들임		
+			m_preViewDlg->m_pSelectedImage = Bitmap::FromFile(m_selFilePath.AllocSysString());
+			::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0, 0);
 		}
-		else if( m_selFilePath.Find(L".bmp") > 0){
-			m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());		
-			::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0,0);	
+		else if (m_selFilePath.Find(L".bmp") > 0) {
+			m_preViewDlg->m_pSelectedImage = Bitmap::FromFile(m_selFilePath.AllocSysString());
+			::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0, 0);
 		}
-		//m_preViewDlg->m_filePath = m_selFilePath;
-		
 	}
-	*pResult = 0;
+	switch (pLVKeyDow->wVKey)
+	{
+	case VK_DOWN:
+		if (GetItemCount() > m_nItem+1)m_nItem++;
+		break;
+	case VK_UP:
+		if(m_nItem!=0) m_nItem--;
+		break;
+	default:return;
+	}
 }
+
