@@ -22,7 +22,7 @@ BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
 
 	//int bmpWidth = (m_width + 3) / 4 * 4;	//new ver
 	//int align = bmpWidth - m_width;
-	int bmpWidth = (m_width * 3 + 3) & ~3; //original ver
+	bmpWidth = (m_width * 3 + 3) & ~3; //original ver
 	int align = bmpWidth - (m_width*3);
 	int Bialign = align;
 	if(align ==1 || align==3) Bialign = 4 - align;
@@ -58,10 +58,6 @@ BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
    //이미지 데이터 복사	
 	m_pucBMP = new UCHAR[ih.biSizeImage];
 	memset(m_pucBMP, 0, sizeof(UCHAR)*ih.biSizeImage);
-	
-	//나중에 1bit으로 바꿔야합니다. 현재 8bit
-	m_bin = new UCHAR[ih.biSizeImage];
-	memset(m_bin, 0, sizeof(UCHAR)*ih.biSizeImage);
 
 	int index = 0, oldindex=0;
 	UINT R,G,B,GRAY;	
@@ -146,6 +142,63 @@ void BMPclass::IppHistogram(float histo[256])
 		histo[i] = static_cast<float>(cnt[i]) / size;
 	}
 	
+}
+
+void BMPclass::bpp1BMP()
+{
+	bmpWidth = (m_uiWidth + 7) & 0xFFFFFFF8; 
+	int align = bmpWidth - m_uiWidth;
+	int Bialign = align;
+	//if (align == 1 || align == 3) Bialign = 4 - align;
+
+	//bmpWidth = m_width + Bialign;	
+	UINT size = (UINT)(((m_uiWidth + 7) & 0xFFFFFFF8) * m_uiHeight / 8);
+
+	memset(&fh, 0, sizeof(BITMAPFILEHEADER));
+	memset(&ih, 0, sizeof(BITMAPINFOHEADER));
+	memset(&rgb, 0, sizeof(RGBQUAD) * 2);
+
+	fh.bfOffBits = 62; // RGBQUAD + InfoHeader + FileHeader only 8bit mode if 24bit == 54; 40+ 14; 
+	fh.bfSize = m_uiHeight*m_uiWidth + sizeof(RGBQUAD) * 2 + sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+	fh.bfType = 19778;
+
+	ih.biBitCount = 1;
+	ih.biHeight = m_uiHeight;
+	ih.biWidth = m_uiWidth;
+	ih.biPlanes = 1;
+	ih.biSize = 40;
+	ih.biSizeImage = size;
+	ih.biXPelsPerMeter = 0;
+	ih.biYPelsPerMeter = 0;
+		
+	rgb[0].rgbBlue = 0;
+	rgb[0].rgbGreen = 0;
+	rgb[0].rgbRed = 0;
+	rgb[0].rgbReserved = 0;
+
+	rgb[1].rgbBlue = 255;
+	rgb[1].rgbGreen = 255;
+	rgb[1].rgbRed = 255;
+	rgb[1].rgbReserved = 0;
+	
+	m_bin = new UCHAR[ih.biSizeImage];
+	memset(m_bin, 0, sizeof(UCHAR)*ih.biSizeImage);
+
+	int index = 0, oldindex = 0;
+	UINT R, G, B, GRAY;
+	for (int i = 0; i<m_uiHeight; i++)
+	{
+		for (int j = 0; j<m_uiWidth; j++)
+		{			
+			m_pucBMP[oldindex++] = GRAY;
+		}
+		for (int j = 0; j< align; j++) {
+			index++;
+		}
+		for (int j = 0; j< Bialign; j++) {
+			m_pucBMP[oldindex++] = 0;
+		}
+	}
 }
 
 //
