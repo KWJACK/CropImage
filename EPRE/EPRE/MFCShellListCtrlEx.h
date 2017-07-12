@@ -19,7 +19,6 @@ public:
 	CString m_selFilePath;
 	CBMPZoomView* m_preViewDlg;
 protected:
-	afx_msg void OnDeleteitem(NMHDR* pNMHDR, LRESULT* pResult);
 	DECLARE_MESSAGE_MAP()
 
 	CStringArray m_cCopyNamesArr;
@@ -32,8 +31,9 @@ protected:
 	virtual void OnItemInserted(int nItem) {}
 public:
 	afx_msg void OnNMClick(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult);	
-	afx_msg void OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);		
+	afx_msg void OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult);		
+	afx_msg void OnDeleteitem(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLvnKeydown(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 
