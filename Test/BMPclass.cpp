@@ -3,7 +3,7 @@
 
 #define WIDTHBYTES(bits) (((bits)+31)/32*4)
 #define T (0.03f)
-
+//0.05¿Ã∏È »Â∏¥«— ±€¿⁄∞° ∏π¿Ã √‚∑¬µ 
 BMPclass::~BMPclass(void)
 {
 	if(m_pucBMP){
@@ -16,11 +16,15 @@ BMPclass::~BMPclass(void)
 BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
 	m_pucBMP(nullptr)	
 {	
-	int align = 4-(m_width & 0x03);	
-	if(align ==4)align=0;
+	//int align = 4-(m_width & 0x03);	
+	//if(align ==4)align=0;
 
-	int bmpWidth = (m_width + 3) / 4 * 4;	
-
+	//int bmpWidth = (m_width + 3) / 4 * 4;	
+	int bmpWidth = (m_width * 3 + 3) & ~3;
+	int align = bmpWidth - (m_width*3);
+	int Bialign = align;
+	if(align ==1 || align==3) Bialign=4 - align;
+	int testWidth = m_width+3 & ~3;
 	m_uiHeight = m_height;
 	m_uiWidth = m_width;
 	
@@ -60,17 +64,44 @@ BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
 	UINT R,G,B,GRAY;	
 	for(int i=0; i<m_height; i++)
 	{	
-		for(int j=0; j<bmpWidth; j++)
+		for(int j=0; j<m_uiWidth; j++)
 		{		
 			B = m_inImg[index++];
 			G = m_inImg[index++];
 			R = m_inImg[index++];
 			GRAY = (UCHAR)(0.299*R + 0.587*G + 0.114*B);
 			m_pucBMP[oldindex++] = GRAY;
-		}	
+		}				
+		for(int j=0;j<align;j++){
+			index++;		
+		}
+		for(int j=0;j<Bialign;j++){			
+			m_pucBMP[oldindex++] = 0;
+		}
+	}
+	int sum=0;
+	for(int i=1;i<m_height-1;i++){
+		for(int j=1;j<m_uiWidth-1;j++){
+			sum=0;
+			for(int k=0;k<3;k++){
+				for(int s=0;s<3;s++){
+					sum+=m_pucBMP[k*3+s];
+				}
+			}
+			m_pucBMP[i*m_uiWidth + j] = 0;
+		}
+		
+		for(int j=0;j<Bialign;j++){			
+			m_pucBMP[oldindex++] = 0;
+		}
 	}
 
-	//adaptiveThreshold(m_pucBMP, m_bin);
+	
+
+
+
+
+	adaptiveThreshold(m_pucBMP, m_bin);
 }
 
 

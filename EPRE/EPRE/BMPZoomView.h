@@ -27,8 +27,7 @@ public:
 	CPoint m_ExpandDest;//늘어난 이미지 크기
 	float m_fResolution_W, m_fResolution_H;	//이미지 배율
 	//선택 이미지
-	Bitmap  *m_pSelectedImage;	
-	inline Bitmap *GetImage() { return m_pSelectedImage; }	
+	Bitmap  *m_pSelectedImage;		
 	
 public:
 	virtual void OnDraw(CDC* pDC);      // 이 뷰를 그리기 위해 재정의되었습니다.

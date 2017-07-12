@@ -326,7 +326,7 @@ void CBMPZoomView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 									   lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top)); 
 			CPen pen;
 			CBrush brush;
-			pen.CreatePen(PS_SOLID, 1, RGB(0,0,0));
+			pen.CreatePen(PS_DOT, 1, RGB(0,0,0));
 			pMemDC->SelectStockObject(NULL_BRUSH);
 			pMemDC->SelectObject(&pen);
 			//스크롤바 이동시 좌표계산이 맞지 않음

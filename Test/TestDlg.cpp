@@ -58,8 +58,8 @@ BOOL CTestDlg::OnInitDialog()
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 
-	m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(200)\\temp\\*.*";
-	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(200)\\temp\\";
+	m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\test\\*.*";
+	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\test\\";
 	m_FileClass = new FileOpenClass;
 
 	ShowWindow(SW_SHOWMAXIMIZED);//다이얼로그 최대화
@@ -326,7 +326,7 @@ void CTestDlg::OnBnClickedButton4()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.	
 	if(makeBinary() >0){
-		MessageBox(L"temp폴더 내 파일 이름 모두 변경");
+		MessageBox(L"이진화 진행(GRAY)");
 	}else{
 		MessageBox(L"에러 발생");
 	}
