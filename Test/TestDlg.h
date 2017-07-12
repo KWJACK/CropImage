@@ -31,6 +31,7 @@ public:
 	int checkFileName();
 	int makeFileNmae();
 	int makeBinary();
+	int elimanate2Char();
 	int m_wordLength;
 	CStdioFileEx m_fp;	//MFC 텍스트 파일 클래스
 	FileOpenClass* m_FileClass;	//BMP 파일 관리 클래스
@@ -69,4 +70,5 @@ public:
 	afx_msg void OnRootFolderChanged(UINT uID);
 	afx_msg void OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnBnClickedButton5();
 };

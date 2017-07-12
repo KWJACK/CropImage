@@ -41,6 +41,7 @@ BEGIN_MESSAGE_MAP(CTestDlg, CDialogEx)
 	ON_WM_DESTROY()
 	ON_NOTIFY(TVN_SELCHANGED, IDC_FOLDERS_TREE, OnTvnSelchanged)
 	ON_WM_MOUSEHWHEEL()	
+	ON_BN_CLICKED(IDC_BUTTON5, &CTestDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -57,8 +58,8 @@ BOOL CTestDlg::OnInitDialog()
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 
-	m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(100)\\temp\\*.*";
-	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(100)\\temp\\";
+	m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(200)\\temp\\*.*";
+	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(200)\\temp\\";
 	m_FileClass = new FileOpenClass;
 
 	ShowWindow(SW_SHOWMAXIMIZED);//다이얼로그 최대화
@@ -84,8 +85,8 @@ BOOL CTestDlg::OnInitDialog()
 
 	m_cTreeCtrl.MoveWindow(0,0,trt.Width(), prt.Height());
 	m_cListCtrlRem.MoveWindow(trt.right, 0, 300, prt.Height());
-	m_pPreviewDlg->SetWindowPos(&wndTopMost, 20, 320, 700, 630, SWP_DRAWFRAME);
-	m_pPreviewDlg->MoveWindow(lrt.Width()+trt.right, 0, 700, prt.Height());
+	//m_pPreviewDlg->SetWindowPos(&wndTopMost, 20, 320, 700, 630, SWP_DRAWFRAME);
+	//m_pPreviewDlg->MoveWindow(lrt.Width()+trt.right, 0, 700, prt.Height());
 
 	m_cListCtrlRem.m_preViewDlg = m_pPreviewDlg;
 	
@@ -371,6 +372,53 @@ void CTestDlg::OnDestroy()
 	}
 	
 }
+
+
+
+void CTestDlg::OnBnClickedButton5()
+{
+	if(elimanate2Char() >0){
+		MessageBox(L"temp폴더 내 파일 뒷 두자리 제거");
+	}else{
+		MessageBox(L"에러 발생");
+	}
+}
+
+int CTestDlg::elimanate2Char(){	
+	WIN32_FIND_DATA fd;
+	HANDLE hFind = FindFirstFile(m_sTmp, &fd);
+	CString newName =L"";
+	TCHAR* FileName= nullptr;	
+	CString oldFileName=L"";
+	if (INVALID_HANDLE_VALUE != hFind)
+	{		
+		do {
+			if (fd.cFileName[0] == '.') {//current and parent path ignore						
+				continue;
+			}
+			else {		
+				oldFileName = fd.cFileName;				
+				FileName = fd.cFileName;					
+				wcstok (FileName, L".");//확장자 이름으로 구분합니다. (파일 이름에 .이 있으면 안됨)				
+				newName = FileName;	
+				newName.Delete(newName.GetLength()-2,2);
+				newName = newName+L".bmp";
+				try{
+					CFile::Rename(m_sPath+oldFileName, m_sPath+(TCHAR*)(LPCTSTR)newName);//이름 바꿀 때는 전체 경로가 있어야함
+				}catch(CFileException* pEx){					
+					printf("File %20s not found, cause = %d\n", fd.cFileName, pEx->m_cause);
+					pEx->Delete();
+				}
+			}								
+		} while (FindNextFile(hFind, &fd));		
+		FindClose(hFind);//handle 반환
+		//m_fp.Close();	//파일 닫음 
+		return success;
+	}
+	return fail;
+}
+
+
 
 void CTestDlg::OnRootFolderChanged(UINT uID)
 {
