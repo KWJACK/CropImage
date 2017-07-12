@@ -37,8 +37,8 @@ BOOL FileOpenClass::ReadBMP(CString a_fileName){
 	}
 	m_hFile.Read(&BMPHi, sizeof(BITMAPINFOHEADER));
 	if(BMPHi.biBitCount != 24){
-		AfxMessageBox(L"24비트의 BMP파일만 읽을 수 있습니다.");
-		return FALSE;
+		//AfxMessageBox(L"24비트의 BMP파일만 읽을 수 있습니다.");
+		//return FALSE;
 	}
 	int m_imgSize = m_hFile.GetLength() - sizeof(BITMAPINFOHEADER) - sizeof(BITMAPFILEHEADER);
 	m_inImg = new UCHAR[m_imgSize];	

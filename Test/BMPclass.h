@@ -11,8 +11,10 @@ public:
 	UINT	m_uiWidth;	//파일에 표시되는 길이, align 길이는 bmpWidth
 	UINT	m_uiHeight;
 
+	int m_nThreshold;
 	BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg);
 	~BMPclass(void);
-
+	int BinarizationIterative();
+	void IppHistogram(float histo[256]);
 	void adaptiveThreshold(unsigned char* input, unsigned char* bin);	
 };

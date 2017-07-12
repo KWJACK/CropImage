@@ -58,8 +58,10 @@ BOOL CTestDlg::OnInitDialog()
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 
-	m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\test\\*.*";
-	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\test\\";
+	//m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\test\\*.*";
+	m_sTmp = L"C:\\Users\\Coms7\\Documents\\etri_test\\Test\\bmpTest\\*.*";
+	//m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\test\\";
+	m_sPath = L"C:\\Users\\Coms7\\Documents\\etri_test\\Test\\bmpTest\\";
 	m_FileClass = new FileOpenClass;
 
 	ShowWindow(SW_SHOWMAXIMIZED);//다이얼로그 최대화
