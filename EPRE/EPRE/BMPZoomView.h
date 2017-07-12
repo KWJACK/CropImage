@@ -16,9 +16,9 @@ protected:
 	//Attributes
 public:
 	//CDemoZoomDoc* GetDocument();
-	BOOL m_bSelectMode;
-	CRect m_rubberBand;
-	CPoint m_ptStart;
+	BOOL m_bSelectMode;			//그리기 모드
+	CRect m_rubberBand, m_Canvas_Rect;
+	CPoint m_ptStart, m_ptEnd;	//마우스 드래그에 따라 그릴 상자의 시작점
 	BOOL m_create_canvas;
 	CStatic m_wndCanvas;
 	CString m_filePath;
@@ -29,7 +29,7 @@ public:
 	//선택 이미지
 	Bitmap  *m_pSelectedImage;	
 	inline Bitmap *GetImage() { return m_pSelectedImage; }	
-
+	
 public:
 	virtual void OnDraw(CDC* pDC);      // 이 뷰를 그리기 위해 재정의되었습니다.
 #ifdef _DEBUG
@@ -43,6 +43,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	void ShowImageInfo(CPoint a_point);//마우스 커서에 따른 비트맵 픽셀 정보 출력
+	void setColorStyle(CClientDC &dc, CPen &pen, CBrush &brush);
 
 	afx_msg void OnViewZoomin();
 	afx_msg void OnViewZoomout();

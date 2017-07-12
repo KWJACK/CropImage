@@ -43,7 +43,7 @@ void CBMPZoomView::OnDraw(CDC* pDC)
 	CDocument* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);*/
 	
-	srand(0);
+	//srand(0);
 	/*int width = 2000/10;
 	int height = 1000/10;
 	int i = 0;
@@ -75,7 +75,42 @@ void CBMPZoomView::OnDraw(CDC* pDC)
 
 		pDC->SelectObject(oldBrush);
 		pDC->SelectObject(oldPen);
-	}*/
+	}*/	
+
+	if(m_ptStart.x !=0 && m_ptEnd.x !=0){
+		//CMMemDC *pMemDC = NULL;
+		//HDC hDC = ::GetDC(m_hWnd);
+		//pMemDC = new CMMemDC( hDC );
+		//hDC = pMemDC->m_hDC;
+		////배경 흰색
+		//CRect rect; GetClientRect(rect);
+		//HBRUSH hBrush = ::CreateSolidBrush( RGB(255, 255, 255) );		
+		//::FillRect( hDC, rect, hBrush );		
+		//DeleteObject( hBrush );
+		//
+		//if(!m_pSelectedImage)return;		
+
+		//if(m_pSelectedImage != NULL)
+		//{
+		//	Graphics graphics( hDC );
+		//	graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
+		//	
+		//	//Rect 값을 변화하면 출력 사이즈를 조절 할 수 있다.?
+		//	graphics.DrawImage(m_pSelectedImage,	
+		//		                 Rect(m_Canvas_Rect.left, 
+		//							  m_Canvas_Rect.top,
+		//							  m_Canvas_Rect.right -  m_Canvas_Rect.left,
+		//							  m_Canvas_Rect.bottom - m_Canvas_Rect.top)); 
+		//	CPen pen;
+		//	CBrush brush;
+		//	pen.CreatePen(PS_SOLID, 1, RGB(0,0,0));
+		//	pMemDC->SelectStockObject(NULL_BRUSH);
+		//	pMemDC->SelectObject(&pen);
+		//	pMemDC->Rectangle(m_ptStart.x, m_ptStart.y, m_ptEnd.x, m_ptEnd.y);
+
+		//	delete pMemDC;
+		//}		
+	}
 }
 
 
@@ -146,42 +181,64 @@ void CBMPZoomView::OnViewZoomout()
 }
 
 void CBMPZoomView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	/*if (m_bSelectMode == FALSE) 
-	{
-		m_bSelectMode = TRUE;
-		m_ptStart = point;
-		DPtoLP(&m_ptStart);
-		m_rubberBand.SetRect(m_ptStart, m_ptStart);
-		Invalidate(FALSE);
-	}*/
+{	
+	m_bSelectMode = TRUE;
+	if (m_bSelectMode) 
+	{		
+		SetCapture();
+		m_ptStart = m_ptEnd =point;
+	}
 	
-	CZoomView::OnLButtonDown(nFlags, point);
+	//CZoomView::OnLButtonDown(nFlags, point);
 }
 
 
 void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if(m_bSelectMode){
+		CClientDC dc(this);
+		CPen pen;
+		CBrush brush;
+		setColorStyle(dc, pen, brush);
+		
+		dc.SetROP2(R2_COPYPEN);
+		dc.Rectangle(m_ptStart.x, m_ptStart.y, m_ptEnd.x, m_ptEnd.y);
+		m_bSelectMode = FALSE;
+		::ReleaseCapture();
+	}
 	/*m_bSelectMode = FALSE;
-	Invalidate(FALSE);
-
+	Invalidate(FALSE);	
 	SetZoomArea(m_rubberBand);*/
 	CZoomView::OnLButtonUp(nFlags, point);
 }
-
+void CBMPZoomView::setColorStyle(CClientDC &dc, CPen &pen, CBrush &brush){
+	pen.CreatePen(PS_SOLID, 1, RGB(0,0,0));
+ 	dc.SelectObject(&pen);
+	dc.SelectStockObject(NULL_BRUSH);	
+}
 
 void CBMPZoomView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if (m_bSelectMode != FALSE) 
+	if(m_bSelectMode){
+		CClientDC dc(this);	
+		dc.SelectStockObject(NULL_BRUSH);
+		CPen m_penDot(PS_DOT, 1, RGB(0, 0, 0));
+		dc.SelectObject(&m_penDot);
+		dc.SetROP2(R2_XORPEN);
+		// 이전에 그린 직선을 지운다.
+		dc.Rectangle(m_ptStart.x,m_ptStart.y,m_ptEnd.x,m_ptEnd.y);
+		// 새로운 직선을 그린다.
+		dc.Rectangle(m_ptStart.x,m_ptStart.y,point.x,point.y);
+		// 직선 끝점의 좌표를 갱신한다.
+		m_ptEnd = point; 
+	}
+	/*if (m_bSelectMode != FALSE) 
 	{
 		DPtoLP(&point);
 		m_rubberBand.SetRect(m_ptStart, point);
 		m_rubberBand.NormalizeRect();
 		Invalidate(FALSE);
-	}
+	}*/
 
 	if(m_pSelectedImage!=NULL){		
 		CPoint pt = point + GetScrollPosition();
@@ -245,23 +302,19 @@ void CBMPZoomView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	if( lpDrawItemStruct->itemAction & ODA_DRAWENTIRE )
 	{
+		m_Canvas_Rect = lpDrawItemStruct->rcItem;
 		CMMemDC *pMemDC = NULL;
 		pMemDC = new CMMemDC( lpDrawItemStruct->hDC );
 		lpDrawItemStruct->hDC = pMemDC->m_hDC;
-
-		CRect rect; GetClientRect( rect );
-		HBRUSH hBrush = ::CreateSolidBrush( RGB(255, 255, 255) );
-		
-		::FillRect( lpDrawItemStruct->hDC, rect, hBrush );
-		
+		//배경 흰색
+		CRect rect; GetClientRect(rect);
+		HBRUSH hBrush = ::CreateSolidBrush( RGB(255, 255, 255) );		
+		::FillRect( lpDrawItemStruct->hDC, rect, hBrush );		
 		DeleteObject( hBrush );
-		///*CImageToolDoc *pDoc = (CImageToolDoc*)((CMainFrame*)AfxGetMainWnd())->GetActiveDocument();
 		
-		
-		if(!m_pSelectedImage)return;
-		//m_pSelectedImage  = Bitmap::FromFile(m_filePath.AllocSysString() );		
+		if(!m_pSelectedImage)return;		
 
-		if(m_pSelectedImage != NULL )
+		if(m_pSelectedImage != NULL)
 		{
 			Graphics graphics( lpDrawItemStruct->hDC );
 			graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
@@ -271,9 +324,20 @@ void CBMPZoomView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 									   lpDrawItemStruct->rcItem.top,
 									   lpDrawItemStruct->rcItem.right - lpDrawItemStruct->rcItem.left,
 									   lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top)); 
-		}
+			CPen pen;
+			CBrush brush;
+			pen.CreatePen(PS_SOLID, 1, RGB(0,0,0));
+			pMemDC->SelectStockObject(NULL_BRUSH);
+			pMemDC->SelectObject(&pen);
+			//스크롤바 이동시 좌표계산이 맞지 않음
+			::Rectangle(lpDrawItemStruct->hDC, 
+				m_ptStart.x-m_ImageDest.x,
+				m_ptStart.y-m_ImageDest.y,
+				m_ptEnd.x - m_ImageDest.x,
+				m_ptEnd.y-m_ImageDest.y);
 
-		delete pMemDC;
+			delete pMemDC;
+		}		
 	}
 	//CZoomView::OnDrawItem(nIDCtl, lpDrawItemStruct); 막아야 에러 나지 않습니다.
 }
