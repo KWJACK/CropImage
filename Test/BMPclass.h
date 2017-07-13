@@ -5,6 +5,7 @@ public:
 	BITMAPFILEHEADER fh;
 	BITMAPINFOHEADER ih;
 	RGBQUAD rgb[256];
+	RGBQUAD rgb2[2];
 
 	UCHAR*	m_pucBMP;	
 	UCHAR*	m_bin;	//나중에 바꿔야합니다. (8bit 인데 1bit으로)

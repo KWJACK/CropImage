@@ -61,20 +61,20 @@ BOOL FileOpenClass::SaveBMP(CString a_fileName)
 	//생성자에서 바로 bit 생성
 	c_outBMP = new BMPclass(m_height, m_width, m_inImg);
 	// 파일에 쓰기
-	m_hFile.Write(&c_outBMP->fh, sizeof(BITMAPFILEHEADER));
+	/*m_hFile.Write(&c_outBMP->fh, sizeof(BITMAPFILEHEADER));
 	m_hFile.Write(&c_outBMP->ih, sizeof(BITMAPINFOHEADER));
 	m_hFile.Write(c_outBMP->rgb, sizeof(RGBQUAD)*256);
 	m_hFile.Write(c_outBMP->m_pucBMP, c_outBMP->ih.biSizeImage);	
-	m_hFile.Close();
+	m_hFile.Close();*/
 	delete m_inImg;
 	m_inImg=nullptr;
 
-	//c_outBMP->bpp1BMP();
-	//m_hFile.Write(&c_outBMP->fh, sizeof(BITMAPFILEHEADER));
-	//m_hFile.Write(&c_outBMP->ih, sizeof(BITMAPINFOHEADER));
-	//m_hFile.Write(c_outBMP->rgb, sizeof(RGBQUAD) * 2);
-	//m_hFile.Write(c_outBMP->m_bin, c_outBMP->ih.biSizeImage);
-	//m_hFile.Close();
+	c_outBMP->bpp1BMP();
+	m_hFile.Write(&c_outBMP->fh, sizeof(BITMAPFILEHEADER));
+	m_hFile.Write(&c_outBMP->ih, sizeof(BITMAPINFOHEADER));
+	m_hFile.Write(c_outBMP->rgb2, sizeof(RGBQUAD) * 2);
+	m_hFile.Write(c_outBMP->m_bin, c_outBMP->ih.biSizeImage);
+	m_hFile.Close();
 
 	delete c_outBMP;
 	c_outBMP = nullptr;

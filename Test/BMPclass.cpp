@@ -10,12 +10,16 @@ BMPclass::~BMPclass(void)
 		delete m_pucBMP;
 		m_pucBMP = nullptr;
 	}
+	if(m_bin){
+		delete m_bin;
+		m_bin = nullptr;
+	}
 
 }
 
 
 BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
-	m_pucBMP(nullptr)	
+	m_pucBMP(nullptr), m_bin(nullptr)
 {	
 	//int align = 4-(m_width & 0x03);	
 	//if(align ==4)align=0;
@@ -75,7 +79,7 @@ BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
 			index++;		
 		}
 		for(int j=0;j<Bialign;j++){			
-			m_pucBMP[oldindex++] = 0;
+			m_pucBMP[oldindex++] = 255;//빈 여백은 흰색으로 채움. 나중에 이진화할 때 0을 검은색으로 보기때문
 		}
 	}	
 	//히스토그램을 통해 임계값을 구함
@@ -85,6 +89,7 @@ BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
 	{
 		m_pucBMP[i] = (m_pucBMP[i] <= m_nThreshold) ? 0 : 255;
 	}
+	
 	//adaptiveThreshold(m_pucBMP, m_bin);
 }
 
@@ -134,8 +139,13 @@ void BMPclass::IppHistogram(float histo[256])
 	//히스토그램 계산
 	int size = m_uiWidth * m_uiHeight;		
 	int cnt[256] = { 0, };//256은 gray 비트수준
-	for (int i = 0; i < size; i++)
-		cnt[m_pucBMP[i]]++;
+	int Index=0;
+	for (int i = 0; i < m_uiHeight; i++){
+		for(int j=0;j<m_uiWidth;j++)
+			cnt[m_pucBMP[Index++]]++;
+		for(int j=0;j<bmpWidth-m_uiWidth;j++)
+			Index++;
+	}
 	//히스토그램 정규화
 	for (int i = 0; i < 256; i++)
 	{
@@ -146,57 +156,79 @@ void BMPclass::IppHistogram(float histo[256])
 
 void BMPclass::bpp1BMP()
 {
-	bmpWidth = (m_uiWidth + 7) & 0xFFFFFFF8; 
-	int align = bmpWidth - m_uiWidth;
-	int Bialign = align;
-	//if (align == 1 || align == 3) Bialign = 4 - align;
-
-	//bmpWidth = m_width + Bialign;	
-	UINT size = (UINT)(((m_uiWidth + 7) & 0xFFFFFFF8) * m_uiHeight / 8);
+ 	int widthBitAlign = (m_uiWidth + 7) & 0xFFFFFFF8; 
+	int Bialign = widthBitAlign-m_uiWidth;
+	int bbmpWidth = (widthBitAlign/8 + 3) & ~3; //original ver
+	int align = bbmpWidth - widthBitAlign/8;//align = 0,1,2,3
+	
 
 	memset(&fh, 0, sizeof(BITMAPFILEHEADER));
 	memset(&ih, 0, sizeof(BITMAPINFOHEADER));
-	memset(&rgb, 0, sizeof(RGBQUAD) * 2);
+	memset(&rgb2, 0, sizeof(RGBQUAD) * 2);
 
-	fh.bfOffBits = 62; // RGBQUAD + InfoHeader + FileHeader only 8bit mode if 24bit == 54; 40+ 14; 
-	fh.bfSize = m_uiHeight*m_uiWidth + sizeof(RGBQUAD) * 2 + sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+	fh.bfOffBits = 62; // RGBQUAD(8) + InfoHeader(40) + FileHeader(14) only 8bit mode if 24bit == 54; 40+ 14; 
+	fh.bfSize = m_uiHeight*bbmpWidth + sizeof(RGBQUAD) * 2 + sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
 	fh.bfType = 19778;
 
 	ih.biBitCount = 1;
 	ih.biHeight = m_uiHeight;
 	ih.biWidth = m_uiWidth;
 	ih.biPlanes = 1;
-	ih.biSize = 40;
-	ih.biSizeImage = size;
+	ih.biSize = 40;//bmp info헤더 크기(40)
+	ih.biSizeImage = bbmpWidth*m_uiHeight;
 	ih.biXPelsPerMeter = 0;
 	ih.biYPelsPerMeter = 0;
 		
-	rgb[0].rgbBlue = 0;
-	rgb[0].rgbGreen = 0;
-	rgb[0].rgbRed = 0;
-	rgb[0].rgbReserved = 0;
+	rgb2[0].rgbBlue = 255;//흰색
+	rgb2[0].rgbGreen = 255;
+	rgb2[0].rgbRed = 255;
+	rgb2[0].rgbReserved = 255;
 
-	rgb[1].rgbBlue = 255;
-	rgb[1].rgbGreen = 255;
-	rgb[1].rgbRed = 255;
-	rgb[1].rgbReserved = 0;
+	rgb2[1].rgbBlue = 0;//검은색
+	rgb2[1].rgbGreen = 0;
+	rgb2[1].rgbRed = 0;
+	rgb2[1].rgbReserved = 255;
 	
 	m_bin = new UCHAR[ih.biSizeImage];
 	memset(m_bin, 0, sizeof(UCHAR)*ih.biSizeImage);
 
-	int index = 0, oldindex = 0;
-	UINT R, G, B, GRAY;
+	int index = 0, oldindex = 0, count=0;	
 	for (int i = 0; i<m_uiHeight; i++)
 	{
-		for (int j = 0; j<m_uiWidth; j++)
-		{			
-			m_pucBMP[oldindex++] = GRAY;
-		}
-		for (int j = 0; j< align; j++) {
-			index++;
-		}
-		for (int j = 0; j< Bialign; j++) {
-			m_pucBMP[oldindex++] = 0;
+		//if(widthBitAlign%8 ==0 && m_uiWidth%4==0){
+		//	for (int j = 0; j< widthBitAlign-4; j++)
+		//	{		
+		//		count++;
+		//		m_bin[oldindex] = m_bin[oldindex]<<1;
+		//		//흑이면 두번 째 파레트 색 추가. 디폴트는 첫번째 파레트 색
+		//		if(m_pucBMP[index++]==0){
+		//			m_bin[oldindex] |= 1;
+		//		}		
+
+		//		if(count==8 || j == widthBitAlign-4-1){
+		//			count=0;
+		//			oldindex++;
+		//		}			
+		//	}					
+		//}
+		//else{
+			for (int j = 0; j< bmpWidth; j++)
+			{		
+				count++;
+				m_bin[oldindex] = m_bin[oldindex]<<1;
+				//흑이면 두번 째 파레트 색 추가. 디폴트는 첫번째 파레트 색
+				if(m_pucBMP[index++]==0){
+					m_bin[oldindex] |= 1;
+				}
+
+				if(count==8 || j == bmpWidth-1){
+					count=0;
+					oldindex++;
+				}		
+			}					
+		//}
+		for (int j = 0; j< align; j++) {//패딩할 byte						
+			oldindex++;
 		}
 	}
 }
