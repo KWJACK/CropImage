@@ -6,6 +6,7 @@
 #include "BMPZoomView.h"
 #include "memdc.h"	//include 해야 memdc 정상 기능
 #include "MainFrm.h"
+#include <cmath>	//abs float
 // CBMPZoomView
 
 IMPLEMENT_DYNCREATE(CBMPZoomView, CView)
@@ -148,7 +149,31 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		dc.Rectangle(m_ptStart.x, m_ptStart.y, m_ptEnd.x, m_ptEnd.y);
 		m_bSelectMode = FALSE;
 		::ReleaseCapture();
+		
+		
+		float pStartW = float(m_ptStart.x-m_ImageDest.x)/m_fResolution_W;
+		float pStartH = float(m_ptStart.y-m_ImageDest.y)/m_fResolution_H;
+		float pEndW = float(point.x-m_ImageDest.x)/m_fResolution_W; 
+		float pEndH = float(point.y-m_ImageDest.y)/m_fResolution_H;
+		Gdiplus::RectF bmpRect(0.0f, 0.0f,abs(pEndW-pStartW),abs(pEndH-pStartH));
+		
+		Bitmap *pCloneBmp = m_pSelectedImage->Clone(pStartW, pStartH, abs(pEndW-pStartW),abs(pEndH-pStartH),m_pSelectedImage->GetPixelFormat());
+		Graphics *pGraphics = Graphics::FromImage(pCloneBmp);
+		pGraphics->DrawImage(pCloneBmp, bmpRect);
+		
 
+		UINT num,size;
+		ImageCodecInfo * pImageCodecInfo;
+		GetImageEncodersSize(&num,&size);
+		pImageCodecInfo =(ImageCodecInfo*)( malloc (size));
+		GetImageEncoders(num,size,pImageCodecInfo);
+		pCloneBmp->Save(L"CroppedBmp.bmp",&pImageCodecInfo[0].Clsid);
+		
+		//Gdiplus::Font GdiPlusFont(dc.GetSafeHdc());
+		//delete pCloneBmp;
+		//delete pGraphics;
+	
+		
 
 	}
 	/*m_bSelectMode = FALSE;
@@ -261,12 +286,13 @@ void CBMPZoomView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		
 		if(m_pSelectedImage != NULL)
 		{
-			Graphics graphics(lpDrawItemStruct->hDC );
+			Gdiplus::Graphics graphics(lpDrawItemStruct->hDC );
 			p_graphics = &graphics;
 			graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
+			
 			//Rect 값을 변화하면 출력 사이즈를 조절 할 수 있다.?
 			graphics.DrawImage(m_pSelectedImage,	
-				                 Rect( lpDrawItemStruct->rcItem.left, 
+				                 Gdiplus::Rect( lpDrawItemStruct->rcItem.left, 
 									   lpDrawItemStruct->rcItem.top,
 									   lpDrawItemStruct->rcItem.right - lpDrawItemStruct->rcItem.left,
 									   lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top)); 
@@ -282,6 +308,7 @@ void CBMPZoomView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 				m_ptEnd.x - m_ImageDest.x,
 				m_ptEnd.y-m_ImageDest.y);
 
+			
 			delete pMemDC;
 		}		
 	}
