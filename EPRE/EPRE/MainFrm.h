@@ -4,6 +4,7 @@
 // MainFrm.h : CMainFrame 클래스의 인터페이스
 //#pragma once
 #include "FormListDlg.h"
+#include "FormBMP.h"
 class CMainFrame : public CFrameWnd
 {	
 public:
@@ -15,7 +16,7 @@ protected:
 	//ListCtrl, TreeCtrl
 	BOOL m_bCustomFolder;
 	FormListDlg* m_pFormListDlg;
-	
+	FormBMP* m_pFormBMP;
 	CString m_cRootFolder;
 // 재정의입니다.
 public:

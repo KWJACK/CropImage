@@ -1,9 +1,7 @@
 #pragma once
-
-
-
+#include "myGdiPlus.h" 
 // FormBMP 폼 뷰입니다.
-
+using namespace Gdiplus;
 class FormBMP : public CFormView
 {
 	DECLARE_DYNCREATE(FormBMP)
@@ -12,6 +10,7 @@ protected:
 	FormBMP();           // 동적 만들기에 사용되는 protected 생성자입니다.
 	virtual ~FormBMP();
 
+	Graphics* p_graphics;
 public:
 	enum { IDD = IDD_FORM_BMP };
 #ifdef _DEBUG

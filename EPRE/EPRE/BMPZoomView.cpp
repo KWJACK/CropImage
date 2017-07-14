@@ -9,12 +9,13 @@
 // CBMPZoomView
 
 IMPLEMENT_DYNCREATE(CBMPZoomView, CView)
-
+using namespace Gdiplus; 
 CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
 {
 	m_bSelectMode = FALSE;
 	m_pSelectedImage = NULL;
 	m_fResolution_H=0.0f;m_fResolution_W=0.0f;
+	HDC hdc = ::GetDC(m_hWnd);	
 }
 
 CBMPZoomView::~CBMPZoomView()
@@ -52,65 +53,7 @@ void CBMPZoomView::OnDraw(CDC* pDC)
 		pDC->FillSolidRect(CRect(i * width, i * height, 
 								 i * width + width, i * height + height), RGB(rand() % 255, rand() % 255, rand() % 255));
 	}*/
-	/*if (m_bSelectMode == TRUE) 
-	{
-		CPen* pPen = pDC->GetCurrentPen();
-		LOGPEN logPen;
-		pPen->GetLogPen(&logPen);
-		logPen.lopnColor = RGB(133,142,144);
-		logPen.lopnStyle = PS_SOLID;
-
-		LOGBRUSH logBrush;
-		::ZeroMemory(&logBrush,sizeof(logBrush));
-		logBrush.lbStyle = BS_HOLLOW;
-		
-		CPen newPen;
-		newPen.CreatePenIndirect(&logPen);
-		CBrush newBrush;
-		newBrush.CreateBrushIndirect(&logBrush);
-		CPen* oldPen = pDC->SelectObject(&newPen);
-		CBrush* oldBrush = pDC->SelectObject(&newBrush);
-
-		pDC->Rectangle(m_rubberBand);
-
-		pDC->SelectObject(oldBrush);
-		pDC->SelectObject(oldPen);
-	}*/	
-
-	if(m_ptStart.x !=0 && m_ptEnd.x !=0){
-		//CMMemDC *pMemDC = NULL;
-		//HDC hDC = ::GetDC(m_hWnd);
-		//pMemDC = new CMMemDC( hDC );
-		//hDC = pMemDC->m_hDC;
-		////배경 흰색
-		//CRect rect; GetClientRect(rect);
-		//HBRUSH hBrush = ::CreateSolidBrush( RGB(255, 255, 255) );		
-		//::FillRect( hDC, rect, hBrush );		
-		//DeleteObject( hBrush );
-		//
-		//if(!m_pSelectedImage)return;		
-
-		//if(m_pSelectedImage != NULL)
-		//{
-		//	Graphics graphics( hDC );
-		//	graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
-		//	
-		//	//Rect 값을 변화하면 출력 사이즈를 조절 할 수 있다.?
-		//	graphics.DrawImage(m_pSelectedImage,	
-		//		                 Rect(m_Canvas_Rect.left, 
-		//							  m_Canvas_Rect.top,
-		//							  m_Canvas_Rect.right -  m_Canvas_Rect.left,
-		//							  m_Canvas_Rect.bottom - m_Canvas_Rect.top)); 
-		//	CPen pen;
-		//	CBrush brush;
-		//	pen.CreatePen(PS_SOLID, 1, RGB(0,0,0));
-		//	pMemDC->SelectStockObject(NULL_BRUSH);
-		//	pMemDC->SelectObject(&pen);
-		//	pMemDC->Rectangle(m_ptStart.x, m_ptStart.y, m_ptEnd.x, m_ptEnd.y);
-
-		//	delete pMemDC;
-		//}		
-	}
+	
 }
 
 
@@ -205,6 +148,8 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		dc.Rectangle(m_ptStart.x, m_ptStart.y, m_ptEnd.x, m_ptEnd.y);
 		m_bSelectMode = FALSE;
 		::ReleaseCapture();
+
+
 	}
 	/*m_bSelectMode = FALSE;
 	Invalidate(FALSE);	
@@ -313,10 +258,11 @@ void CBMPZoomView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 		DeleteObject( hBrush );
 		
 		if(!m_pSelectedImage)return;		
-
+		
 		if(m_pSelectedImage != NULL)
 		{
-			Graphics graphics( lpDrawItemStruct->hDC );
+			Graphics graphics(lpDrawItemStruct->hDC );
+			p_graphics = &graphics;
 			graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 			//Rect 값을 변화하면 출력 사이즈를 조절 할 수 있다.?
 			graphics.DrawImage(m_pSelectedImage,	
