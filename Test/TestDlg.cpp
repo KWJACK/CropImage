@@ -15,6 +15,7 @@
 using namespace std;
 
 
+#define RESULT_PATH L".\\images\\"
 
 CTestDlg::CTestDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CTestDlg::IDD, pParent), m_bCustomFolder(FALSE)
@@ -195,6 +196,7 @@ void CTestDlg::OnBnClickedButton2()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if(checkFileName() >0){
 		MessageBox(L"유효성 검사 완료");
+		ShellExecute(NULL, L"open", L"notepad", L".\\errorPrint.txt", NULL, SW_SHOW);
 	}else{
 		MessageBox(L"에러 발생");
 	}
@@ -329,7 +331,8 @@ void CTestDlg::OnBnClickedButton4()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.	
 	if(makeBinary() >0){
-		MessageBox(L"이진화 진행(GRAY)");
+		MessageBox(L"이진화 진행(1bpp)");
+		ShellExecute(NULL, L"open", L"explorer", RESULT_PATH, NULL, SW_SHOW);
 	}else{
 		MessageBox(L"에러 발생");
 	}
@@ -479,9 +482,11 @@ void CTestDlg::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 
 //파레트 반전
 void CTestDlg::OnBnClickedButton6()
-{
+{	 
+	
 	if(PaletteChange1bpp() >0){
 		MessageBox(L"파레트,데이터 정보 반전");
+		ShellExecute(NULL, L"open", L"explorer", RESULT_PATH, NULL, SW_SHOW);
 	}else{
 		MessageBox(L"에러 발생");
 	}
