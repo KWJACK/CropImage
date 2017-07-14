@@ -30,6 +30,7 @@ void CTestDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_FOLDERS_TREE, m_cTreeCtrl);
 	DDX_Control(pDX, IDC_LIST_REM, m_cListCtrlRem);
+	DDX_Control(pDX, IDC_NAME_CHECK, m_name_check);
 }
 
 BEGIN_MESSAGE_MAP(CTestDlg, CDialogEx)
@@ -43,7 +44,7 @@ BEGIN_MESSAGE_MAP(CTestDlg, CDialogEx)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_FOLDERS_TREE, OnTvnSelchanged)
 	ON_WM_MOUSEHWHEEL()	
 	ON_BN_CLICKED(IDC_BUTTON5, &CTestDlg::OnBnClickedButton5)
-	ON_BN_CLICKED(IDC_BUTTON6, &CTestDlg::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON6, &CTestDlg::OnBnClickedButton6)	
 END_MESSAGE_MAP()
 
 
@@ -483,12 +484,16 @@ void CTestDlg::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 //파레트 반전
 void CTestDlg::OnBnClickedButton6()
 {	 
-	
-	if(PaletteChange1bpp() >0){
-		MessageBox(L"파레트,데이터 정보 반전");
-		ShellExecute(NULL, L"open", L"explorer", RESULT_PATH, NULL, SW_SHOW);
+	if(!m_name_check.GetCheck()){//체크가 없을 때
+		if(PaletteChange1bpp() >0){
+			MessageBox(L"파레트,데이터 정보 반전");
+			ShellExecute(NULL, L"open", L"explorer", RESULT_PATH, NULL, SW_SHOW);
+		}else{
+			MessageBox(L"에러 발생");
+		}
 	}else{
-		MessageBox(L"에러 발생");
+		m_editDlg.Create(IDD_EDIT_DIALOG, this);
+		m_editDlg.ShowWindow(SW_SHOW);
 	}
 }
 
@@ -516,3 +521,6 @@ int CTestDlg::PaletteChange1bpp()
 	}
 	return fail;
 }
+
+
+

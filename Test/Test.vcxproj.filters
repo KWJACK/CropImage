@@ -69,6 +69,9 @@
     <ClInclude Include="CZoomView.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="EditDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp">
@@ -111,6 +114,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CZoomView.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="EditDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

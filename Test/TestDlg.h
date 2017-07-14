@@ -10,7 +10,8 @@
 #include "ProjectListCtrl.h"
 #include "ProjFilesArray.h"
 #include "PreviewDlg.h"
-
+#include "afxwin.h"
+#include "EditDlg.h"
 
 enum { success= 1, fail= -1};
 // CTestDlg 대화 상자
@@ -34,6 +35,7 @@ public:
 	int elimanate2Char();
 	int PaletteChange1bpp();
 	int m_wordLength;
+	
 	CStdioFileEx m_fp;	//MFC 텍스트 파일 클래스
 	FileOpenClass* m_FileClass;	//BMP 파일 관리 클래스
 	CString m_sTmp;
@@ -49,7 +51,9 @@ public:
 	//PreviewImage
 	CPreviewDlg*	m_pPreviewDlg;
 
-	
+	//EditDlg 관련 
+	CButton m_name_check;	//체크 박스
+	CEditDlg m_editDlg;
 	//BOOL IsImageGDIPLUSValid( CString filePath );
 // 구현입니다.
 
@@ -72,5 +76,7 @@ public:
 	afx_msg void OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnBnClickedButton5();
-	afx_msg void OnBnClickedButton6();
+	afx_msg void OnBnClickedButton6();	
+	
+	
 };

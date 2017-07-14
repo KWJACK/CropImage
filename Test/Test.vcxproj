@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BMPclass.h" />
+    <ClInclude Include="EditDlg.h" />
     <ClInclude Include="FileOpenClass.h" />
     <ClInclude Include="memdc.h" />
     <ClInclude Include="MFCShellListCtrlEx.h" />
@@ -126,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BMPclass.cpp" />
+    <ClCompile Include="EditDlg.cpp" />
     <ClCompile Include="FileOpenClass.cpp" />
     <ClCompile Include="MFCShellListCtrlEx.cpp" />
     <ClCompile Include="MFCShellTreeCtrlEx.cpp" />
