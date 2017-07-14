@@ -25,7 +25,7 @@ FileOpenClass::~FileOpenClass(void)
 }
 
 
-BOOL FileOpenClass::ReadBMP(CString a_fileName){
+BOOL FileOpenClass::ReadBMP(IN CString a_fileName){
 	int result = m_hFile.Open(a_fileName, CFile::modeRead| CFile::shareDenyWrite,NULL);		
 	
 	m_hFile.Read(&BMPHf, sizeof(BITMAPFILEHEADER));
@@ -49,7 +49,7 @@ BOOL FileOpenClass::ReadBMP(CString a_fileName){
 	return TRUE;
 }
 
-BOOL FileOpenClass::SaveBMP(CString a_fileName)
+BOOL FileOpenClass::SaveBMP(IN CString a_fileName)
 {
 	//저장경로는 images (임시)
 	if(!m_hFile.Open(L".\\images\\"+a_fileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)){
@@ -80,7 +80,7 @@ BOOL FileOpenClass::SaveBMP(CString a_fileName)
 	return TRUE;
 }
 
-BOOL FileOpenClass::PaletteChange(CString a_path, CString a_fileName){
+BOOL FileOpenClass::PaletteChange(IN CString a_path, IN CString a_fileName){
 	RGBQUAD rgb2[2];//추가
 	int result = m_hFile.Open(a_path, CFile::modeRead| CFile::shareDenyWrite,NULL);		
 
@@ -110,8 +110,8 @@ BOOL FileOpenClass::PaletteChange(CString a_path, CString a_fileName){
 	for(int i=0;i<dataSize;i++){
 		m_inImg[i] =~ m_inImg[i];
 	}
-
 	m_hFile.Close();
+
 	if(!m_hFile.Open(L".\\images\\"+a_fileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)){
 		AfxMessageBox(L"BMP 파일 생성 초기화 오류");
 		return FALSE;
@@ -123,5 +123,6 @@ BOOL FileOpenClass::PaletteChange(CString a_path, CString a_fileName){
 	m_hFile.Close();
 	delete m_inImg;
 	m_inImg=nullptr;
+
 	return TRUE;
 }

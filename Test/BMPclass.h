@@ -15,10 +15,10 @@ public:
 	UINT bmpWidth;	//align된 bmp 가로 크기
 
 	int m_nThreshold;
-	BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg);
+	BMPclass(IN UINT m_height, IN UINT m_width, IN UCHAR* m_inImg);
 	~BMPclass(void);
 	int BinarizationIterative();
-	void IppHistogram(float histo[256]);
+	void IppHistogram(OUT float histo[256]);
 	void bpp1BMP();
 	//void adaptiveThreshold(unsigned char* input, unsigned char* bin);	
 };

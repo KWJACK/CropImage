@@ -215,8 +215,7 @@ int CTestDlg::checkFileName()
 
 	int oldIndex=-1;
 	if (INVALID_HANDLE_VALUE != hFind)
-	{
-		USHORT nShort = 0xfeff;  // 유니코드 바이트 오더마크.  
+	{		
 		if(m_fp.Open(L"errorPrint.txt", CFile::modeCreate |CFile::modeWrite | CStdioFileEx::modeWriteUnicode)){			
 			do {
 				if (fd.cFileName[0] == '.') {//current and parent path ignore						
@@ -346,8 +345,7 @@ int CTestDlg::makeBinary()
 	CString newName =L"";
 	TCHAR* FileName= nullptr;		
 	if (INVALID_HANDLE_VALUE != hFind)
-	{
-		USHORT nShort = 0xfeff;  // 유니코드 바이트 오더마크.  		
+	{		
 		do {
 			if (fd.cFileName[0] == '.') {//current and parent path ignore						
 				continue;
@@ -485,7 +483,7 @@ void CTestDlg::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 void CTestDlg::OnBnClickedButton6()
 {	 
 	if(!m_name_check.GetCheck()){//체크가 없을 때
-		if(PaletteChange1bpp() >0){
+		if(PaletteChange1bpp(L"") >0){
 			MessageBox(L"파레트,데이터 정보 반전");
 			ShellExecute(NULL, L"open", L"explorer", RESULT_PATH, NULL, SW_SHOW);
 		}else{
@@ -494,6 +492,7 @@ void CTestDlg::OnBnClickedButton6()
 	}else{
 		m_editDlg.Create(IDD_EDIT_DIALOG, this);
 		m_editDlg.ShowWindow(SW_SHOW);
+		//이 후 실행은 EditDlg 확인 버튼에서..
 	}
 }
 
@@ -505,8 +504,7 @@ int CTestDlg::PaletteChange1bpp()
 	CString newName =L"";
 	TCHAR* FileName= nullptr;		
 	if (INVALID_HANDLE_VALUE != hFind)
-	{
-		USHORT nShort = 0xfeff;  // 유니코드 바이트 오더마크.  		
+	{			
 		do {
 			if (fd.cFileName[0] == '.') {//current and parent path ignore						
 				continue;
@@ -522,5 +520,26 @@ int CTestDlg::PaletteChange1bpp()
 	return fail;
 }
 
-
+int CTestDlg::PaletteChange1bpp(CString a_EditName)
+{
+	WIN32_FIND_DATA fd;
+	HANDLE hFind = FindFirstFile(m_sTmp, &fd);
+	int Index = 0;
+	if (INVALID_HANDLE_VALUE != hFind)
+	{		
+		do {			
+			if (fd.cFileName[0] == '.') {//current and parent path ignore						
+				continue;
+			}
+			else {
+				CString strNum; strNum.Format(L"%02d", Index);//글자 2자리. 빈곳은 0으로 채운다
+				CString tempFileName = fd.cFileName;
+				m_FileClass->PaletteChange(m_sPath + tempFileName, a_EditName+L"_"+ strNum +L"_"+a_EditName.GetAt(Index++));
+			}
+		} while (FindNextFile(hFind, &fd));
+		FindClose(hFind);//handle 반환		
+		return success;
+	}
+	return fail;
+}
 

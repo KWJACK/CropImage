@@ -18,7 +18,7 @@ BMPclass::~BMPclass(void)
 }
 
 
-BMPclass::BMPclass(UINT m_height, UINT m_width, UCHAR* m_inImg):
+BMPclass::BMPclass(IN UINT m_height, IN UINT m_width, IN UCHAR* m_inImg):
 	m_pucBMP(nullptr), m_bin(nullptr)
 {	
 	//int align = 4-(m_width & 0x03);	
@@ -134,7 +134,7 @@ int BMPclass::BinarizationIterative()
 	return T;	
 }
 
-void BMPclass::IppHistogram(float histo[256])
+void BMPclass::IppHistogram(OUT float histo[256])
 {
 	//히스토그램 계산
 	int size = m_uiWidth * m_uiHeight;		

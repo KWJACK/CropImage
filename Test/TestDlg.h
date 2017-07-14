@@ -34,6 +34,7 @@ public:
 	int makeBinary();
 	int elimanate2Char();
 	int PaletteChange1bpp();
+	int PaletteChange1bpp(CString a_EditName);
 	int m_wordLength;
 	
 	CStdioFileEx m_fp;	//MFC 텍스트 파일 클래스
