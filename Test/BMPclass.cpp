@@ -194,39 +194,21 @@ void BMPclass::bpp1BMP()
 
 	int index = 0, oldindex = 0, count=0;	
 	for (int i = 0; i<m_uiHeight; i++)
-	{
-		//if(widthBitAlign%8 ==0 && m_uiWidth%4==0){
-		//	for (int j = 0; j< widthBitAlign-4; j++)
-		//	{		
-		//		count++;
-		//		m_bin[oldindex] = m_bin[oldindex]<<1;
-		//		//흑이면 두번 째 파레트 색 추가. 디폴트는 첫번째 파레트 색
-		//		if(m_pucBMP[index++]==0){
-		//			m_bin[oldindex] |= 1;
-		//		}		
+	{		
+		for (int j = 0; j< bmpWidth; j++)//8bit의 alignㄷ
+		{		
+			count++;
+			m_bin[oldindex] = m_bin[oldindex]<<1;
+			//흑이면 두번 째 파레트 색 추가. 디폴트는 첫번째 파레트 색
+			if(m_pucBMP[index++]==0){
+				m_bin[oldindex] |= 1;
+			}
 
-		//		if(count==8 || j == widthBitAlign-4-1){
-		//			count=0;
-		//			oldindex++;
-		//		}			
-		//	}					
-		//}
-		//else{
-			for (int j = 0; j< bmpWidth; j++)
-			{		
-				count++;
-				m_bin[oldindex] = m_bin[oldindex]<<1;
-				//흑이면 두번 째 파레트 색 추가. 디폴트는 첫번째 파레트 색
-				if(m_pucBMP[index++]==0){
-					m_bin[oldindex] |= 1;
-				}
-
-				if(count==8 || j == bmpWidth-1){
-					count=0;
-					oldindex++;
-				}		
-			}					
-		//}
+			if(count==8 || j == bmpWidth-1){
+				count=0;
+				oldindex++;
+			}		
+		}					
 		for (int j = 0; j< align; j++) {//패딩할 byte						
 			oldindex++;
 		}

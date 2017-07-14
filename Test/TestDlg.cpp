@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CTestDlg, CDialogEx)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_FOLDERS_TREE, OnTvnSelchanged)
 	ON_WM_MOUSEHWHEEL()	
 	ON_BN_CLICKED(IDC_BUTTON5, &CTestDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &CTestDlg::OnBnClickedButton6)
 END_MESSAGE_MAP()
 
 
@@ -353,8 +354,7 @@ int CTestDlg::makeBinary()
 				m_FileClass->SaveBMP(tempFileName);
 			}								
 		} while (FindNextFile(hFind, &fd));		
-		FindClose(hFind);//handle 반환
-		//m_fp.Close();	//파일 닫음
+		FindClose(hFind);//handle 반환		
 		return success;
 	}
 	return fail;
@@ -371,8 +371,7 @@ void CTestDlg::OnDestroy()
 	if( m_pPreviewDlg )
 	{
 		delete m_pPreviewDlg;
-	}
-	
+	}	
 }
 
 
@@ -477,3 +476,38 @@ void CTestDlg::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 }
 
 
+
+//파레트 반전
+void CTestDlg::OnBnClickedButton6()
+{
+	if(PaletteChange1bpp() >0){
+		MessageBox(L"파레트,데이터 정보 반전");
+	}else{
+		MessageBox(L"에러 발생");
+	}
+}
+
+
+int CTestDlg::PaletteChange1bpp()
+{		
+	WIN32_FIND_DATA fd;
+	HANDLE hFind = FindFirstFile(m_sTmp, &fd);
+	CString newName =L"";
+	TCHAR* FileName= nullptr;		
+	if (INVALID_HANDLE_VALUE != hFind)
+	{
+		USHORT nShort = 0xfeff;  // 유니코드 바이트 오더마크.  		
+		do {
+			if (fd.cFileName[0] == '.') {//current and parent path ignore						
+				continue;
+			}
+			else {
+				CString tempFileName = fd.cFileName;
+				m_FileClass->PaletteChange(m_sPath+tempFileName, tempFileName);
+			}								
+		} while (FindNextFile(hFind, &fd));		
+		FindClose(hFind);//handle 반환		
+		return success;
+	}
+	return fail;
+}
