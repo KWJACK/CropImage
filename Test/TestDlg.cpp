@@ -22,7 +22,8 @@ CTestDlg::CTestDlg(CWnd* pParent /*=NULL*/)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-	m_pPreviewDlg = NULL;
+	m_pPreviewDlg = nullptr;
+	m_editDlg = nullptr;
 }
 
 void CTestDlg::DoDataExchange(CDataExchange* pDX)
@@ -371,9 +372,12 @@ void CTestDlg::OnDestroy()
 		delete m_FileClass;
 	}
 	if( m_pPreviewDlg )
-	{
-		delete m_pPreviewDlg;
+	{		
+		m_pPreviewDlg->DestroyWindow();
 	}	
+	if(m_editDlg){
+		m_editDlg->DestroyWindow();
+	}		
 }
 
 
@@ -490,10 +494,12 @@ void CTestDlg::OnBnClickedButton6()
 			MessageBox(L"에러 발생");
 		}
 	}else{
-		m_editDlg.Create(IDD_EDIT_DIALOG, this);
-		m_editDlg.ShowWindow(SW_SHOW);
+		if(m_editDlg!=nullptr)m_editDlg->DestroyWindow();
+		m_editDlg = new CEditDlg();
+		m_editDlg->Create(IDD_EDIT_DIALOG, this);
+		m_editDlg->ShowWindow(SW_SHOW);
 		//이 후 실행은 EditDlg 확인 버튼에서..
-	}
+	}	
 }
 
 
@@ -524,22 +530,25 @@ int CTestDlg::PaletteChange1bpp(CString a_EditName)
 {
 	WIN32_FIND_DATA fd;
 	HANDLE hFind = FindFirstFile(m_sTmp, &fd);
-	int Index = 0;
-	if (INVALID_HANDLE_VALUE != hFind)
+#define AD0000_ 7
+	int Index = AD0000_;//offeset 크기가 있습니다. 
+	int num_create_char = m_editDlg->m_edit_str.GetLength()-7;
+ 	if (INVALID_HANDLE_VALUE != hFind)
 	{		
 		do {			
 			if (fd.cFileName[0] == '.') {//current and parent path ignore						
 				continue;
 			}
 			else {
-				CString strNum; strNum.Format(L"%02d", Index);//글자 2자리. 빈곳은 0으로 채운다
+				CString strNum; strNum.Format(L"%02d", Index-AD0000_);//글자 2자리. 빈곳은 0으로 채운다
 				CString tempFileName = fd.cFileName;
-				m_FileClass->PaletteChange(m_sPath + tempFileName, a_EditName+L"_"+ strNum +L"_"+a_EditName.GetAt(Index++));
+				m_FileClass->PaletteChange(m_sPath + tempFileName, a_EditName+L"_"+ strNum +L"_"+a_EditName.GetAt(Index++)+L".bmp");
 			}
-		} while (FindNextFile(hFind, &fd));
+		} while (FindNextFile(hFind, &fd) && Index-AD0000_ != num_create_char);
 		FindClose(hFind);//handle 반환		
 		return success;
+		m_editDlg->DestroyWindow();
+		m_editDlg = nullptr;
 	}
 	return fail;
 }
-

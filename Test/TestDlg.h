@@ -34,7 +34,7 @@ public:
 	int makeBinary();
 	int elimanate2Char();
 	int PaletteChange1bpp();
-	int PaletteChange1bpp(CString a_EditName);
+	
 	int m_wordLength;
 	
 	CStdioFileEx m_fp;	//MFC 텍스트 파일 클래스
@@ -54,7 +54,8 @@ public:
 
 	//EditDlg 관련 
 	CButton m_name_check;	//체크 박스
-	CEditDlg m_editDlg;
+	CEditDlg* m_editDlg;
+	int PaletteChange1bpp(CString a_EditName);
 	//BOOL IsImageGDIPLUSValid( CString filePath );
 // 구현입니다.
 
