@@ -144,7 +144,7 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		float absWidth = abs(pEndW-pStartW);
 		float absHeight = abs(pEndH-pStartH);
 
-		if( absWidth<3 || absHeight<10)return;//사각형이 너무 작으면 저장하지 않는다
+		if( absWidth<3 || absHeight<5)return;//사각형이 너무 작으면 저장하지 않는다
 
 		if(pStartW >= pEndW && pStartH >= pEndH){//↖
 			if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;
@@ -360,20 +360,24 @@ void CBMPZoomView::OnSaveCropImageFile()
 	dlg.m_fileName = m_oldFileName;//Dlg에 보일 최근 파일이름 출력
 	if (dlg.DoModal() == IDOK)
 	{
-		m_fileName = m_oldFileName =dlg.m_fileName;//이전에 작성한 파일이름을 나중에도 사용합니다.		
+		if(dlg.m_fileName.GetLength()<8)return;//adxxxx_ 에 추가로 입력한게 있어야 진행
+
+		m_fileName = m_oldFileName =dlg.m_fileName;//이전에 작성한 파일이름을 나중에도 사용합니다.
 		CString Address = wcstok((TCHAR*)(LPCTSTR)m_fileName, L"_");
-		CString Word = wcstok(NULL, L"_");
-		TCHAR* Index = wcstok(NULL, L"_");		
+		CString Word = wcstok(NULL, L"_");		
+		TCHAR* Index = wcstok(NULL, L"_");
+		if(Index ==NULL)return;//사용자가 잘못 입력한 경우 처리
+
 		int tempIndex = _wtoi(Index);		
 		CString newIndex;
-		newIndex.Format(L"%d", tempIndex+1);
-		if(tempIndex  < Word.GetLength()-1){
-			m_fileName  = Address+L"_"+Word+L"_"+Index+L"_"+Word.GetAt(tempIndex);
-			m_oldFileName = Address+L"_"+Word+L"_"+ newIndex +L"_"+Word.GetAt(++tempIndex);
-		}else{
-			m_oldFileName = Address;//입력문자열이 초과하면 up
+		newIndex.Format(L"%d", tempIndex+1);		
+		m_fileName  = Address+L"_"+Word+L"_"+Index+L"_"+Word.GetAt(tempIndex);
+		m_oldFileName = Address+L"_"+Word+L"_"+ newIndex +L"_"+Word.GetAt(++tempIndex);		
+		if(tempIndex  >= Word.GetLength()){
+			m_oldFileName = Address+L"_";//입력문자열이 초과하면 up)
 		}
-			m_IDOK = TRUE;
+		
+		m_IDOK = TRUE;
 		//처음 파일 이름 입력한 대로 인덱스 얻어서 자동으로 지정하게 하면 될듯
 	}
 	else m_IDOK = FALSE;
