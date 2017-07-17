@@ -103,14 +103,6 @@ BEGIN
     BEGIN
         MENUITEM "끝내기(&X)",                     ID_APP_EXIT
     END
-    POPUP "편집(&E)"
-    BEGIN
-        MENUITEM "실행 취소(&U)\tCtrl+Z",           ID_EDIT_UNDO
-        MENUITEM SEPARATOR
-        MENUITEM "잘라내기(&T)\tCtrl+X",            ID_EDIT_CUT
-        MENUITEM "복사(&C)\tCtrl+C",              ID_EDIT_COPY
-        MENUITEM "붙여넣기(&P)\tCtrl+V",            ID_EDIT_PASTE
-    END
     POPUP "보기(&V)"
     BEGIN
         MENUITEM "도구 모음(&T)",                   ID_VIEW_TOOLBAR
@@ -119,6 +111,10 @@ BEGIN
     POPUP "도움말(&H)"
     BEGIN
         MENUITEM "EPRE 정보(&A)...",              ID_APP_ABOUT
+    END
+    POPUP "저장"
+    BEGIN
+        MENUITEM "파일이름지정",                      ID_32774
     END
 END
 
@@ -130,14 +126,6 @@ END
 
 IDR_MAINFRAME ACCELERATORS
 BEGIN
-    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
-    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
-    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
-    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
-    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
-    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     VK_ADD,         ID_VIEW_ZOOMIN,         VIRTKEY, NOINVERT
@@ -180,6 +168,17 @@ STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_BMP_THUMNAIL,"Static",SS_BLACKFRAME,7,26,70,68
+END
+
+IDD_SAVE__IMAGE_DLG DIALOGEX 0, 0, 255, 74
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "파일 이름 저장하기"
+FONT 9, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,141,53,50,14
+    PUSHBUTTON      "취소",IDCANCEL,198,53,50,14
+    EDITTEXT        IDC_FILENAME_EDIT,47,27,201,14,ES_AUTOHSCROLL
+    LTEXT           "저장할 파일 이름 입력",IDC_FILE_INFO_STATIC,7,7,204,13
 END
 
 
@@ -260,6 +259,14 @@ BEGIN
         RIGHTMARGIN, 302
         TOPMARGIN, 7
         BOTTOMMARGIN, 170
+    END
+
+    IDD_SAVE__IMAGE_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 248
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
     END
 END
 #endif    // APSTUDIO_INVOKED

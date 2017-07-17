@@ -20,8 +20,7 @@ public:
 	CRect m_rubberBand, m_Canvas_Rect;
 	CPoint m_ptStart, m_ptEnd;	//마우스 드래그에 따라 그릴 상자의 시작점
 	BOOL m_create_canvas;
-	CStatic m_wndCanvas;
-	CString m_filePath;
+	CStatic m_wndCanvas;	
 
 	CPoint m_ImageDest;//이미지 출력 시작점 cx = left, cy = top
 	CPoint m_ExpandDest;//늘어난 이미지 크기
@@ -29,7 +28,9 @@ public:
 	//선택 이미지
 	Bitmap  *m_pSelectedImage;		
 	Graphics* p_graphics;//GDI+ 출력개체를 가르키는 포인터
-	
+	//파일 이름 변수 저장 관련
+	CString m_fileName, m_oldFileName;
+	BOOL m_IDOK;
 public:
 	virtual void OnDraw(CDC* pDC);      // 이 뷰를 그리기 위해 재정의되었습니다.
 #ifdef _DEBUG
@@ -60,5 +61,6 @@ public:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSaveCropImageFile();
 };
 

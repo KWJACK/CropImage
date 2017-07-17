@@ -9,6 +9,7 @@
 #include <cmath>	//abs float
 #include <algorithm>//swap
 // CBMPZoomView
+#include "SetFileNameDlg.h"
 
 IMPLEMENT_DYNCREATE(CBMPZoomView, CView)
 using namespace Gdiplus; 
@@ -17,7 +18,8 @@ CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
 	m_bSelectMode = FALSE;
 	m_pSelectedImage = NULL;
 	m_fResolution_H=0.0f;m_fResolution_W=0.0f;
-	HDC hdc = ::GetDC(m_hWnd);	
+	HDC hdc = ::GetDC(m_hWnd);
+	m_IDOK = FALSE;
 }
 
 CBMPZoomView::~CBMPZoomView()
@@ -35,6 +37,7 @@ BEGIN_MESSAGE_MAP(CBMPZoomView, CView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_DRAWITEM()
 	ON_WM_SIZE()
+	ON_COMMAND(ID_32774, &CBMPZoomView::OnSaveCropImageFile)
 END_MESSAGE_MAP()
 
 
@@ -166,13 +169,17 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		Graphics *pGraphics = Graphics::FromImage(pCloneBmp);
 		pGraphics->DrawImage(pCloneBmp, bmpRect);	
 
-		UINT num,size;
-		ImageCodecInfo * pImageCodecInfo;
-		GetImageEncodersSize(&num,&size);
-		pImageCodecInfo =(ImageCodecInfo*)( malloc (size));
-		GetImageEncoders(num,size,pImageCodecInfo);
-		pCloneBmp->Save(L"CroppedBmp.bmp",&pImageCodecInfo[0].Clsid);
-				
+		OnSaveCropImageFile();
+		CString m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(200)\\temp\\";
+		if(m_IDOK){//대화상자에서 OK를 눌렀는지 체크하는 옵션 값
+			UINT num,size;
+			ImageCodecInfo * pImageCodecInfo;
+			GetImageEncodersSize(&num,&size);
+			pImageCodecInfo =(ImageCodecInfo*)( malloc (size));
+			GetImageEncoders(num,size,pImageCodecInfo);
+			pCloneBmp->Save(m_sPath+m_fileName+L".bmp",&pImageCodecInfo[0].Clsid);
+			free(pImageCodecInfo);
+		}
 		delete pCloneBmp;
 		delete pGraphics;		
 	}
@@ -344,4 +351,30 @@ void CBMPZoomView::OnSize(UINT nType, int cx, int cy)
 		m_wndCanvas.MoveWindow( rect );
 		m_wndCanvas.Invalidate();
 	}
+}
+
+
+void CBMPZoomView::OnSaveCropImageFile()
+{
+	CSetFileNameDlg dlg;
+	dlg.m_fileName = m_oldFileName;//Dlg에 보일 최근 파일이름 출력
+	if (dlg.DoModal() == IDOK)
+	{
+		m_fileName = m_oldFileName =dlg.m_fileName;//이전에 작성한 파일이름을 나중에도 사용합니다.		
+		CString Address = wcstok((TCHAR*)(LPCTSTR)m_fileName, L"_");
+		CString Word = wcstok(NULL, L"_");
+		TCHAR* Index = wcstok(NULL, L"_");		
+		int tempIndex = _wtoi(Index);		
+		CString newIndex;
+		newIndex.Format(L"%d", tempIndex+1);
+		if(tempIndex  < Word.GetLength()-1){
+			m_fileName  = Address+L"_"+Word+L"_"+Index+L"_"+Word.GetAt(tempIndex);
+			m_oldFileName = Address+L"_"+Word+L"_"+ newIndex +L"_"+Word.GetAt(++tempIndex);
+		}else{
+			m_oldFileName = Address;//입력문자열이 초과하면 up
+		}
+			m_IDOK = TRUE;
+		//처음 파일 이름 입력한 대로 인덱스 얻어서 자동으로 지정하게 하면 될듯
+	}
+	else m_IDOK = FALSE;
 }
