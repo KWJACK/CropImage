@@ -7,6 +7,7 @@
 #include "memdc.h"	//include 해야 memdc 정상 기능
 #include "MainFrm.h"
 #include <cmath>	//abs float
+#include <algorithm>//swap
 // CBMPZoomView
 
 IMPLEMENT_DYNCREATE(CBMPZoomView, CView)
@@ -41,19 +42,6 @@ END_MESSAGE_MAP()
 
 void CBMPZoomView::OnDraw(CDC* pDC)
 {
-	/*TRACE("DemoZoom::OnDraw\n");
-	CDocument* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);*/
-	
-	//srand(0);
-	/*int width = 2000/10;
-	int height = 1000/10;
-	int i = 0;
-	for (i = 0; i < 10; i++)
-	{
-		pDC->FillSolidRect(CRect(i * width, i * height, 
-								 i * width + width, i * height + height), RGB(rand() % 255, rand() % 255, rand() % 255));
-	}*/
 	
 }
 
@@ -76,7 +64,6 @@ void CBMPZoomView::Dump(CDumpContext& dc) const
 
 BOOL CBMPZoomView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	return CZoomView::PreCreateWindow(cs);
 }
 
@@ -126,9 +113,11 @@ void CBMPZoomView::OnViewZoomout()
 
 void CBMPZoomView::OnLButtonDown(UINT nFlags, CPoint point)
 {	
-	m_bSelectMode = TRUE;
-	if (m_bSelectMode) 
+	
+	if (!m_bSelectMode && m_pSelectedImage!=NULL //이미지 클릭 확인
+		&& point.x >= m_ImageDest.x && point.y >= m_ImageDest.y)//범위확인
 	{		
+		m_bSelectMode = TRUE;
 		SetCapture();
 		m_ptStart = m_ptEnd =point;
 	}
@@ -139,28 +128,43 @@ void CBMPZoomView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	if(m_bSelectMode){
-		CClientDC dc(this);
-		CPen pen;
-		CBrush brush;
-		setColorStyle(dc, pen, brush);
-		
-		dc.SetROP2(R2_COPYPEN);
-		dc.Rectangle(m_ptStart.x, m_ptStart.y, m_ptEnd.x, m_ptEnd.y);
+	if(m_bSelectMode && point.x <= m_ExpandDest.x+m_ImageDest.x // 끝점 범위 x,y 확인
+		&& point.y <= m_ExpandDest.y+m_ImageDest.y){		
 		m_bSelectMode = FALSE;
+		CClientDC dc(this);		
 		::ReleaseCapture();
-		
-		
+
 		float pStartW = float(m_ptStart.x-m_ImageDest.x)/m_fResolution_W;
 		float pStartH = float(m_ptStart.y-m_ImageDest.y)/m_fResolution_H;
 		float pEndW = float(point.x-m_ImageDest.x)/m_fResolution_W; 
 		float pEndH = float(point.y-m_ImageDest.y)/m_fResolution_H;
-		Gdiplus::RectF bmpRect(0.0f, 0.0f,abs(pEndW-pStartW),abs(pEndH-pStartH));
+		float absWidth = abs(pEndW-pStartW);
+		float absHeight = abs(pEndH-pStartH);
+
+		if( absWidth<3 || absHeight<10)return;//사각형이 너무 작으면 저장하지 않는다
+
+		if(pStartW >= pEndW && pStartH >= pEndH){//↖
+			if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;
+			
+			std::swap(pStartW,pEndW);
+			std::swap(pStartH,pEndH);
+		}
+		else if(pStartW <= pEndW && pStartH >= pEndH){//↗
+			//if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;
+			std::swap(pStartH,pEndH);
+		}
+		else if(pStartW >= pEndW && pStartH <= pEndH){//↙
+			if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;
+			std::swap(pStartW,pEndW);
+		}
+		else {//↘
+		}
 		
-		Bitmap *pCloneBmp = m_pSelectedImage->Clone(pStartW, pStartH, abs(pEndW-pStartW),abs(pEndH-pStartH),m_pSelectedImage->GetPixelFormat());
+
+		Gdiplus::RectF bmpRect(0.0f, 0.0f,absWidth,absHeight);		
+		Bitmap *pCloneBmp = m_pSelectedImage->Clone(pStartW, pStartH, absWidth,absHeight, m_pSelectedImage->GetPixelFormat());
 		Graphics *pGraphics = Graphics::FromImage(pCloneBmp);
-		pGraphics->DrawImage(pCloneBmp, bmpRect);
-		
+		pGraphics->DrawImage(pCloneBmp, bmpRect);	
 
 		UINT num,size;
 		ImageCodecInfo * pImageCodecInfo;
@@ -168,17 +172,10 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		pImageCodecInfo =(ImageCodecInfo*)( malloc (size));
 		GetImageEncoders(num,size,pImageCodecInfo);
 		pCloneBmp->Save(L"CroppedBmp.bmp",&pImageCodecInfo[0].Clsid);
-		
-		//Gdiplus::Font GdiPlusFont(dc.GetSafeHdc());
-		//delete pCloneBmp;
-		//delete pGraphics;
-	
-		
-
+				
+		delete pCloneBmp;
+		delete pGraphics;		
 	}
-	/*m_bSelectMode = FALSE;
-	Invalidate(FALSE);	
-	SetZoomArea(m_rubberBand);*/
 	CZoomView::OnLButtonUp(nFlags, point);
 }
 void CBMPZoomView::setColorStyle(CClientDC &dc, CPen &pen, CBrush &brush){
@@ -201,14 +198,7 @@ void CBMPZoomView::OnMouseMove(UINT nFlags, CPoint point)
 		dc.Rectangle(m_ptStart.x,m_ptStart.y,point.x,point.y);
 		// 직선 끝점의 좌표를 갱신한다.
 		m_ptEnd = point; 
-	}
-	/*if (m_bSelectMode != FALSE) 
-	{
-		DPtoLP(&point);
-		m_rubberBand.SetRect(m_ptStart, point);
-		m_rubberBand.NormalizeRect();
-		Invalidate(FALSE);
-	}*/
+	}	
 
 	if(m_pSelectedImage!=NULL){		
 		CPoint pt = point + GetScrollPosition();
@@ -228,11 +218,9 @@ void CBMPZoomView::ShowImageInfo(CPoint a_point)
 	
 	int w = m_pSelectedImage->GetWidth();
 	int h = m_pSelectedImage->GetHeight();
-
-	CString strText;
-	//a_point.x < w+m_ImageDest.x && a_point.y < h+m_ImageDest.y &&
+	CString strText;	
 	// 상태바에 마우스 좌표 표시
-	if (a_point.x >= 0 && a_point.y >= 0 &&		
+	if (a_point.x >= 0 && a_point.y >= 0 &&
 		a_point.x > m_ImageDest.x &&
 		a_point.y > m_ImageDest.y &&
 		a_point.x < m_ExpandDest.x+m_ImageDest.x &&
@@ -307,7 +295,6 @@ void CBMPZoomView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 				m_ptStart.y-m_ImageDest.y,
 				m_ptEnd.x - m_ImageDest.x,
 				m_ptEnd.y-m_ImageDest.y);
-
 			
 			delete pMemDC;
 		}		
@@ -319,12 +306,8 @@ void CBMPZoomView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 void CBMPZoomView::OnSize(UINT nType, int cx, int cy)
 {
 	CZoomView::OnSize(nType, cx, cy);
-	CRect rc; GetClientRect( rc );
-
+	CRect rc; GetClientRect( rc );	
 	
-
-	//CImageToolDoc* pDoc = (CImageToolDoc*)pFrame->GetActiveDocument();
-
 	if(m_pSelectedImage==NULL)
 	{
 		//rc.SetRectEmpty();
@@ -361,5 +344,4 @@ void CBMPZoomView::OnSize(UINT nType, int cx, int cy)
 		m_wndCanvas.MoveWindow( rect );
 		m_wndCanvas.Invalidate();
 	}
-	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
