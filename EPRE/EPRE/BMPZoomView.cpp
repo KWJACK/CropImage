@@ -10,6 +10,7 @@
 #include <algorithm>//swap
 // CBMPZoomView
 #include "SetFileNameDlg.h"
+#include "SetImagePathDlg.h"
 
 IMPLEMENT_DYNCREATE(CBMPZoomView, CView)
 using namespace Gdiplus; 
@@ -20,6 +21,7 @@ CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
 	m_fResolution_H=0.0f;m_fResolution_W=0.0f;
 	HDC hdc = ::GetDC(m_hWnd);
 	m_IDOK = FALSE;
+	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(300)\\temp\\";//default
 }
 
 CBMPZoomView::~CBMPZoomView()
@@ -38,6 +40,7 @@ BEGIN_MESSAGE_MAP(CBMPZoomView, CView)
 	ON_WM_DRAWITEM()
 	ON_WM_SIZE()
 	ON_COMMAND(ID_32774, &CBMPZoomView::OnSaveCropImageFile)
+	ON_COMMAND(ID_32777, &CBMPZoomView::OnSetImagePath)
 END_MESSAGE_MAP()
 
 
@@ -169,8 +172,7 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		Graphics *pGraphics = Graphics::FromImage(pCloneBmp);
 		pGraphics->DrawImage(pCloneBmp, bmpRect);	
 
-		OnSaveCropImageFile();
-		CString m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(200)\\temp\\";
+		OnSaveCropImageFile();		
 		if(m_IDOK){//대화상자에서 OK를 눌렀는지 체크하는 옵션 값
 			UINT num,size;
 			ImageCodecInfo * pImageCodecInfo;
@@ -381,4 +383,14 @@ void CBMPZoomView::OnSaveCropImageFile()
 		//처음 파일 이름 입력한 대로 인덱스 얻어서 자동으로 지정하게 하면 될듯
 	}
 	else m_IDOK = FALSE;
+}
+
+//자른 파일 저장 위치 지정
+void CBMPZoomView::OnSetImagePath()
+{
+	SetImagePathDlg dlg;	
+	if (dlg.DoModal() == IDOK)
+	{
+		m_sPath = dlg.m_path +L"\\";		
+	}	
 }

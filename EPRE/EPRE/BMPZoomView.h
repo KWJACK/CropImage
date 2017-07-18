@@ -30,6 +30,7 @@ public:
 	Graphics* p_graphics;//GDI+ 출력개체를 가르키는 포인터
 	//파일 이름 변수 저장 관련
 	CString m_fileName, m_oldFileName;
+	CString m_sPath;//이미지 저장 경로
 	BOOL m_IDOK;
 public:
 	virtual void OnDraw(CDC* pDC);      // 이 뷰를 그리기 위해 재정의되었습니다.
@@ -62,5 +63,6 @@ public:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnSaveCropImageFile();
+	afx_msg void OnSetImagePath();
 };
 

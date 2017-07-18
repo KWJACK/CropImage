@@ -108,13 +108,20 @@ BEGIN
         MENUITEM "도구 모음(&T)",                   ID_VIEW_TOOLBAR
         MENUITEM "상태 표시줄(&S)",                  ID_VIEW_STATUS_BAR
     END
+    POPUP "설정"
+    BEGIN
+        MENUITEM "자른 이미지 저장하기",                 ID_32774
+        MENUITEM "이미지 저장 경로 설정하기",              ID_32777
+        MENUITEM "이진화 결과 경로 설정하기",              ID_32778
+    END
+    POPUP "이진화"
+    BEGIN
+        MENUITEM "24bmp이진화",                    ID_32775
+        MENUITEM "1bpp 파레트 반전",                 ID_32776
+    END
     POPUP "도움말(&H)"
     BEGIN
         MENUITEM "EPRE 정보(&A)...",              ID_APP_ABOUT
-    END
-    POPUP "저장"
-    BEGIN
-        MENUITEM "파일이름지정",                      ID_32774
     END
 END
 
@@ -179,6 +186,17 @@ BEGIN
     PUSHBUTTON      "취소",IDCANCEL,198,53,50,14
     EDITTEXT        IDC_FILENAME_EDIT,47,27,201,14,ES_AUTOHSCROLL
     LTEXT           "저장할 파일 이름 입력",IDC_FILE_INFO_STATIC,7,7,204,13
+END
+
+IDD_SAVE_PATH_DLG DIALOGEX 0, 0, 255, 74
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "이미지 저장 경로 설정"
+FONT 9, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,145,53,50,14
+    PUSHBUTTON      "취소",IDCANCEL,198,53,50,14
+    EDITTEXT        IDC_IMAGEPATH_EDIT,14,35,234,14,ES_AUTOHSCROLL
+    LTEXT           "이미지 저장 경로 입력",IDC_STATIC,14,15,129,17
 END
 
 
@@ -262,6 +280,14 @@ BEGIN
     END
 
     IDD_SAVE__IMAGE_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 248
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
+    END
+
+    IDD_SAVE_PATH_DLG, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 248

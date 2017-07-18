@@ -62,9 +62,9 @@ BOOL CTestDlg::OnInitDialog()
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 
-	m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(200)\\temp\\*.*";
+	m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(300)\\temp\\*.*";
 	//m_sTmp = L"C:\\Users\\jaekeun\\Desktop\\origin\\*.*";
-	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(200)\\temp\\";
+	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(300)\\temp\\";
 	//m_sPath = L"C:\\Users\\jaekeun\\Desktop\\origin\\";
 	m_FileClass = new FileOpenClass;
 

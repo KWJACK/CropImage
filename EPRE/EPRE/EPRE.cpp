@@ -128,7 +128,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)		
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)			
 END_MESSAGE_MAP()
 
 // 대화 상자를 실행하기 위한 응용 프로그램 명령입니다.
@@ -137,6 +137,3 @@ void CEPREApp::OnAppAbout()
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
-
-// CEPREApp 메시지 처리기
-

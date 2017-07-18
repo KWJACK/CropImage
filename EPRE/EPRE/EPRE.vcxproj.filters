@@ -69,6 +69,9 @@
     <ClInclude Include="SetFileNameDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SetImagePathDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EPRE.cpp">
@@ -111,6 +114,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SetFileNameDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SetImagePathDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
