@@ -224,6 +224,10 @@ void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 			m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());		
 			::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0,0);	
 		}
+		else if( m_selFilePath.Find(L".PNG") > 0){
+			m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());		
+			::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0,0);	
+		}
 		//m_preViewDlg->m_filePath = m_selFilePath;
 		
 	}	

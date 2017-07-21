@@ -112,11 +112,13 @@
     <ClInclude Include="MFCShellListCtrlEx.h" />
     <ClInclude Include="MFCShellTreeCtrlEx.h" />
     <ClInclude Include="MFCShellUtils.h" />
+    <ClInclude Include="MyBMPclass.h" />
     <ClInclude Include="ProjectListCtrl.h" />
     <ClInclude Include="ProjFilesArray.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SetFileNameDlg.h" />
     <ClInclude Include="SetImagePathDlg.h" />
+    <ClInclude Include="SetResultPathDlg.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ZoomView.h" />
@@ -131,10 +133,12 @@
     <ClCompile Include="MFCShellListCtrlEx.cpp" />
     <ClCompile Include="MFCShellTreeCtrlEx.cpp" />
     <ClCompile Include="MFCShellUtils.cpp" />
+    <ClCompile Include="MyBMPclass.cpp" />
     <ClCompile Include="ProjectListCtrl.cpp" />
     <ClCompile Include="ProjFilesArray.cpp" />
     <ClCompile Include="SetFileNameDlg.cpp" />
     <ClCompile Include="SetImagePathDlg.cpp" />
+    <ClCompile Include="SetResultPathDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

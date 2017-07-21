@@ -111,8 +111,8 @@ BEGIN
     POPUP "설정"
     BEGIN
         MENUITEM "자른 이미지 저장하기",                 ID_32774
-        MENUITEM "이미지 저장 경로 설정하기",              ID_32777
-        MENUITEM "이진화 결과 경로 설정하기",              ID_32778
+        MENUITEM "이미지 저장 경로 설정하기",              ID_SET_STROE_PATH
+        MENUITEM "이진화 결과 경로 설정하기",              ID_SET_RESULT_PATH
     END
     POPUP "이진화"
     BEGIN
@@ -197,6 +197,17 @@ BEGIN
     PUSHBUTTON      "취소",IDCANCEL,198,53,50,14
     EDITTEXT        IDC_IMAGEPATH_EDIT,14,35,234,14,ES_AUTOHSCROLL
     LTEXT           "이미지 저장 경로 입력",IDC_STATIC,14,15,129,17
+END
+
+IDD_SAVE_RESULT_PATH_DLG DIALOGEX 0, 0, 309, 86
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "이진화 결과 이미지 저장 경로 설정"
+FONT 9, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,198,65,50,14
+    PUSHBUTTON      "취소",IDCANCEL,252,65,50,14
+    EDITTEXT        IDC_RESULTPATH_EDIT,17,38,273,15,ES_AUTOHSCROLL
+    LTEXT           "이진화 결과 이미지 저장 경로 입력",IDC_RESULT_PATH_STATIC,17,16,151,18
 END
 
 
@@ -293,6 +304,14 @@ BEGIN
         RIGHTMARGIN, 248
         TOPMARGIN, 7
         BOTTOMMARGIN, 67
+    END
+
+    IDD_SAVE_RESULT_PATH_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
     END
 END
 #endif    // APSTUDIO_INVOKED
