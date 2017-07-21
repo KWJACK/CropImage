@@ -9,9 +9,9 @@
 #include <cmath>	//abs float
 #include <algorithm>//swap
 // CBMPZoomView
-#include "SetFileNameDlg.h"
-#include "SetImagePathDlg.h"
-
+#include "SetFileNameDlg.h"		//파일 이름 지정 다디얼로그
+#include "SetImagePathDlg.h"	//패스 지정 다이얼로그
+#include "SetResultPathDlg.h"	//결과 패스 지정 다이얼로그
 IMPLEMENT_DYNCREATE(CBMPZoomView, CView)
 using namespace Gdiplus; 
 CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
@@ -22,10 +22,17 @@ CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
 	HDC hdc = ::GetDC(m_hWnd);
 	m_IDOK = FALSE;
 	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(300)\\temp\\";//default
+	
+	//you can change this in runtime
+	m_BMPclass = new MyBMPclass;
 }
 
 CBMPZoomView::~CBMPZoomView()
 {
+	if(m_BMPclass){
+		delete m_BMPclass;
+		m_BMPclass = nullptr;
+	}
 }
 
 BEGIN_MESSAGE_MAP(CBMPZoomView, CView)
@@ -41,8 +48,20 @@ BEGIN_MESSAGE_MAP(CBMPZoomView, CView)
 	ON_WM_SIZE()
 	ON_COMMAND(ID_32774, &CBMPZoomView::OnSaveCropImageFile)
 	ON_COMMAND(ID_32777, &CBMPZoomView::OnSetImagePath)
+	ON_COMMAND(ID_32775, &CBMPZoomView::On24bitBMPto1bitBinarization)
+	ON_COMMAND(ID_SET_RESULT_PATH, &CBMPZoomView::OnSetResultPath)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
+
+void CBMPZoomView::OnDestroy()
+{
+	CZoomView::OnDestroy();
+	if(m_BMPclass){
+		delete m_BMPclass;
+		m_BMPclass = nullptr;
+	}
+}
 
 // CBMPZoomView 그리기입니다.
 
@@ -375,6 +394,7 @@ void CBMPZoomView::OnSaveCropImageFile()
 		newIndex.Format(L"%d", tempIndex+1);		
 		m_fileName  = Address+L"_"+Word+L"_"+Index+L"_"+Word.GetAt(tempIndex);
 		m_oldFileName = Address+L"_"+Word+L"_"+ newIndex +L"_"+Word.GetAt(++tempIndex);		
+
 		if(tempIndex  >= Word.GetLength()){
 			m_oldFileName = Address+L"_";//입력문자열이 초과하면 up)
 		}
@@ -394,3 +414,39 @@ void CBMPZoomView::OnSetImagePath()
 		m_sPath = dlg.m_path +L"\\";		
 	}	
 }
+
+void CBMPZoomView::OnSetResultPath()
+{
+	CSetResultPathDlg dlg;
+	if(dlg.DoModal() == IDOK){
+		m_result_path = dlg.m_reslut_path;
+	}
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+//취득한 영상을 이진화
+void CBMPZoomView::On24bitBMPto1bitBinarization()
+{
+	#define RESULT_PATH L".\\images\\"
+	WIN32_FIND_DATA fd;
+	HANDLE hFind = FindFirstFile(m_sPath+L"*.*", &fd);
+	CString newName =L"";
+	TCHAR* FileName= nullptr;		
+	if (INVALID_HANDLE_VALUE != hFind)
+	{		
+		do {
+			if (fd.cFileName[0] == '.') {//current and parent path ignore						
+				continue;
+			}
+			else {
+				CString tempFileName = fd.cFileName;
+				if(! m_BMPclass->runMake1bpp(m_sPath+tempFileName, tempFileName, bit24)){					
+					return;
+				}
+			}								
+		} while (FindNextFile(hFind, &fd));		
+		FindClose(hFind);//handle 반환				
+	}
+	ShellExecute(NULL, L"open", L"explorer", RESULT_PATH, NULL, SW_SHOW);
+}
+

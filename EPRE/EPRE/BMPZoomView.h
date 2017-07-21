@@ -4,7 +4,7 @@
 #include "afxwin.h"
 #include "myGdiPlus.h" 
 #include "resource.h"
-
+#include "MyBMPclass.h"	//write&save BMP
 using namespace Gdiplus; 
 class CBMPZoomView : public CZoomView
 {
@@ -32,6 +32,9 @@ public:
 	CString m_fileName, m_oldFileName;
 	CString m_sPath;//이미지 저장 경로
 	BOOL m_IDOK;
+	//이진화 결과 저장관련
+	CString m_result_path;
+	MyBMPclass* m_BMPclass;
 public:
 	virtual void OnDraw(CDC* pDC);      // 이 뷰를 그리기 위해 재정의되었습니다.
 #ifdef _DEBUG
@@ -64,5 +67,8 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnSaveCropImageFile();
 	afx_msg void OnSetImagePath();
+	afx_msg void On24bitBMPto1bitBinarization();
+	afx_msg void OnSetResultPath();
+	afx_msg void OnDestroy();
 };
 
