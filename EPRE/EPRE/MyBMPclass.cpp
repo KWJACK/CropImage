@@ -22,7 +22,7 @@ MyBMPclass::~MyBMPclass(void)
 
 BOOL MyBMPclass::readBMP(IN CString a_fileName, OPTIONAL int flag)
 {
-	int result = m_hFile.Open(a_fileName, CFile::modeRead| CFile::shareDenyWrite,NULL);			
+	int result = m_hFile.Open(a_fileName, CFile::modeRead| CFile::shareDenyNone,NULL);			
 	m_hFile.Read(&BMPHf, sizeof(BITMAPFILEHEADER));
 	if(BMPHf.bfType != 0x4D42){
 		AfxMessageBox(L"BMP파일이 아닙니다.");
@@ -240,17 +240,19 @@ BOOL MyBMPclass::make1bpp()
 	return TRUE;
 }
 
-BOOL MyBMPclass::saveBMP(IN CString a_fileName, OPTIONAL int flag)
+BOOL MyBMPclass::saveBMP(IN CString a_newFileName, OPTIONAL int flag)
 {
-	if(!m_hFile.Open(L".\\images\\"+a_fileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)){
+	if(!m_hFile.Open(L".\\images\\"+a_newFileName, CFile::modeCreate | CFile::modeReadWrite  | CFile::typeBinary | CFile::shareDenyNone)){	
 		AfxMessageBox(L"BMP 파일 생성 초기화 오류");
-		return FALSE;
+		return FALSE;		
 	}
 	m_hFile.Write(&BMPHf, sizeof(BITMAPFILEHEADER));
 	m_hFile.Write(&BMPHi, sizeof(BITMAPINFOHEADER));
 	m_hFile.Write(rgb2, sizeof(RGBQUAD) * 2);
 	m_hFile.Write(m_bin, BMPHi.biSizeImage);
 	m_hFile.Close();
+	m_hFile.Abort();
+	return TRUE;
 }
 
 BOOL MyBMPclass::runMake1bpp(IN CString a_fileName, IN CString a_newFileName, OPTIONAL int flag){

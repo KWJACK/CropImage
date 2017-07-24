@@ -13,6 +13,7 @@ FormBMP::FormBMP()
 	: CFormView(FormBMP::IDD)
 {
 	m_saveFlag = 0;
+	m_pSelectedImage = nullptr;
 }
 
 FormBMP::~FormBMP()
@@ -26,10 +27,9 @@ void FormBMP::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(FormBMP, CFormView)
-	ON_WM_SIZE()
-	ON_WM_CREATE()
-	ON_WM_DRAWITEM()
+	ON_WM_SIZE()	
 	ON_WM_PAINT()
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 // FormBMP 진단입니다.
@@ -72,40 +72,6 @@ int FormBMP::OnCreate(LPCREATESTRUCT lpCreateStruct)
 }
 
 
-
-void FormBMP::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
-{
-	if(m_saveFlag){
-		CMMemDC *pMemDC = NULL;
-		pMemDC = new CMMemDC( lpDrawItemStruct->hDC );
-		lpDrawItemStruct->hDC = pMemDC->m_hDC;
-		//배경 흰색
-		CRect rect; GetClientRect(rect);
-		HBRUSH hBrush = ::CreateSolidBrush( RGB(255, 255, 255) );		
-		::FillRect( lpDrawItemStruct->hDC, rect, hBrush );		
-		DeleteObject( hBrush );
-
-		Gdiplus::Graphics graphics(lpDrawItemStruct->hDC );
-		p_graphics = &graphics;
-		graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
-				
-		graphics.DrawImage(m_pSelectedImage,	
-								Gdiplus::Rect( lpDrawItemStruct->rcItem.left, 
-									lpDrawItemStruct->rcItem.top,
-									lpDrawItemStruct->rcItem.right - lpDrawItemStruct->rcItem.left,
-									lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top)); 
-		CPen pen;
-		CBrush brush;
-		pen.CreatePen(PS_DOT, 1, RGB(0,0,0));
-		pMemDC->SelectStockObject(NULL_BRUSH);
-		pMemDC->SelectObject(&pen);
-			
-		delete pMemDC;
-	}
-	//CFormView::OnDrawItem(nIDCtl, lpDrawItemStruct);
-}
-
-
 void FormBMP::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
@@ -125,16 +91,8 @@ void FormBMP::OnPaint()
 			graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 				
 			graphics.DrawImage(m_pSelectedImage,	
-				Gdiplus::Rect( rt.left, 
-										rt.top,
-										rt.right -rt.left,
-										rt.bottom - rt.top)); 
-			CPen pen;
-			CBrush brush;
-			pen.CreatePen(PS_DOT, 1, RGB(0,0,0));
-			pMemDC->SelectStockObject(NULL_BRUSH);
-			pMemDC->SelectObject(&pen);
-			
+				Gdiplus::Rect( rt.left, rt.top, rt.right -rt.left, rt.bottom - rt.top)); 
+			m_saveFlag = 0;			
 			delete pMemDC;
 	}
 }

@@ -14,8 +14,7 @@ protected:
 	CBMPZoomView();           // 동적 만들기에 사용되는 protected 생성자입니다.
 	virtual ~CBMPZoomView();
 	//Attributes
-public:
-	//CDemoZoomDoc* GetDocument();
+public:	
 	BOOL m_bSelectMode;			//그리기 모드
 	CRect m_rubberBand, m_Canvas_Rect;
 	CPoint m_ptStart, m_ptEnd;	//마우스 드래그에 따라 그릴 상자의 시작점
@@ -27,13 +26,14 @@ public:
 	float m_fResolution_W, m_fResolution_H;	//이미지 배율
 	//선택 이미지
 	Bitmap  *m_pSelectedImage;		
-	Graphics* p_graphics;//GDI+ 출력개체를 가르키는 포인터
+	Graphics* p_graphics;//GDI+ 출력개체를 가르키는 포인터	
 	//파일 이름 변수 저장 관련
 	CString m_fileName, m_oldFileName;
-	CString m_sPath;//이미지 저장 경로
+	CString m_sPath;//이미지 저장 경로	
+
 	BOOL m_IDOK;
 	//이진화 결과 저장관련
-	CString m_result_path;
+	CString m_result_path;	
 	MyBMPclass* m_BMPclass;
 public:
 	virtual void OnDraw(CDC* pDC);      // 이 뷰를 그리기 위해 재정의되었습니다.

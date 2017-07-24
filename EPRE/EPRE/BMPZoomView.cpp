@@ -23,6 +23,7 @@ CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
 	HDC hdc = ::GetDC(m_hWnd);
 	m_IDOK = FALSE;
 	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(300)\\temp\\";//default	
+	m_result_path = L".\\images";
 	//you can change this in runtime
 	m_BMPclass = new MyBMPclass;
 }
@@ -98,7 +99,8 @@ void CBMPZoomView::OnInitialUpdate()
 	CZoomView::OnInitialUpdate();
 	CRect rt; GetClientRect( &rt );
 	//MainFrame의 주소를 얻어서 MainFrame이 갖고 있는 ListDlg의 PreviewDlg주소에 ZoomView의 주소 연결
-	CMainFrame* myFrame = (CMainFrame* )GetParentFrame();
+	CMainFrame* myFrame = (CMainFrame* )GetParentFrame();//AFXGetParentFram을 사용해도 됩니다.
+	(CZoomView *)GetParentFrame();
 	myFrame->m_pFormListDlg->m_cListCtrlRem.m_preViewDlg = this;
 
 	if(m_create_canvas == FALSE){
@@ -137,17 +139,14 @@ void CBMPZoomView::OnViewZoomout()
 }
 
 void CBMPZoomView::OnLButtonDown(UINT nFlags, CPoint point)
-{	
-	
+{		
 	if (!m_bSelectMode && m_pSelectedImage!=NULL //이미지 클릭 확인
 		&& point.x >= m_ImageDest.x && point.y >= m_ImageDest.y)//범위확인
 	{		
 		m_bSelectMode = TRUE;
 		SetCapture();
 		m_ptStart = m_ptEnd =point;
-	}
-	
-	//CZoomView::OnLButtonDown(nFlags, point);
+	}	
 }
 
 
@@ -169,8 +168,7 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		if( absWidth<3 || absHeight<5)return;//사각형이 너무 작으면 저장하지 않는다
 
 		if(pStartW >= pEndW && pStartH >= pEndH){//↖
-			if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;
-			
+			if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;			
 			std::swap(pStartW,pEndW);
 			std::swap(pStartH,pEndH);
 		}
@@ -191,7 +189,7 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		Graphics *pGraphics = Graphics::FromImage(pCloneBmp);
 		pGraphics->DrawImage(pCloneBmp, bmpRect);	
 
-		OnSaveCropImageFile();		
+		OnSaveCropImageFile();//파일이름으로 입력한게 맞는지 검사 & 글자 자동완성 함수
 		if(m_IDOK){//대화상자에서 OK를 눌렀는지 체크하는 옵션 값
 			UINT num,size;
 			ImageCodecInfo* pImageCodecInfo;
@@ -199,6 +197,8 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 			pImageCodecInfo =(ImageCodecInfo *)malloc(size);
 			GetImageEncoders(num,size,pImageCodecInfo);
 			pCloneBmp->Save(m_sPath+m_fileName+L".bmp",&pImageCodecInfo[0].Clsid);
+
+			//FormBMP(왼쪽 구석 창)에 이진화된 결과를 그릴 수 있도록 합니다.
 			writetoFormBMP(&(m_sPath+m_fileName+L".bmp"));//FormBMP 트리거 함수
 			free(pImageCodecInfo);			
 		}
@@ -209,10 +209,25 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 }
 
 void CBMPZoomView::writetoFormBMP(CString* a_filepath){
+	//이전 파일이 있다면 삭제합니다.
 	CMainFrame* myFrame = (CMainFrame *)AfxGetMainWnd();	
-	myFrame->m_pFormBMP->m_pSelectedImage  = Bitmap::FromFile(a_filepath->AllocSysString());		
+
+	CString resultTemp = m_result_path+L"\\temp.bmp";
+	CFileFind hFileFind; CFile hFile;
+	if( hFileFind.FindFile(resultTemp.AllocSysString()) ){				
+		if(myFrame->m_pFormBMP->m_pSelectedImage){
+			delete myFrame->m_pFormBMP->m_pSelectedImage;
+			myFrame->m_pFormBMP->m_pSelectedImage = nullptr;			
+		}
+		hFile.Remove(resultTemp);		
+	}
+	if(! m_BMPclass->runMake1bpp(*a_filepath, L"temp.bmp", bit24))
+		return;	
+	
+	myFrame->m_pFormBMP->m_pSelectedImage  = Bitmap::FromFile(resultTemp.AllocSysString());		
 	myFrame->m_pFormBMP->m_saveFlag = 1;
-	::SendMessage(myFrame->m_pFormBMP->m_hWnd, WM_PAINT, 0,0);	
+	::SendMessage(myFrame->m_pFormBMP->m_hWnd, WM_PAINT, 0,0);		
+	
 }
 
 void CBMPZoomView::setColorStyle(CClientDC &dc, CPen &pen, CBrush &brush){
@@ -383,14 +398,17 @@ void CBMPZoomView::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
-
+//자른 이미지 저장시 단어 검사, 자동완성 해주는 부분
 void CBMPZoomView::OnSaveCropImageFile()
 {
 	CSetFileNameDlg dlg;
 	dlg.m_fileName = m_oldFileName;//Dlg에 보일 최근 파일이름 출력
 	if (dlg.DoModal() == IDOK)
 	{
-		if(dlg.m_fileName.GetLength()<8)return;//adxxxx_ 에 추가로 입력한게 있어야 진행
+		if(dlg.m_fileName.GetLength()<8){
+			m_IDOK = FALSE;
+			return;//adxxxx_ 에 추가로 입력한게 있어야 진행
+		}
 
 		m_fileName = m_oldFileName =dlg.m_fileName;//이전에 작성한 파일이름을 나중에도 사용합니다.
 		CString Address = wcstok((TCHAR*)(LPCTSTR)m_fileName, L"_");
@@ -406,9 +424,9 @@ void CBMPZoomView::OnSaveCropImageFile()
 
 		if(tempIndex  >= Word.GetLength()){
 			m_oldFileName = Address+L"_";//입력문자열이 초과하면 up)
-		}
-		
+		}		
 		m_IDOK = TRUE;
+		return;
 		//처음 파일 이름 입력한 대로 인덱스 얻어서 자동으로 지정하게 하면 될듯
 	}
 	else m_IDOK = FALSE;
@@ -424,19 +442,18 @@ void CBMPZoomView::OnSetImagePath()
 	}	
 }
 
+//이미지 저장 경로 변경 함수
 void CBMPZoomView::OnSetResultPath()
 {
 	CSetResultPathDlg dlg;
 	if(dlg.DoModal() == IDOK){
 		m_result_path = dlg.m_reslut_path;
-	}
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	}	
 }
 
 //취득한 영상을 이진화
 void CBMPZoomView::On24bitBMPto1bitBinarization()
-{
-	#define RESULT_PATH L".\\images\\"
+{	
 	WIN32_FIND_DATA fd;
 	HANDLE hFind = FindFirstFile(m_sPath+L"*.*", &fd);
 	CString newName =L"";
@@ -456,6 +473,6 @@ void CBMPZoomView::On24bitBMPto1bitBinarization()
 		} while (FindNextFile(hFind, &fd));		
 		FindClose(hFind);//handle 반환				
 	}
-	ShellExecute(NULL, L"open", L"explorer", RESULT_PATH, NULL, SW_SHOW);
+	ShellExecute(NULL, L"open", L"explorer", m_result_path, NULL, SW_SHOW);
 }
 

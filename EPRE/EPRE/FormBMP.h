@@ -31,7 +31,6 @@ protected:
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);	
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 
 	OPTIONAL int m_saveFlag;//BMPZoomView에서 사진이 바뀌었음을 나타내는플래그
 	IN Bitmap  *m_pSelectedImage;
