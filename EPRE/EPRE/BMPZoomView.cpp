@@ -12,6 +12,7 @@
 #include "SetFileNameDlg.h"		//파일 이름 지정 다디얼로그
 #include "SetImagePathDlg.h"	//패스 지정 다이얼로그
 #include "SetResultPathDlg.h"	//결과 패스 지정 다이얼로그
+
 IMPLEMENT_DYNCREATE(CBMPZoomView, CView)
 using namespace Gdiplus; 
 CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
@@ -21,8 +22,7 @@ CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
 	m_fResolution_H=0.0f;m_fResolution_W=0.0f;
 	HDC hdc = ::GetDC(m_hWnd);
 	m_IDOK = FALSE;
-	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(300)\\temp\\";//default
-	
+	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(300)\\temp\\";//default	
 	//you can change this in runtime
 	m_BMPclass = new MyBMPclass;
 }
@@ -194,18 +194,27 @@ void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 		OnSaveCropImageFile();		
 		if(m_IDOK){//대화상자에서 OK를 눌렀는지 체크하는 옵션 값
 			UINT num,size;
-			ImageCodecInfo * pImageCodecInfo;
+			ImageCodecInfo* pImageCodecInfo;
 			GetImageEncodersSize(&num,&size);
-			pImageCodecInfo =(ImageCodecInfo*)( malloc (size));
+			pImageCodecInfo =(ImageCodecInfo *)malloc(size);
 			GetImageEncoders(num,size,pImageCodecInfo);
 			pCloneBmp->Save(m_sPath+m_fileName+L".bmp",&pImageCodecInfo[0].Clsid);
-			free(pImageCodecInfo);
+			writetoFormBMP(&(m_sPath+m_fileName+L".bmp"));//FormBMP 트리거 함수
+			free(pImageCodecInfo);			
 		}
 		delete pCloneBmp;
 		delete pGraphics;		
 	}
 	CZoomView::OnLButtonUp(nFlags, point);
 }
+
+void CBMPZoomView::writetoFormBMP(CString* a_filepath){
+	CMainFrame* myFrame = (CMainFrame *)AfxGetMainWnd();	
+	myFrame->m_pFormBMP->m_pSelectedImage  = Bitmap::FromFile(a_filepath->AllocSysString());		
+	myFrame->m_pFormBMP->m_saveFlag = 1;
+	::SendMessage(myFrame->m_pFormBMP->m_hWnd, WM_PAINT, 0,0);	
+}
+
 void CBMPZoomView::setColorStyle(CClientDC &dc, CPen &pen, CBrush &brush){
 	pen.CreatePen(PS_SOLID, 1, RGB(0,0,0));
  	dc.SelectObject(&pen);

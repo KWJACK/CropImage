@@ -122,7 +122,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	int m_IDpane = m_wndSplitter.IdFromRowCol(0, 0);//왼쪽 윈도우 아이디 접근
 	int m_IDpane2 = m_wndSplitter.IdFromRowCol(0, 1);//오른쪽 윈도우 아이디 접근
 	//왼쪽열에 수평선을 만듬
-	if(!m_wndSplitter2.CreateStatic(&m_wndSplitter, 2, 1, WS_CHILD|WS_VISIBLE, m_IDpane)) {
+	if(!m_wndSplitter2.CreateStatic(&m_wndSplitter, 3, 1, WS_CHILD|WS_VISIBLE, m_IDpane)) {
 		TRACE0("Fail to left horizontal splitter...");
 		return FALSE;
 	}
@@ -133,8 +133,9 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	}*/
 
 	// Main View (link 출력 뷰) 를 만듬(왼쪽 하단, 상단) 하단 ForList를 만들어야  상단 FolderDlg 생성가능
-	if(!m_wndSplitter2.CreateView(1, 0, RUNTIME_CLASS(FormListDlg), CSize(200, 10), pContext)||
-		!m_wndSplitter2.CreateView(0, 0, RUNTIME_CLASS(FormFolderDlg), CSize(200, 10), pContext)) {
+	if(!m_wndSplitter2.CreateView(1, 0, RUNTIME_CLASS(FormListDlg), CSize(200, 200), pContext)||
+		!m_wndSplitter2.CreateView(0, 0, RUNTIME_CLASS(FormFolderDlg), CSize(200, 200), pContext)||
+		!m_wndSplitter2.CreateView(2, 0, RUNTIME_CLASS(FormBMP), CSize(200, 200), pContext)) {
 		TRACE0("Fail to create MainView...");
 		return FALSE;
 	}
@@ -156,6 +157,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	m_wndSplitter.SetColumnInfo( 0, 250, 20 );
 	// 왼쪽 수평 분할 윈도우의 크기
 	m_wndSplitter2.SetRowInfo( 0, 300, 10 );
+	m_wndSplitter2.SetRowInfo( 1, 400, 10 );
+	m_wndSplitter2.SetRowInfo( 2, 300, 10 );
 	//m_wndSplitter3.SetRowInfo( 0, 1600, 10 );
 	
 	// 활성창 지정

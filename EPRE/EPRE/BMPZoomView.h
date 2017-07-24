@@ -49,6 +49,7 @@ protected:
 public:
 	void ShowImageInfo(CPoint a_point);//마우스 커서에 따른 비트맵 픽셀 정보 출력
 	void setColorStyle(CClientDC &dc, CPen &pen, CBrush &brush);
+	void writetoFormBMP(CString* a_filepath);
 
 	afx_msg void OnViewZoomin();
 	afx_msg void OnViewZoomout();
