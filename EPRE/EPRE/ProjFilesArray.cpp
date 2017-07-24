@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "ProjFilesArray.h"
 
-// This is a CString to CObject map, where CObject is a CStringArray containing selected file names
 CProjFilesArray::CProjFilesArray()
 {
 }
@@ -18,6 +17,7 @@ CProjFilesArray::~CProjFilesArray()
 			delete pArray;
 	}
 }
+
 // Getting the list of selected files (a CStringArray object) corresponding to the folder
 // specified by szFolderPath parameters.
 // If bAddIfNotFound is TRUE and the map does not contain the required key

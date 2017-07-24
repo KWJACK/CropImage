@@ -24,7 +24,7 @@ CSetFileNameDlg::~CSetFileNameDlg()
 void CSetFileNameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);		
-	DDX_Text(pDX, IDC_FILENAME_EDIT, m_fileName);
+	DDX_Text(pDX, IDC_FILENAME_EDIT, m_fileName);//Directly connect edit with CString variable
 }
 
 
