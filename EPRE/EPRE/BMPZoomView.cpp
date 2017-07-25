@@ -13,6 +13,7 @@
 #include "SetImagePathDlg.h"	//패스 지정 다이얼로그
 #include "SetResultPathDlg.h"	//결과 패스 지정 다이얼로그
 
+
 IMPLEMENT_DYNCREATE(CBMPZoomView, CView)
 using namespace Gdiplus; 
 CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE)
@@ -151,40 +152,28 @@ void CBMPZoomView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CBMPZoomView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	if(m_bSelectMode && point.x <= m_ExpandDest.x+m_ImageDest.x // 끝점 범위 x,y 확인
-		&& point.y <= m_ExpandDest.y+m_ImageDest.y){		
+	m_ptEnd = point;
+
+	if(m_ptStart.x > m_ptEnd.x)	std::swap(m_ptStart.x, m_ptEnd.x);//좌표 체계가 다르다면 스왑합니다
+	if(m_ptStart.y > m_ptEnd.y) std::swap(m_ptStart.y, m_ptEnd.y);//코드 절약
+
+	if(m_bSelectMode && m_ptEnd.x <= m_ExpandDest.x+m_ImageDest.x // 끝점 범위 x,y 확인
+		&& m_ptEnd.y <= m_ExpandDest.y+m_ImageDest.y){		
 		m_bSelectMode = FALSE;
 		CClientDC dc(this);		
 		::ReleaseCapture();
 
 		float pStartW = float(m_ptStart.x-m_ImageDest.x)/m_fResolution_W;
 		float pStartH = float(m_ptStart.y-m_ImageDest.y)/m_fResolution_H;
-		float pEndW = float(point.x-m_ImageDest.x)/m_fResolution_W; 
-		float pEndH = float(point.y-m_ImageDest.y)/m_fResolution_H;
-		float absWidth = abs(pEndW-pStartW);
-		float absHeight = abs(pEndH-pStartH);
+		float pEndW = float(m_ptEnd.x-m_ImageDest.x)/m_fResolution_W; 
+		float pEndH = float(m_ptEnd.y-m_ImageDest.y)/m_fResolution_H;
+		float Width = pEndW-pStartW;
+		float Height = pEndH-pStartH;
 
-		if( absWidth<3 || absHeight<5)return;//사각형이 너무 작으면 저장하지 않는다
+		if( Width<3 || Height<5)return;//사각형이 너무 작으면 저장하지 않는다	
 
-		if(pStartW >= pEndW && pStartH >= pEndH){//↖
-			if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;			
-			std::swap(pStartW,pEndW);
-			std::swap(pStartH,pEndH);
-		}
-		else if(pStartW <= pEndW && pStartH >= pEndH){//↗
-			//if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;
-			std::swap(pStartH,pEndH);
-		}
-		else if(pStartW >= pEndW && pStartH <= pEndH){//↙
-			if(point.x < m_ptStart.x ||point.y <m_ptStart.y)return;
-			std::swap(pStartW,pEndW);
-		}
-		else {//↘
-		}
-		
-
-		Gdiplus::RectF bmpRect(0.0f, 0.0f,absWidth,absHeight);		
-		Bitmap *pCloneBmp = m_pSelectedImage->Clone(pStartW, pStartH, absWidth,absHeight, m_pSelectedImage->GetPixelFormat());
+		Gdiplus::RectF bmpRect(0.0f, 0.0f, Width, Height);		
+		Bitmap *pCloneBmp = m_pSelectedImage->Clone(pStartW, pStartH, Width,Height, m_pSelectedImage->GetPixelFormat());
 		Graphics *pGraphics = Graphics::FromImage(pCloneBmp);
 		pGraphics->DrawImage(pCloneBmp, bmpRect);	
 
