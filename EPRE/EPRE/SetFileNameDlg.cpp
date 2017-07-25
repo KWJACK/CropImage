@@ -32,3 +32,14 @@ BEGIN_MESSAGE_MAP(CSetFileNameDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
+
+
+BOOL CSetFileNameDlg::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+	SetWindowPos(NULL, 300,700,0,0,SWP_NOSIZE);
+	
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	
+}

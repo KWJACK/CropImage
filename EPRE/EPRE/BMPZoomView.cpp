@@ -99,8 +99,7 @@ void CBMPZoomView::OnInitialUpdate()
 	CZoomView::OnInitialUpdate();
 	CRect rt; GetClientRect( &rt );
 	//MainFrame의 주소를 얻어서 MainFrame이 갖고 있는 ListDlg의 PreviewDlg주소에 ZoomView의 주소 연결
-	CMainFrame* myFrame = (CMainFrame* )GetParentFrame();//AFXGetParentFram을 사용해도 됩니다.
-	(CZoomView *)GetParentFrame();
+	CMainFrame* myFrame = (CMainFrame* )GetParentFrame();//AFXGetParentFram을 사용해도 됩니다.	
 	myFrame->m_pFormListDlg->m_cListCtrlRem.m_preViewDlg = this;
 
 	if(m_create_canvas == FALSE){
@@ -405,7 +404,7 @@ void CBMPZoomView::OnSaveCropImageFile()
 	dlg.m_fileName = m_oldFileName;//Dlg에 보일 최근 파일이름 출력
 	if (dlg.DoModal() == IDOK)
 	{
-		if(dlg.m_fileName.GetLength()<8){
+		if(dlg.m_fileName.GetLength() < 8){
 			m_IDOK = FALSE;
 			return;//adxxxx_ 에 추가로 입력한게 있어야 진행
 		}
