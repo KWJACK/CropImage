@@ -56,6 +56,7 @@ void FormBMP::OnSize(UINT nType, int cx, int cy)
 	if(rt.Width()){
 		this->GetClientRect(rt);
 		CStatic* pWnd = (CStatic *)GetDlgItem(IDC_BMP_THUMNAIL);
+		rt.SetRect(rt.left+10, rt.top+10, rt.right-10, rt.bottom-10);
 		pWnd->MoveWindow(rt);
 	}	
 }
@@ -68,6 +69,11 @@ int FormBMP::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetClientRect(rt);	
 	CMainFrame* myFrame = (CMainFrame* )GetParentFrame();
 	myFrame->m_pFormBMP = this;
+
+	HDC hdc = ::GetWindowDC(m_hWnd);
+	HBRUSH hBrush = ::CreateSolidBrush(RGB(255,255,255));
+	::FillRect(hdc, rt, hBrush);
+	DeleteObject(hBrush);
 	return 0;
 }
 
@@ -91,7 +97,7 @@ void FormBMP::OnPaint()
 			graphics.SetInterpolationMode(InterpolationModeHighQualityBicubic);
 				
 			graphics.DrawImage(m_pSelectedImage,	
-				Gdiplus::Rect( rt.left, rt.top, rt.right -rt.left, rt.bottom - rt.top)); 
+				Gdiplus::Rect( rt.left, rt.top, rt.right -rt.left-30, rt.bottom - rt.top-30)); 
 			m_saveFlag = 0;			
 			delete pMemDC;
 	}

@@ -23,6 +23,11 @@ public:
 
 	CPoint m_ImageDest;//이미지 출력 시작점 cx = left, cy = top
 	CPoint m_ExpandDest;//늘어난 이미지 크기
+	//객체 무빙 관련
+	CPoint m_ptPrev;	//객체 무빙시 쓸 기준 좌표
+	BOOL m_prev_object;//사각형 선택 했는지
+	int m_select_flag;
+
 	float m_fResolution_W, m_fResolution_H;	//이미지 배율
 	//선택 이미지
 	Bitmap  *m_pSelectedImage;		
@@ -31,7 +36,7 @@ public:
 	CString m_fileName, m_oldFileName;
 	CString m_sPath;//이미지 저장 경로	
 
-	BOOL m_IDOK;
+	BOOL m_IDOK;//대화상자에서 OK 사인 눌렀는지
 	//이진화 결과 저장관련
 	CString m_result_path;	
 	MyBMPclass* m_BMPclass;
@@ -50,6 +55,8 @@ public:
 	void ShowImageInfo(CPoint a_point);//마우스 커서에 따른 비트맵 픽셀 정보 출력
 	void setColorStyle(CClientDC &dc, CPen &pen, CBrush &brush);
 	void writetoFormBMP(CString* a_filepath);
+	int  PosInObject(int a_x, int a_y);
+	void CBMPZoomView::MovePos(int a_interval_x, int a_interval_y);
 
 	afx_msg void OnViewZoomin();
 	afx_msg void OnViewZoomout();
@@ -71,5 +78,7 @@ public:
 	afx_msg void On24bitBMPto1bitBinarization();
 	afx_msg void OnSetResultPath();
 	afx_msg void OnDestroy();
+	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnPaint();
 };
 

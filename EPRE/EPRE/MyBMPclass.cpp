@@ -136,7 +136,7 @@ int	MyBMPclass::binarizationIterative()
 		Told = T;
 
 		a1 = b1 = u1 = 0.f;
-		for (i = 0; i <= Told; i++)
+		for (i = 0; i <= Told; i++)//Threshold 경계 이전까지
 		{
 			a1 += (i*hist[i]);
 			b1 += hist[i];
@@ -146,7 +146,7 @@ int	MyBMPclass::binarizationIterative()
 			u1 = a1 / b1;
 
 		a2 = b2 = u2 = 0.f;
-		for (i = Told + 1; i < 256; i++)
+		for (i = Told + 1; i < 256; i++)//Threshold 경계 이후까지
 		{
 			a2 += (i*hist[i]);
 			b2 += hist[i];
@@ -171,7 +171,7 @@ void MyBMPclass::makeHistogram(OUT float histo[256])
 		for(int j=0;j<bmpWidth-m_width;j++)
 			Index++;
 	}
-	//히스토그램 정규화
+	//히스토그램 정규화 갯수를 확률 값으로 
 	for (int i = 0; i < 256; i++)
 	{
 		histo[i] = static_cast<float>(cnt[i]) / size;
