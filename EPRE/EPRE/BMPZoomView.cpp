@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(CBMPZoomView, CView)
 	ON_WM_DESTROY()
 	ON_WM_RBUTTONUP()
 	ON_WM_PAINT()
+	ON_COMMAND(ID_SAVE_KEY, &CBMPZoomView::OnSaveKey)
 END_MESSAGE_MAP()
 
 
@@ -203,7 +204,7 @@ void CBMPZoomView::OnMouseMove(UINT nFlags, CPoint point)
 		int half_width = (m_ptEnd.x - m_ptStart.x)>>1;
 		int half_height = (m_ptEnd.y - m_ptStart.y)>>1;
 
-		CRect r(m_ptStart.x - 7, m_ptStart.y - 7, m_ptStart.x + 7, m_ptStart.y + 7);
+		CRect r(m_ptStart.x - 3, m_ptStart.y - 3, m_ptStart.x + 3, m_ptStart.y + 3);
 
 		for (int i = 0; i < 8; i++) {
 				dc.Rectangle(r);
@@ -571,7 +572,7 @@ void CBMPZoomView::OnPaint()
 		int half_width = (m_ptEnd.x - m_ptStart.x)>>1;
 		int half_height = (m_ptEnd.y - m_ptStart.y)>>1;
 
-		CRect r(m_ptStart.x - 7, m_ptStart.y - 7, m_ptStart.x + 7, m_ptStart.y + 7);
+		CRect r(m_ptStart.x - 3, m_ptStart.y - 3, m_ptStart.x + 3, m_ptStart.y + 3);
 
 		for (int i = 0; i < 8; i++) {
 			dc.Rectangle(r);
@@ -579,4 +580,12 @@ void CBMPZoomView::OnPaint()
 			half_height * ((i / 2) % 2 == 0)*(1 -(i / 4)*2));// 음수만들기는 (1-2)
 		}
 	}
+}
+
+
+void CBMPZoomView::OnSaveKey()
+{
+	m_bSelectMode = TRUE;	
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	PostMessage(WM_LBUTTONUP,0,MAKELPARAM(m_ptEnd.x, m_ptEnd.y));
 }

@@ -80,5 +80,6 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnPaint();
+	afx_msg void OnSaveKey();
 };
 
