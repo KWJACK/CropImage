@@ -208,7 +208,7 @@ void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 	//CString cStrText = GetItemText(m_nItem, m_nSubItem); //선택 list의 파일 이름 얻음
 	if(m_nItem==-1){
 		return;
-	}
+	}	
 	//선택 아이템 경로 얻기		
 	if(!GetItemPath(m_selFilePath, m_nItem)){
 		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
@@ -218,7 +218,8 @@ void CMFCShellListCtrlEx::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 	if(m_preViewDlg){				
 		if(m_selFilePath.Find(L".jpg") > 0 ){//jpg, bmp 파일만 읽어들임		
 			m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());		
-			::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0,0);	
+			::SendMessage(m_preViewDlg->m_hWnd, WM_SIZE, 0, 0);	
+			::PostMessage(m_preViewDlg->m_hWnd, LM_SEL_PATH_NAME, 0, LPARAM(&m_selFilePath));
 		}
 		else if( m_selFilePath.Find(L".bmp") > 0){
 			m_preViewDlg->m_pSelectedImage  = Bitmap::FromFile(m_selFilePath.AllocSysString());		
@@ -260,6 +261,8 @@ void CMFCShellListCtrlEx::OnLvnKeydown(NMHDR *pNMHDR, LRESULT *pResult)
 	default:return;
 	}
 	//선택 아이템 경로 얻기	
+	
+
 	if (!GetItemPath(m_selFilePath, i)) {
 		AfxMessageBox(L"해당 파일의 경로를 찾을 수 없습니다.");
 		return;

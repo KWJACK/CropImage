@@ -34,7 +34,7 @@
 
 
 
-
+#define LM_SEL_PATH_NAME	37001
 
 
 

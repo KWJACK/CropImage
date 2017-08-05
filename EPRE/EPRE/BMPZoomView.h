@@ -33,7 +33,7 @@ public:
 
 	BOOL m_IDOK;
 	//이진화 결과 저장관련
-	CString m_result_path;	
+	CString m_result_path;		
 	MyBMPclass* m_BMPclass;
 public:
 	virtual void OnDraw(CDC* pDC);      // 이 뷰를 그리기 위해 재정의되었습니다.
@@ -71,5 +71,10 @@ public:
 	afx_msg void On24bitBMPto1bitBinarization();
 	afx_msg void OnSetResultPath();
 	afx_msg void OnDestroy();
+protected:
+	afx_msg LRESULT OnLmSelPathName(WPARAM wParam, LPARAM lParam);
+public:
+	afx_msg void OnSaveKey();		
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 

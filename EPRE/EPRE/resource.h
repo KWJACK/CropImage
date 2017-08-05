@@ -28,13 +28,14 @@
 #define ID_32778                        32778
 #define ID_SET_STROE_PATH               32779
 #define ID_SET_RESULT_PATH              32780
+#define ID_SAVE_KEY                     32781
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        317
-#define _APS_NEXT_COMMAND_VALUE         32781
+#define _APS_NEXT_COMMAND_VALUE         32783
 #define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -16,7 +16,7 @@ public:
 	BOOL CopyItems(const CMFCShellListCtrlEx& cSrcListCtrl, const CUIntArray& cItemPosArr);	
 	
 	int m_nItem;
-	CString m_selFilePath;
+	CString m_selFilePath;	//선택 파일 경로	 
 	CBMPZoomView* m_preViewDlg;
 protected:
 	DECLARE_MESSAGE_MAP()
