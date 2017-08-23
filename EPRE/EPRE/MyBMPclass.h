@@ -33,5 +33,6 @@ public:
 	BOOL make1bpp();//1bit 
 
 	BOOL runMake1bpp(IN CString a_fileName, IN CString a_newFileName, OPTIONAL int flag);
+	BOOL PaletteChange(IN CString a_path, IN CString a_fileName);
 };
 

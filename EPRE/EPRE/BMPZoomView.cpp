@@ -24,7 +24,7 @@ CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE), m_select_flag(0)
 	m_fResolution_H=0.0f;m_fResolution_W=0.0f;
 	HDC hdc = ::GetDC(m_hWnd);
 	m_IDOK = FALSE;
-	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(300)\\temp\\";//default	
+	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(400)\\temp\\";//default	
 	m_result_path = L".\\images";
 	//you can change this in runtime
 	m_BMPclass = new MyBMPclass;
@@ -39,6 +39,9 @@ CBMPZoomView::~CBMPZoomView()
 }
 
 BEGIN_MESSAGE_MAP(CBMPZoomView, CView)
+	ON_WM_PAINT()
+	ON_WM_DRAWITEM()
+	ON_WM_SIZE()
 	ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomin)
 	ON_COMMAND(ID_VIEW_ZOOMOUT, OnViewZoomout)
 	ON_WM_LBUTTONDOWN()
@@ -46,17 +49,17 @@ BEGIN_MESSAGE_MAP(CBMPZoomView, CView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_VSCROLL()
 	ON_WM_HSCROLL()
-	ON_WM_MOUSEWHEEL()
-	ON_WM_DRAWITEM()
-	ON_WM_SIZE()
+	ON_WM_MOUSEWHEEL()	
 	ON_COMMAND(ID_32774, &CBMPZoomView::OnSaveCropImageFile)
 	ON_COMMAND(ID_32777, &CBMPZoomView::OnSetImagePath)
 	ON_COMMAND(ID_32775, &CBMPZoomView::On24bitBMPto1bitBinarization)
-	ON_COMMAND(ID_SET_RESULT_PATH, &CBMPZoomView::OnSetResultPath)
-	ON_WM_DESTROY()
-	ON_WM_RBUTTONUP()
-	ON_WM_PAINT()
+	ON_COMMAND(ID_32776, &CBMPZoomView::OnConvert1bpp)
+	ON_COMMAND(ID_SET_RESULT_PATH, &CBMPZoomView::OnSetResultPath)		
+	ON_WM_RBUTTONUP()	
 	ON_COMMAND(ID_SAVE_KEY, &CBMPZoomView::OnSaveKey)
+	ON_UPDATE_COMMAND_UI(ID_32775, &CBMPZoomView::OnUpdate32775)
+	ON_UPDATE_COMMAND_UI(ID_32776, &CBMPZoomView::OnUpdate32776)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -548,6 +551,30 @@ void CBMPZoomView::On24bitBMPto1bitBinarization()
 	ShellExecute(NULL, L"open", L"explorer", m_result_path, NULL, SW_SHOW);
 }
 
+//1bpp 파레트 반전 함수
+void CBMPZoomView::OnConvert1bpp()
+{
+	WIN32_FIND_DATA fd;
+	HANDLE hFind = FindFirstFile(m_sPath+L"*.*", &fd);
+	CString newName =L"";
+	TCHAR* FileName= nullptr;		
+	if (INVALID_HANDLE_VALUE != hFind)
+	{			
+		do {
+			if (fd.cFileName[0] == '.') {//current and parent path ignore						
+				continue;
+			}
+			else {
+				CString tempFileName = fd.cFileName;
+				m_BMPclass->PaletteChange(m_sPath+tempFileName, tempFileName);
+			}								
+		} while (FindNextFile(hFind, &fd));		
+		FindClose(hFind);//handle 반환		
+		return;
+	}
+	return;
+}
+
 
 //오브젝트 선택을 취소함
 void CBMPZoomView::OnRButtonUp(UINT nFlags, CPoint point)
@@ -589,3 +616,16 @@ void CBMPZoomView::OnSaveKey()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	PostMessage(WM_LBUTTONUP,0,MAKELPARAM(m_ptEnd.x, m_ptEnd.y));
 }
+
+//bitmap24bit->1bpp 활성화 함수
+void CBMPZoomView::OnUpdate32775(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(true);
+}
+
+//1bpp 반전코드 메뉴 활성화 함수
+void CBMPZoomView::OnUpdate32776(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(true);
+}
+

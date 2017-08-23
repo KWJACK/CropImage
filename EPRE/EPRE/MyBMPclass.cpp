@@ -276,3 +276,49 @@ BOOL MyBMPclass::runMake1bpp(IN CString a_fileName, IN CString a_newFileName, OP
 
 	return TRUE;
 }
+
+BOOL MyBMPclass::PaletteChange(IN CString a_path, IN CString a_fileName){
+		RGBQUAD rgb2[2];//추가
+	int result = m_hFile.Open(a_path, CFile::modeRead| CFile::shareDenyWrite,NULL);		
+
+	int dataSize = m_hFile.GetLength() - //전체 파일 크기 - (비트맵헤더+흑백 파레트)
+		(sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER)+sizeof(RGBQUAD)*2);//
+	
+	m_hFile.Read(&BMPHf, sizeof(BITMAPFILEHEADER));
+	if(BMPHf.bfType != 0x4D42){
+		AfxMessageBox(L"BMP파일이 아닙니다.");
+		return FALSE;
+	}
+	m_hFile.Read(&BMPHi, sizeof(BITMAPINFOHEADER));
+	if(BMPHi.biBitCount != 1){
+		AfxMessageBox(L"1비트의 BMP파일만 읽을 수 있습니다.");
+		return FALSE;
+	}	
+	
+	m_hFile.Read(rgb2, sizeof(rgb2));//파레트 정보 읽어서 반전
+	for(int i=0;i<2;i++){
+		rgb2[i].rgbRed =~rgb2[i].rgbRed;
+		rgb2[i].rgbBlue =~rgb2[i].rgbBlue;
+		rgb2[i].rgbGreen =~rgb2[i].rgbGreen;
+	}
+
+	m_inImg = new UCHAR[dataSize];
+	m_hFile.Read(m_inImg, dataSize);//데이터 정보 읽어서 반전
+	for(int i=0;i<dataSize;i++){
+		m_inImg[i] =~ m_inImg[i];
+	}
+	m_hFile.Close();
+
+	if(!m_hFile.Open(L".\\images\\"+a_fileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)){
+		AfxMessageBox(L"BMP 파일 생성 초기화 오류");
+		return FALSE;
+	}
+	m_hFile.Write(&BMPHf, sizeof(BITMAPFILEHEADER));
+	m_hFile.Write(&BMPHi, sizeof(BITMAPINFOHEADER));
+	m_hFile.Write(rgb2, sizeof(RGBQUAD) * 2);
+	m_hFile.Write(m_inImg, dataSize);
+	m_hFile.Close();
+	delete m_inImg;
+	m_inImg=nullptr;
+
+}

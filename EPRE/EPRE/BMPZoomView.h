@@ -81,5 +81,8 @@ public:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnPaint();
 	afx_msg void OnSaveKey();
+	afx_msg void OnUpdate32775(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate32776(CCmdUI *pCmdUI);
+	afx_msg void OnConvert1bpp();
 };
 
