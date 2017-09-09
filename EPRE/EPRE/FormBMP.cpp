@@ -53,7 +53,7 @@ void FormBMP::Dump(CDumpContext& dc) const
 void FormBMP::OnSize(UINT nType, int cx, int cy)
 {
 	CFormView::OnSize(nType, cx, cy);
-	if(rt.Width()){
+	if(rt.Width() && m_bmp_thumnail.m_hWnd!=NULL){
 		this->GetClientRect(rt);
 		CStatic* pWnd = (CStatic *)GetDlgItem(IDC_BMP_THUMNAIL);
 		rt.SetRect(rt.left+10, rt.top+10, rt.right-10, rt.bottom-10);

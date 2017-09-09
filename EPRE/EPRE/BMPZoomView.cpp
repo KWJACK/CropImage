@@ -24,7 +24,7 @@ CBMPZoomView::CBMPZoomView() : m_create_canvas(FALSE), m_select_flag(0)
 	m_fResolution_H=0.0f;m_fResolution_W=0.0f;
 	HDC hdc = ::GetDC(m_hWnd);
 	m_IDOK = FALSE;
-	m_sPath = L"C:\\Users\\jaekeun\\Desktop\\job\\sampleImage(400)\\temp\\";//default	
+	m_sPath = L".\\result\\";//default	
 	m_result_path = L".\\images";
 	//you can change this in runtime
 	m_BMPclass = new MyBMPclass;
