@@ -566,11 +566,12 @@ void CBMPZoomView::OnConvert1bpp()
 			}
 			else {
 				CString tempFileName = fd.cFileName;
-				m_BMPclass->PaletteChange(m_sPath+tempFileName, tempFileName);
+				m_BMPclass->PaletteChange(m_result_path+L"\\" +tempFileName, tempFileName);
 			}								
 		} while (FindNextFile(hFind, &fd));		
-		FindClose(hFind);//handle 반환		
-		ShellExecute(NULL, L"open", L"explorer", m_result_path, NULL, SW_SHOW);
+		FindClose(hFind);//handle 반환
+		CString m_convert_path = L".\\convert_1bpp";
+		ShellExecute(NULL, L"open", L"explorer", m_convert_path, NULL, SW_SHOW);
 		return;
 	}
 	return;

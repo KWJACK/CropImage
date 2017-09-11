@@ -309,7 +309,7 @@ BOOL MyBMPclass::PaletteChange(IN CString a_path, IN CString a_fileName){
 	}
 	m_hFile.Close();
 
-	if(!m_hFile.Open(L".\\images\\"+a_fileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)){
+	if(!m_hFile.Open(L".\\convert_1bpp\\"+a_fileName, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)){
 		AfxMessageBox(L"BMP 파일 생성 초기화 오류");
 		return FALSE;
 	}
