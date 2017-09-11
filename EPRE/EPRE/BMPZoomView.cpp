@@ -570,6 +570,7 @@ void CBMPZoomView::OnConvert1bpp()
 			}								
 		} while (FindNextFile(hFind, &fd));		
 		FindClose(hFind);//handle ¹ÝÈ¯		
+		ShellExecute(NULL, L"open", L"explorer", m_result_path, NULL, SW_SHOW);
 		return;
 	}
 	return;

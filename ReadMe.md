@@ -1,10 +1,11 @@
 # Introduction
- This application is made for **collecting sample image data** during my intership period in Hyper-connected Communication Research Laboratory, ETRI.
+ This application is made for **collecting sample image data** during my intership period at the Hyper-connected Communication Research Laboratory, ETRI.
 
- You can easily crop part of image which you had dragged.
+ You can easily crop part of image which you had dragged, as shown below.
  This serve expected **binarization result** on **left-corner splitted window**
 
-EPRE means ETRI PreProcessing (sorry)
+(EPRE) means ETRI PreProcessing (sorry)
+
 # Screenshoot
 ![result1](/assets/result1.png)
 
@@ -31,8 +32,8 @@ EPRE means ETRI PreProcessing (sorry)
 - Select the file (jpg, png, bmp) and drag the area you want to cut.
 - Write the file name that you want to save once
   - but I set the naming format so you should name according to rule
-  - For example, you cut the character '성', write 'ad0000_성북구_0'
-  - Until the last character(in this case '구'), you don't need to re-write the file name
+  - For example, you cut the character '??, write 'ad0000_?�북�?0'
+  - Until the last character(in this case '�?), you don't need to re-write the file name
   - **If you want not to yield, remove the OnSaveCropImageFile() in BMPZoomView.cpp**
 - Finally, check it the result of binarization.
 
