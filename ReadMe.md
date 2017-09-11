@@ -32,8 +32,9 @@
 - Select the file (jpg, png, bmp) and drag the area you want to cut.
 - Write the file name that you want to save once
   - but I set the naming format so you should name according to rule
-  - For example, you cut the character '??, write 'ad0000_?�북�?0'
-  - Until the last character(in this case '�?), you don't need to re-write the file name
+  - For example, you cut the character '서', write 'ad0000_서울시_0'
+  - Until the last character(in this case '시'), you don't need to re-write the file name
+  - This program will write left file automatically
   - **If you want not to yield, remove the OnSaveCropImageFile() in BMPZoomView.cpp**
 - Finally, check it the result of binarization.
 
